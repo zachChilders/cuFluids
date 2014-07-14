@@ -1,0 +1,15 @@
+#version 330 core
+
+// Interpolated values from the vertex shaders
+in vec2 UV;
+
+// Ouput data
+//out vec4 color;
+
+void main(){
+
+	// Output color = color specified in the vertex shader, 
+	// interpolated between all 3 surrounding vertices
+	
+	gl_FragColor = vec4(50.0 / 256.0, 177.0 / 256.0 , 188.0 / 256.0, 0.4);
+}
