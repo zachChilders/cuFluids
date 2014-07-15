@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+#include<GL/glew.h>
 #include <GLFW/glfw3.h>
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -54,9 +54,10 @@ int main()
 	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
 	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	glDepthFunc(GL_LESS);
 
 	GLuint VertexArrayID; 
 	glGenVertexArrays(1, &VertexArrayID);
@@ -70,9 +71,10 @@ int main()
 	glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 	//Camera matrix
 	glm::mat4 View = glm::lookAt(
-						glm::vec3(8,6,-3),
+						glm::vec3(6,5,-3),
 						glm::vec3(0,0,0),
 						glm::vec3(0,1,0));
+
 	//Model is an id matrix, setting everything at world origin.
 	glm::mat4 Model = glm::mat4(1.0f);
 	glm::mat4 MVP = Projection * View * Model;
@@ -81,29 +83,29 @@ int main()
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;	
 	std::vector<glm::vec3> normals; // Won't be used at the moment.
-	bool res = loadOBJ("cube.obj", vertices, uvs, normals);
+	bool res = loadOBJ("cube2.obj", vertices, uvs, normals);
 	
-
+/*
 	std::vector<unsigned short> indices;
 	std::vector<glm::vec3> indexed_vertices;
 	std::vector<glm::vec2> indexed_uvs;
 	std::vector<glm::vec3> indexed_normals;
-	indexVBO(vertices, uvs, normals, indices, indexed_vertices, indexed_uvs, indexed_normals);
+	indexVBO(vertices, uvs, normals, indices, indexed_vertices, indexed_uvs, indexed_normals);*/
 
 	GLuint vertexbuffer;
 	glGenBuffers(1, &vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER, indexed_vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
 
 	GLuint normalbuffer;
 	glGenBuffers(1, &normalbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
 	glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
-	
+	/*
 	GLuint elementbuffer;
 	glGenBuffers(1, &elementbuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);*/
 
 	do{
 		//Clear the screen
@@ -136,6 +138,18 @@ int main()
 			(void*)0                          // array buffer offset
 		);
 
+		//// 2nd attribute buffer : normals
+		//glEnableVertexAttribArray(2);
+		//glBindBuffer(GL_ARRAY_BUFFER, elementbuffer);
+		//glVertexAttribPointer(
+		//	2,                                // attribute
+		//	3,                                // size
+		//	GL_FLOAT,                         // type
+		//	GL_FALSE,                         // normalized?
+		//	0,                                // stride
+		//	(void*)0                          // array buffer offset
+		//);
+
 
 		glDrawArrays(GL_TRIANGLES, 0, vertices.size() );
 		
@@ -154,7 +168,7 @@ int main()
 
 	// Cleanup VBO and shaders
 	glDeleteBuffers(1, &vertexbuffer);
-	glDeleteBuffers(1, &elementbuffer);
+	//glDeleteBuffers(1, &elementbuffer);
 	glDeleteBuffers(1, &normalbuffer);
 
 	glDeleteProgram(programID);

@@ -76,16 +76,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\Downloads\OpenGL-tutorial_v0014_33\OpenGL-tutorial_v0014_33\common\shader.cpp" />
     <ClCompile Include="include\objloader.cpp" />
+    <ClCompile Include="include\shader.cpp" />
     <ClCompile Include="include\texture.cpp" />
     <ClCompile Include="include\vboindexer.cpp" />
     <ClCompile Include="ogl.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Downloads\OpenGL-tutorial_v0014_33\OpenGL-tutorial_v0014_33\common\shader.hpp" />
     <ClInclude Include="include\glfw3.h" />
     <ClInclude Include="include\objloader.hpp" />
+    <ClInclude Include="include\shader.hpp" />
     <ClInclude Include="include\texture.hpp" />
     <ClInclude Include="include\vboindexer.hpp" />
   </ItemGroup>
