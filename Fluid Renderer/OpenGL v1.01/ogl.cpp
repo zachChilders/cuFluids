@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <SOIL\SOIL.h>
+#include <SOIL/SOIL.h>
 
 #include <algorithm>
 #include <stdio.h>
@@ -33,6 +33,7 @@ const GLchar* vertexSource =
     "   Texcoord = texcoord;"
     "   gl_Position = proj * view * model * vec4(position, 1.0);"
     "}";
+
 const GLchar* fragmentSource =
     "#version 150 core\n"
     "in vec3 Color;"
@@ -41,7 +42,7 @@ const GLchar* fragmentSource =
     "uniform sampler2D texKitten;"
     "uniform sampler2D texPuppy;"
     "void main() {"
-	"	outColor = vec4(Color, 1.0) * mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), 0.5);"
+	"	outColor = vec4(Color, 0.8) * mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), 0.5);"
     "}";
 
 
@@ -62,55 +63,48 @@ int main()
 	glGenBuffers(1, &vbo); //Generate 1 buffer
 
 	GLfloat vertices[] = {
-        -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-         0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-         0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+        -0.5f, -1.35f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+         0.5f, -1.35f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+         0.5f,  1.35f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f,  1.35f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+        -0.5f,  1.35f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+        -0.5f, -1.35f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
 
-        -0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-         0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+        -0.5f,  1.35f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+        -0.5f,  1.35f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+        -0.5f, -1.35f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+        -0.5f, -1.35f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+        -0.5f, -1.35f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+        -0.5f,  1.35f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
 
-        -0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+         0.5f,  1.35f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+         0.5f,  1.35f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f, -1.35f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+         0.5f, -1.35f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+         0.5f, -1.35f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+         0.5f,  1.35f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
 
-         0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-         0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-         0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+        -0.5f, -1.35f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+         0.5f, -1.35f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f, -1.35f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+         0.5f, -1.35f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+        -0.5f, -1.35f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+        -0.5f, -1.35f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
 
-        -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-         0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-         0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-
-        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-         0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+        -0.5f,  1.35f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+         0.5f,  1.35f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f,  1.35f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+         0.5f,  1.35f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+        -0.5f,  1.35f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+        -0.5f,  1.35f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
 
 		//FLOOR
-        -5.0f, -5.0f, -2.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-         5.0f, -5.0f, -2.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-         5.0f,  5.0f, -2.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-         5.0f,  5.0f, -2.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-        -5.0f,  5.0f, -2.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-        -5.0f, -5.0f, -2.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f
+        -5.0f, -5.0f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+         5.0f, -5.0f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+         5.0f,  5.0f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+         5.0f,  5.0f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        -5.0f,  5.0f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -5.0f, -5.0f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f
     };
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo); //Upload data to the GPU
@@ -146,18 +140,13 @@ int main()
     glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 
 							8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 
-	/*GLint texAttrib = glGetAttribLocation(shaderProgram, "texcoord");
-	glEnableVertexAttribArray(texAttrib);
-	glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE,
-							8*sizeof(float), (void*)(6*sizeof(float)));*/
-
 	//Texturing
 	GLuint tex;
 	glGenTextures(1, &tex);
 	glBindTexture(GL_TEXTURE_2D, tex);
 
 	int width, height;
-    unsigned char* image = SOIL_load_image("sample.png", &width, &height, 0, SOIL_LOAD_RGB);
+    unsigned char* image = SOIL_load_image("cat.png", &width, &height, 0, SOIL_LOAD_RGB);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
     SOIL_free_image_data(image);
 
@@ -170,7 +159,7 @@ int main()
 
 	//Camera matrix
 	glm::mat4 view = glm::lookAt(
-						glm::vec3(3.0f,2.5f,3.0f),
+						glm::vec3(4.0f, 0.0f ,2.0f),
 						glm::vec3(0,0,0),
 						glm::vec3(0,0,1.0f));
 	GLint uniView = glGetUniformLocation(shaderProgram, "view");
@@ -186,14 +175,14 @@ int main()
 	do{
 
 		//Clear the screen
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glm::mat4 model;
 		glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(model));
 
 		//Draw cube
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDrawArrays(GL_TRIANGLES, 0, 30);
 
 		glEnable(GL_STENCIL_TEST);
 		// Draw floor with stencil
@@ -202,7 +191,7 @@ int main()
         glStencilMask(0xFF); //Mask
         glDepthMask(GL_FALSE);
         glClear(GL_STENCIL_BUFFER_BIT);       
-        glDrawArrays(GL_TRIANGLES, 36, 6); //Actual drawing
+        glDrawArrays(GL_TRIANGLES, 30, 6); //Actual drawing
         glStencilFunc(GL_EQUAL, 1, 0xFF); //Stencil
         glStencilMask(0x00); //Mask
         glDepthMask(GL_TRUE);
@@ -213,7 +202,7 @@ int main()
 		glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(model));
 		
 		glUniform3f(uniColor, 0.3f, 0.3f, 0.3f);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDrawArrays(GL_TRIANGLES, 0, 30);
 		glUniform3f(uniColor, 1.0f, 1.0f, 1.0f);
 
         glDisable(GL_STENCIL_TEST);
