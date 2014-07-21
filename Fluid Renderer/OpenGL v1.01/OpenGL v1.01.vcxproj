@@ -76,22 +76,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="include\objloader.cpp" />
-    <ClCompile Include="include\shader.cpp" />
-    <ClCompile Include="include\texture.cpp" />
     <ClCompile Include="include\vboindexer.cpp" />
     <ClCompile Include="ogl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\glfw3.h" />
-    <ClInclude Include="include\objloader.hpp" />
-    <ClInclude Include="include\shader.hpp" />
-    <ClInclude Include="include\texture.hpp" />
     <ClInclude Include="include\vboindexer.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="FragmentShader.shader" />
     <None Include="Shaders\ColorFragmentShader.fragmentshader" />
     <None Include="Shaders\TransformVertexShader.vertexshader" />
+    <None Include="Shaders\VertexShader.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

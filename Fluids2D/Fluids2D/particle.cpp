@@ -1,5 +1,5 @@
-#include "stdafx.h"
-#include "particle.h"
+#include  stdafx.h 
+#include  particle.h 
 
 //Default
 fluidParticle::
@@ -26,6 +26,7 @@ fluidParticle::
 		xPos = x;
 		yPos = y;
 		zPos = z;
+		viscosity = viscosity;
 	}
 
 //Nothing to destruct yet.

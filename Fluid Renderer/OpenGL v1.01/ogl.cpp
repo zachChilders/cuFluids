@@ -1,4 +1,4 @@
-#include<GL/glew.h>
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -8,52 +8,52 @@
 #include <SOIL/SOIL.h>
 
 #include <algorithm>
+#include <iostream>
+#include <sstream>
+#include <fstream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
 #include <time.h>
 
 GLFWwindow* window;
-
 void startContext();
 
-// Shader sources
-const GLchar* vertexSource =
-    "#version 150 core\n"
-    "in vec3 position;"
-    "in vec3 color;"
-    "in vec2 texcoord;"
-    "out vec3 Color;"
-    "out vec2 Texcoord;"
-    "uniform mat4 model;"
-    "uniform mat4 view;"
-    "uniform mat4 proj;"
-	"uniform vec3 overrideColor;"
-    "void main() {"
-    "   Color = overrideColor * color;"
-    "   Texcoord = texcoord;"
-    "   gl_Position = proj * view * model * vec4(position, 1.0);"
-    "}";
-
-const GLchar* fragmentSource =
-    "#version 150 core\n"
-    "in vec3 Color;"
-    "in vec2 Texcoord;"
-    "out vec4 outColor;"
-    "uniform sampler2D texKitten;"
-    "uniform sampler2D texPuppy;"
-    "void main() {"
-	"	outColor = vec4(Color, 0.8) * mix(texture(texKitten, Texcoord), texture(texPuppy, Texcoord), 0.5);"
-    "}";
-
-
 int main()
-{
+{	
 	startContext();
 
+	//GL config
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDepthFunc(GL_LESS);
+
+	//ShaderFile and lineBuffer used by every shader.
+	std::ifstream shaderFile;
+	std::string lineBuffer;
+
+	//Load vertex shader
+	std::string vertexSource;
+	shaderFile.open("Shaders/VertexShader.shader");
+	while(getline(shaderFile, lineBuffer))
+	{
+		vertexSource += "\n" + lineBuffer;
+	}
+	shaderFile.close();
+
+	//Load fragment shader
+	std::string fragmentSource;
+	shaderFile.open("Shaders/FragmentShader.shader");
+	while(getline(shaderFile, lineBuffer))
+	{
+		fragmentSource += "\n" + lineBuffer;
+	}
+	shaderFile.close();
+
+	//Bind shaders into GLchars
+	const GLchar* vertexShaderSource = vertexSource.c_str();
+	const GLchar* fragmentShaderSource = fragmentSource.c_str();
 	
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
@@ -112,12 +112,12 @@ int main()
 	
 	// Create and compile the vertex shader
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexSource, NULL);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
 
     // Create and compile the fragment shader
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
+	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
 
     // Link the vertex and fragment shader into a shader program
@@ -125,6 +125,7 @@ int main()
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
     glBindFragDataLocation(shaderProgram, 0, "outColor");
+	
     glLinkProgram(shaderProgram);
     glUseProgram(shaderProgram);
 
@@ -134,11 +135,16 @@ int main()
     glEnableVertexAttribArray(posAttrib);
     glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 
 							8 * sizeof(GLfloat), 0);
-						  //Var	   Number Type    ??  	    Line total		  offset
+
     GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
     glEnableVertexAttribArray(colAttrib);
     glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 
 							8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+
+	GLint texAttrib = glGetAttribLocation(shaderProgram, "texcoord");
+    glEnableVertexAttribArray(texAttrib);
+    glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 
+							8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
 
 	//Texturing
 	GLuint tex;
@@ -175,7 +181,7 @@ int main()
 	do{
 
 		//Clear the screen
-		glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+		glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glm::mat4 model;
@@ -240,7 +246,7 @@ void startContext()
 
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	window = glfwCreateWindow(1024, 768, "Fluid Renderer", NULL, NULL);

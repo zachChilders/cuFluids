@@ -30,7 +30,7 @@
 #define _glfw3_h_
 
 #ifdef __cplusplus
-extern "C" {
+extern  C  {
 #endif
 
 
@@ -76,7 +76,7 @@ extern "C" {
  * First: If we are we on Windows, we want a single define for it (_WIN32)
  * (Note: For Cygwin the compiler flag -mwin32 should be used, but to
  * make sure that things run smoothly for Cygwin users, we add __CYGWIN__
- * to the list of "valid Win32 identifiers", which removes the need for
+ * to the list of  valid Win32 identifiers , which removes the need for
  * -mwin32)
  */
 #if !defined(_WIN32) && (defined(__WIN32__) || defined(WIN32) || defined(__CYGWIN__))
@@ -171,7 +171,7 @@ extern "C" {
   * to the DLL version of the GLFW library.  _GLFW_BUILD_DLL is defined by the
   * GLFW configuration header when compiling the DLL version of the library.
   */
- #error "You must not have both GLFW_DLL and _GLFW_BUILD_DLL defined"
+ #error  You must not have both GLFW_DLL and _GLFW_BUILD_DLL defined 
 #endif
 
 #if defined(_WIN32) && defined(_GLFW_BUILD_DLL)
@@ -190,7 +190,7 @@ extern "C" {
 
 #elif defined(__GNUC__) && defined(_GLFW_BUILD_DLL)
 
- #define GLFWAPI __attribute__((visibility("default")))
+ #define GLFWAPI __attribute__((visibility( default )))
 
 #else
 
@@ -254,14 +254,14 @@ extern "C" {
  *
  * The naming of the key codes follow these rules:
  *  - The US keyboard layout is used
- *  - Names of printable alpha-numeric characters are used (e.g. "A", "R",
- *    "3", etc.)
+ *  - Names of printable alpha-numeric characters are used (e.g.  A ,  R ,
+ *     3 , etc.)
  *  - For non-alphanumeric characters, Unicode:ish names are used (e.g.
- *    "COMMA", "LEFT_SQUARE_BRACKET", etc.). Note that some names do not
+ *     COMMA ,  LEFT_SQUARE_BRACKET , etc.). Note that some names do not
  *    correspond to the Unicode standard (usually for brevity)
- *  - Keys that lack a clear US mapping are named "WORLD_x"
- *  - For non-printable keys, custom names are used (e.g. "F4",
- *    "BACKSPACE", etc.)
+ *  - Keys that lack a clear US mapping are named  WORLD_x 
+ *  - For non-printable keys, custom names are used (e.g.  F4 ,
+ *     BACKSPACE , etc.)
  *
  *  @ingroup input
  *  @{

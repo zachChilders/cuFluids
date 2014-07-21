@@ -15,19 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ogl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="include\vboindexer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="include\objloader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="include\shader.cpp">
+    <ClCompile Include="ogl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,16 +26,7 @@
     <ClInclude Include="include\vboindexer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\texture.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\glfw3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\objloader.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\shader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,6 +35,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Shaders\ColorFragmentShader.fragmentshader">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="FragmentShader.shader">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\VertexShader.shader">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
