@@ -76,11 +76,13 @@
     <ClCompile Include="ogl.cpp" />
     <ClCompile Include="particles.cpp" />
     <ClCompile Include="shaders.cpp" />
+    <ClCompile Include="System.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common_header.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="shaders.h" />
+    <ClInclude Include="System.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
