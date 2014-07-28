@@ -18,27 +18,18 @@
     <ClCompile Include="ogl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="shaders.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="particles.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="System.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Particles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="particle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="shaders.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common_header.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="System.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

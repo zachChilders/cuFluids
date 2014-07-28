@@ -19,109 +19,71 @@ System::~System(void)
 }
 
 /*
- * initalizes a single particle according to its type
- */
-void System::createParticle(Particle *p)
-{
-
-	p->lifespan = (((rand()%10+1)))/10.0f;
-	p->type = 0;
-
-	p->age = 0.0f;
-	p->scale = 0.25f;
-	p->direction = 0;   
-	p->position[X] = ((rand()%2)-(rand()%2));
-
-	p->position[Y] = -30;
-
-	p->position[Z] = 0; 
-
-	p->movement[X] = (((((((2) * rand()%11) + 1)) * rand()%11) + 1) * 0.0035) - (((((((2) * rand()%11) + 1)) * rand()%11) + 1) * 0.0035);
-	p->movement[Y] = ((((((5) * rand()%11) + 3)) * rand()%11) + 7) * 0.015; 
-	p->movement[Z] = (((((((2) * rand()%11) + 1)) * rand()%11) + 1) * 0.0015) - (((((((2) * rand()%11) + 1)) * rand()%11) + 1) * 0.0015);
-   
-	p->color[X] = 0.0f;
-	p->color[Y] = 0.0f;
-	p->color[Z] = 1.0f;
-
-	p->pull[X] = 0.0f;
-	p->pull[Y] = 0.0f;
-	p->pull[Z] = 0.0f;
-}
-
-/*
  * initalizes a particle system according to its type
  * calls create particle() to initalize individual particles
  */
 void System::createParticles(void)
 {
 
-	systemPull[Y] = 0.005;
-	systemPull[X] = systemPull[Z] = 0.0f; 
+	systemPull.y = 0.005;
+	systemPull.x = systemPull.z = 0.0f; 
 
 	
 	for(int i = 0; i < MAX_PARTICLES; i++)
 	{
-		createParticle(&particles[i]);
+		//createParticle(&particles[i]);
+		particles[i] = Particle();
 	}
 }
-
-/*
- * updates required particle attributes for all particles in a system
- * also responsible for killing and respawning (via createparticle()) individual particles
- */
+ 
+//We're going to replace this with a shader.
 void System::updateParticles(void)
 {
    for(int i = 0; i < MAX_PARTICLES; i++)
    {
       particles[i].age = particles[i].age + 0.02;
       
-      if(systemType == Smoke || particles[i].type == 1)
-         particles[i].scale = particles[i].scale + 0.001; //increasing scale makes textures bigger over lifetime
-
+      
       particles[i].direction = particles[i].direction + ((((((int)(0.5) * rand()%11) + 1)) * rand()%11) + 1);
 
-      particles[i].position[X] = particles[i].position[X] + particles[i].movement[X] + particles[i].pull[X];
-      particles[i].position[Y] = particles[i].position[Y] + particles[i].movement[Y] + particles[i].pull[Y];
-      particles[i].position[Z] = particles[i].position[Z] + particles[i].movement[Z] + particles[i].pull[Z];
+      particles[i].position.x = particles[i].position.x + particles[i].movement.x + particles[i].pull.x;
+      particles[i].position.y = particles[i].position.y + particles[i].movement.y + particles[i].pull.y;
+      particles[i].position.z = particles[i].position.z + particles[i].movement.z + particles[i].pull.z;
       
-      particles[i].pull[X] = particles[i].pull[X] + systemPull[X];
-      particles[i].pull[Y] = particles[i].pull[Y] + systemPull[Y]; // acleration due to gravity
-      particles[i].pull[Z] = particles[i].pull[Z] + systemPull[Z];
+      particles[i].pull.x = particles[i].pull.x + systemPull.x;
+      particles[i].pull.y = particles[i].pull.y + systemPull.y; // acleration due to gravity
+      particles[i].pull.z = particles[i].pull.z + systemPull.z;
 
-      // color changing for fire particles light yellow -> red with age
-      if(systemType == Fire || particles[i].type == 0)
-      {
          float temp = particles[i].lifespan/particles[i].age;
          if((temp) < 1.75)
          {//red
-            particles[i].color[X] = 1.0f;
-            particles[i].color[Y] = 0.25f;
-            particles[i].color[Z] = 0.0f;
+            particles[i].color.x = 1.0f;
+            particles[i].color.y = 0.25f;
+            particles[i].color.z = 0.0f;
          }
          else if((temp) < 3.0)
          {//gold
-            particles[i].color[X] = 1.0f;
-            particles[i].color[Y] = 0.9f;
-            particles[i].color[Z] = 0.0f;
+            particles[i].color.x = 1.0f;
+            particles[i].color.y = 0.9f;
+            particles[i].color.z = 0.0f;
          }
          else if((temp) < 10.0)
          {//yellow
-            particles[i].color[X] = 1.0f;
-            particles[i].color[Y] = 1.0f;
-            particles[i].color[Z] = 0.0f;
+            particles[i].color.x = 1.0f;
+            particles[i].color.y = 1.0f;
+            particles[i].color.z = 0.0f;
          }
          else
          {// initial light yellow
-            particles[i].color[X] = 1.0f;
-            particles[i].color[Y] = 0.95f;
-            particles[i].color[Z] = 0.8f;
+            particles[i].color.x = 1.0f;
+            particles[i].color.y = 0.95f;
+            particles[i].color.z = 0.8f;
          }
-      }
+      
 
       
-        if (particles[i].age > particles[i].lifespan || particles[i].position[Y] > 45 || particles[i].position[Y] < -35 || particles[i].position[X] > 80 || particles[i].position[X] < -80)
-			createParticle(&particles[i]);
+        if (particles[i].age > particles[i].lifespan || particles[i].position.y > 45 || particles[i].position.y < -35 || particles[i].position.x > 80 || particles[i].position.x < -80)
+			particles[i] = Particle();
      
    }
 }
@@ -138,30 +100,30 @@ int System::getNumOfParticles(void)
 
 float System::getXPos(int i)
 {
-   return particles[i].position[X];
+   return particles[i].position.x;
 }
 
 float System::getYPos(int i)
 {
-   return particles[i].position[Y];
+   return particles[i].position.y;
 }
 float System::getZPos(int i)
 {
-   return particles[i].position[Z];
+   return particles[i].position.z;
 }
 
 float System::getR(int i)
 {
-   return particles[i].color[X];
+   return particles[i].color.x;
 }
 
 float System::getG(int i)
 {
-   return particles[i].color[Y];
+   return particles[i].color.y;
 }
 float System::getB(int i)
 {
-   return particles[i].color[Z];
+   return particles[i].color.z;
 }
 
 float System::getScale(int i)
@@ -181,7 +143,7 @@ float System::getAlpha(int i)
 
 void System::modifySystemPull(float x, float y, float z)
 {
-   systemPull[X] += x;
-   systemPull[Y] += y;
-   systemPull[Z] += z;
+   systemPull.x += x;
+   systemPull.y += y;
+   systemPull.z += z;
 }

@@ -74,14 +74,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ogl.cpp" />
-    <ClCompile Include="particles.cpp" />
-    <ClCompile Include="shaders.cpp" />
+    <ClCompile Include="Particles.cpp" />
     <ClCompile Include="System.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="common_header.h" />
-    <ClInclude Include="particle.h" />
-    <ClInclude Include="shaders.h" />
+    <ClInclude Include="Particle.h" />
     <ClInclude Include="System.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

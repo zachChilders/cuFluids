@@ -122,56 +122,56 @@ Result:  Loads and adds include part.
 
 /*---------------------------------------------*/
 
-bool CShader::GetLinesFromFile(string sFile, bool bIncludePart, vector<string>* vResult)
-{
-	FILE* fp = fopen(sFile.c_str(), "rt");
-	if(!fp)return false;
-
-	string sDirectory;
-	int slashIndex = -1;
-	RFOR(i, ESZ(sFile)-1)
-	{
-		if(sFile[i] == '\\' || sFile[i] == '/')
-		{
-			slashIndex = i;
-			break;
-		}
-	}
-
-	sDirectory = sFile.substr(0, slashIndex+1);
-
-	// Get all lines from a file
-
-	char sLine[255];
-
-	bool bInIncludePart = false;
-
-	while(fgets(sLine, 255, fp))
-	{
-		stringstream ss(sLine);
-		string sFirst;
-		ss >> sFirst;
-		if(sFirst == "#include")
-		{
-			string sFileName;
-			ss >> sFileName;
-			if(ESZ(sFileName) > 0 && sFileName[0] == '\"' && sFileName[ESZ(sFileName)-1] == '\"')
-			{
-				sFileName = sFileName.substr(1, ESZ(sFileName)-2);
-				GetLinesFromFile(sDirectory+sFileName, true, vResult);
-			}
-		}
-		else if(sFirst == "#include_part")
-			bInIncludePart = true;
-		else if(sFirst == "#definition_part")
-			bInIncludePart = false;
-		else if(!bIncludePart || (bIncludePart && bInIncludePart))
-			vResult->push_back(sLine);
-	}
-	fclose(fp);
-
-	return true;
-}
+//bool CShader::GetLinesFromFile(string sFile, bool bIncludePart, vector<string>* vResult)
+//{
+//	FILE* fp = fopen(sFile.c_str(), "rt");
+//	if(!fp)return false;
+//
+//	string sDirectory;
+//	int slashIndex = -1;
+//	RFOR(i, ESZ(sFile)-1)
+//	{
+//		if(sFile[i] == '\\' || sFile[i] == '/')
+//		{
+//			slashIndex = i;
+//			break;
+//		}
+//	}
+//
+//	sDirectory = sFile.substr(0, slashIndex+1);
+//
+//	// Get all lines from a file
+//
+//	char sLine[255];
+//
+//	bool bInIncludePart = false;
+//
+//	while(fgets(sLine, 255, fp))
+//	{
+//		stringstream ss(sLine);
+//		string sFirst;
+//		ss >> sFirst;
+//		if(sFirst == "#include")
+//		{
+//			string sFileName;
+//			ss >> sFileName;
+//			if(ESZ(sFileName) > 0 && sFileName[0] == '\"' && sFileName[ESZ(sFileName)-1] == '\"')
+//			{
+//				sFileName = sFileName.substr(1, ESZ(sFileName)-2);
+//				GetLinesFromFile(sDirectory+sFileName, true, vResult);
+//			}
+//		}
+//		else if(sFirst == "#include_part")
+//			bInIncludePart = true;
+//		else if(sFirst == "#definition_part")
+//			bInIncludePart = false;
+//		else if(!bIncludePart || (bIncludePart && bInIncludePart))
+//			vResult.push_back(sLine);
+//	}
+//	fclose(fp);
+//
+//	return true;
+//}
 
 /*-----------------------------------------------
 
@@ -251,14 +251,14 @@ Result:	Adds a shader (like source file) to
 
 /*---------------------------------------------*/
 
-bool CShaderProgram::AddShaderToProgram(CShader* shShader)
-{
-	if(!shShader->IsLoaded())return false;
-
-	glAttachShader(uiProgram, shShader->GetShaderID());
-
-	return true;
-}
+//bool CShaderProgram::AddShaderToProgram(CShader* shShader)
+//{
+//	if(!shShader.IsLoaded())return false;
+//
+//	glAttachShader(uiProgram, shShader.GetShaderID());
+//
+//	return true;
+//}
 
 /*-----------------------------------------------
 
