@@ -31,12 +31,13 @@ public:
 	void updateParticles(); //updates particles according to forces being used
 	void turnToSmoke(Particle *p); //called only durring fire with smoke system to turn dead fire into smoke
 
-	void setSystemType(int systemType); //sets the particle system type
 	int getNumOfParticles(); // returns the number of particles in the system (legacy)
 	float getXPos(int i); //returns x position of particle i
 	float getYPos(int i); //returns y position of particle i
 	float getZPos(int i); //returns z position of particle i
-	glm::vec3 getRGB(int i);
+	
+	glm::vec4 getRGBA(int i);
+	glm::vec3 getPosition(int i);
 	float getR(int i); //returns red component of particle i
 	float getG(int i); //returns green component of particle i
 	float getB(int i); //returns blue component of particle i

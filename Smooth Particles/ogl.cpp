@@ -91,7 +91,6 @@ void init (void)
 	glEnable (GL_DEPTH_TEST);
 
 	zoom = -80.0f;
-	particleSystem.setSystemType(1);
 	particleSystem.createParticles();
 
 	//Soil would handle this much better
@@ -107,22 +106,18 @@ void handleKeypress(unsigned char key, int x, int y)
    {
       case 49: //1 key: smoke
          zoom = -80.0f;
-         particleSystem.setSystemType(1);
          particleSystem.createParticles();
          break;
       case 50: //2 key: fountain high
          zoom = -40.0f;
-         particleSystem.setSystemType(2);
          particleSystem.createParticles();
          break;
       case 51: //3 key: fire
          zoom = -40.0f;
-         particleSystem.setSystemType(3);
          particleSystem.createParticles();
          break;
       case 52: //4 key: fire with smoke
          zoom = -60.0f;
-         particleSystem.setSystemType(4);
          particleSystem.createParticles();
          break;
       case 61: //+ key: change x pull for more wind to right
@@ -183,7 +178,6 @@ int main(int argc, char **argv)
 		   glfwWindowShouldClose(window) == 0 );*/
 }
 
-
 // Functions to load RAW files
 // I did not write the following functions.
 // They are form the OpenGL tutorials at http://www.swiftless.com
@@ -213,7 +207,6 @@ void FreeTexture( GLuint texture )
 {
   glDeleteTextures( 1, &texture );
 }
-
 
 int windowInit()
 {

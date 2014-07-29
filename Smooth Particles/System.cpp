@@ -18,10 +18,6 @@ System::~System(void)
 {
 }
 
-/*
- * initalizes a particle system according to its type
- * calls create particle() to initalize individual particles
- */
 void System::createParticles(void)
 {
 
@@ -43,7 +39,6 @@ void System::updateParticles(void)
    {
       particles[i].age = particles[i].age + 0.02;
       
-      
       particles[i].direction = particles[i].direction + ((((((int)(0.5) * rand()%11) + 1)) * rand()%11) + 1);
 
       particles[i].position.x = particles[i].position.x + particles[i].movement.x + particles[i].pull.x;
@@ -51,7 +46,7 @@ void System::updateParticles(void)
       particles[i].position.z = particles[i].position.z + particles[i].movement.z + particles[i].pull.z;
       
       particles[i].pull.x = particles[i].pull.x + systemPull.x;
-      particles[i].pull.y = particles[i].pull.y + systemPull.y; // acleration due to gravity
+      particles[i].pull.y = particles[i].pull.y + systemPull.y; // accleration due to gravity
       particles[i].pull.z = particles[i].pull.z + systemPull.z;
 
          float temp = particles[i].lifespan/particles[i].age;
@@ -80,18 +75,21 @@ void System::updateParticles(void)
             particles[i].color.z = 0.8f;
          }
       
-
-      
         if (particles[i].age > particles[i].lifespan || particles[i].position.y > 45 || particles[i].position.y < -35 || particles[i].position.x > 80 || particles[i].position.x < -80)
 			particles[i] = Particle();
      
    }
 }
 
-void System::setSystemType(int type)
+glm::vec4 System::getRGBA(int i)
 {
-   systemType = type;
-}
+	return particles[i].getRGBA();
+};
+
+glm::vec3 System::getPosition(int i)
+{
+	return particles[i].getPosition();
+};
 
 int System::getNumOfParticles(void)
 {
@@ -102,7 +100,6 @@ float System::getXPos(int i)
 {
    return particles[i].position.x;
 }
-
 float System::getYPos(int i)
 {
    return particles[i].position.y;
@@ -116,7 +113,6 @@ float System::getR(int i)
 {
    return particles[i].color.x;
 }
-
 float System::getG(int i)
 {
    return particles[i].color.y;

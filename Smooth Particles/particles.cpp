@@ -34,7 +34,12 @@ Particle::~Particle()
 {
 };
 
-glm::vec3 Particle::getRGB()
+glm::vec4 Particle::getRGBA()
 {
 	return color;
+}
+
+glm::vec3 Particle::getPosition()
+{
+	return position;
 }
