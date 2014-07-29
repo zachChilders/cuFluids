@@ -1,11 +1,17 @@
-#pragma once
+/*****************************************************
+Particle Class
+
+Zach Childers
+
+Summer 2014
+
+/*****************************************************/
 
 #include "Particle.h"
 
 Particle::Particle()
 {
 	lifespan = (((rand()%10+1)))/10.0f;
-	type = 0;
 
 	age = 0.0f;
 	scale = 0.25f;
@@ -43,3 +49,20 @@ glm::vec3 Particle::getPosition()
 {
 	return position;
 }
+
+void Particle::setRGBA(float r, float g, float b, float a)
+{
+	color = glm::vec4(r, g, b, a);
+
+};
+
+void Particle::setPos(float x, float y, float z)
+{
+	position = glm::vec3(x, y, z);
+};
+
+bool Particle::operator<(Particle *other)
+{
+	return (position.z < other->getPosition().z);
+
+};

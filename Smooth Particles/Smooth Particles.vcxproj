@@ -78,6 +78,7 @@
     <ClCompile Include="System.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GLutils.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="System.h" />
   </ItemGroup>

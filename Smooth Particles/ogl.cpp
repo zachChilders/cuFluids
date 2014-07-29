@@ -1,3 +1,13 @@
+/*****************************************************
+GL Utilities
+
+Zach Childers
+
+Summer 2014
+
+/*****************************************************/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -25,11 +35,11 @@ void DrawParticles (void)
 	{
 		glPushMatrix();
 		// set color and alpha of current particle
-		glColor4f(particleSystem.getR(i), particleSystem.getG(i), 
-			particleSystem.getB(i), particleSystem.getAlpha(i));
+	/*	glColor4f(particleSystem.getR(i), particleSystem.getG(i), 
+			particleSystem.getB(i), particleSystem.getAlpha(i));*/
+		glColor4f(particleSystem.getRGBA(i).r, particleSystem.getRGBA(i).g, particleSystem.getRGBA(i).b, particleSystem.getRGBA(i).a);
 		//move the current particle to its new position
-		glTranslatef(particleSystem.getXPos(i), particleSystem.getYPos(i),
-			particleSystem.getZPos(i) + zoom);
+		glTranslatef(particleSystem.getPosition(i).x, particleSystem.getPosition(i).y, particleSystem.getPosition(i).z + zoom);
 
 		glScalef(particleSystem.getScale(i), particleSystem.getScale(i),
 			particleSystem.getScale(i));
@@ -151,7 +161,7 @@ int main(int argc, char **argv)
 	srand((unsigned int) time(0));
 	glutInit ( &argc, argv);
 	glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutInitWindowSize(500, 500);
+	glutInitWindowSize(800, 600);
 	glutInitWindowPosition( 100, 100);
 	glutCreateWindow( "Particle System");
 	init();
