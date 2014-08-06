@@ -22,10 +22,11 @@ This code is based off of code written by Georg Albrecht of UC Santa Cruz.
 
 class System
 {
+private:
 	int systemType; //1 = smoke, 2 = fountain, 3 = fire, 4 = fire with smoke
 	glm::vec3 systemPull; //used to store global compounding system pull in x,y,z
-	//Particle particles[MAX_PARTICLES]; //initalizes and array of type Particle
-	std::vector<Particle> particles;
+	Particle particles[MAX_PARTICLES]; //initalizes and array of type Particle
+	//std::vector<Particle> particles;
 public:
 	System();
 	~System();

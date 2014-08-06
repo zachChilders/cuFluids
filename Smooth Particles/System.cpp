@@ -17,6 +17,11 @@ This code is based off of code written by Georg Albrecht of UC Santa Cruz.
 
 System::System()
 {
+//	//Particle Pool
+//	for (int i = 0; i < MAX_PARTICLES; i++)
+//	{
+//		particlePool[i] = Particle();
+//	}
 }
 
 System::~System()
@@ -33,7 +38,8 @@ void System::createParticles()
 	for(int i = 0; i < MAX_PARTICLES; i++)
 	{
 		//createParticle(&particles[i]);
-		particles.push_back(Particle());
+		//particles.push_back(particlePool[i]);
+		particles[i] = Particle();
 	}
 }
  
@@ -92,7 +98,8 @@ glm::vec3 System::getPosition(int i)
 
 int System::getNumOfParticles(void)
 {
-   return MAX_PARTICLES;
+//   return particles.size();
+	return MAX_PARTICLES;
 }
 
 float System::getScale(int i)

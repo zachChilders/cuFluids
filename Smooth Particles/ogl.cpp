@@ -1,5 +1,5 @@
 /*****************************************************
-GL Utilities
+Smooth Particle System
 
 Zach Childers
 
@@ -14,6 +14,7 @@ Summer 2014
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <GLFW/glfw3.h>
+#include <SOIL\SOIL.h>
 
 #include "System.h"
 
@@ -35,8 +36,6 @@ void DrawParticles (void)
 	{
 		glPushMatrix();
 		// set color and alpha of current particle
-	/*	glColor4f(particleSystem.getR(i), particleSystem.getG(i), 
-			particleSystem.getB(i), particleSystem.getAlpha(i));*/
 		glColor4f(particleSystem.getRGBA(i).r, particleSystem.getRGBA(i).g, particleSystem.getRGBA(i).b, particleSystem.getRGBA(i).a);
 		//move the current particle to its new position
 		glTranslatef(particleSystem.getPosition(i).x, particleSystem.getPosition(i).y, particleSystem.getPosition(i).z + zoom);
@@ -170,22 +169,27 @@ int main(int argc, char **argv)
 	glutKeyboardFunc(handleKeypress);
 	glutReshapeFunc(reshape);
 	glutMainLoop();
-	return 0;
 
 
-	/*
-	windowInit();
+	/*windowInit();
+	init();
 
 	do{
 
-		glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glm::mat4 model;
+
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 
 	}while(glfwGetKey(window, GLFW_KEY_ENTER ) != GLFW_PRESS &&
 		   glfwWindowShouldClose(window) == 0 );*/
+
+	
+	return 0;
 }
 
 // Functions to load RAW files
@@ -233,7 +237,7 @@ int windowInit()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	window = glfwCreateWindow(1024, 768, "PARTICLES!!", NULL, NULL);
+	window = glfwCreateWindow(1024, 768, "Particle System", NULL, NULL);
 
 	if (window == NULL)
 	{

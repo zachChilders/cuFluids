@@ -10,6 +10,7 @@ Summer 2014
 #pragma once
 
 #include <glm/glm.hpp>
+#include <GLFW/glfw3.h>
 
 #define MAX_PARTICLES 10000
 
