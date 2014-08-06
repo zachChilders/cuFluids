@@ -34,13 +34,7 @@ Particle::Particle()
 	pull.y = 0.0f;
 	pull.z = 0.0f;
 
-	//Define a single particle to instance from.
-	static GLfloat vertices [20] = { 
-		-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-		 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-		 1.0f, -1.0f, 0.0f, 1.0f, 1.0f,
-		-1.0f,  1.0f, 0.0f, 0.0f, 1.0f
-	};
+	
 
 }
 

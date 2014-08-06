@@ -12,10 +12,11 @@ This code is based off of code written by Georg Albrecht of UC Santa Cruz.
 
 #pragma once
 
+#include <ctime>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <ctime>
+#include <GL\glew.h>
 #include <vector>
 
 #include "Particle.h"
@@ -28,12 +29,12 @@ private:
 	Particle particles[MAX_PARTICLES]; //initalizes and array of type Particle
 	//std::vector<Particle> particles;
 public:
+	GLuint particleVBO;
 	System();
 	~System();
 	
 	void createParticles(); //calls createParticle() to initalize all particles in system
 	void updateParticles(); //updates particles according to forces being used
-
 	int getNumOfParticles(); // returns the number of particles in the system (legacy)
 	
 	glm::vec4 getRGBA(int i);
