@@ -113,145 +113,10 @@ System particleSystem;
 
 GLuint shaderProgram;
 
-void DrawParticles (void)
-{
-	////This should be a vertex shader (geometry??)
-	//for (int i = 1; i < particleSystem.getNumOfParticles(); i++)
-	//{
-	//	glPushMatrix();
-	//	// set color and alpha of current particle
-	//	glColor4f(particleSystem.getRGBA(i).r, particleSystem.getRGBA(i).g, particleSystem.getRGBA(i).b, particleSystem.getRGBA(i).a);
-	//	//move the current particle to its new position
-	//	glTranslatef(particleSystem.getPosition(i).x, particleSystem.getPosition(i).y, particleSystem.getPosition(i).z + zoom);
 
-	//	glScalef(particleSystem.getScale(i), particleSystem.getScale(i),
-	//		particleSystem.getScale(i));
-
-	//	glDisable(GL_DEPTH_TEST);
-	//	glEnable (GL_BLEND);
-
-	//	glBlendFunc ( GL_DST_COLOR, GL_ZERO);
-	//	glBindTexture(GL_TEXTURE_2D, texture[0]);
-
-	//	glBegin (GL_QUADS);
-	//	glTexCoord2d (0, 0);
-	//	glVertex3f (-1, -1, 0);
-	//	glTexCoord2d (1, 0);
-	//	glVertex3f (1, -1, 0);
-	//	glTexCoord2d (1, 1);
-	//	glVertex3f (1, 1, 0);
-	//	glTexCoord2d (0, 1);
-	//	glVertex3f (-1, 1, 0);
-	//	glEnd();
-
-	//	glBlendFunc( GL_ONE, GL_ONE);
-	//	glBindTexture( GL_TEXTURE_2D, texture[1]);
-
-	//	glBegin (GL_QUADS);
-	//	glTexCoord2d (0, 0);
-	//	glVertex3f (-1, -1, 0);
-	//	glTexCoord2d (1, 0);
-	//	glVertex3f (1, -1, 0);
-	//	glTexCoord2d (1, 1);
-	//	glVertex3f (1, 1, 0);
-	//	glTexCoord2d (0, 1);
-	//	glVertex3f (-1, 1, 0);
-	//	glEnd();
-
-	//	glEnable(GL_DEPTH_TEST);
-
-	//	glPopMatrix();
-	//}
-}
-
-void display (void)
-{
-	/*glClearDepth(1);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();
-	glTranslatef( 0, 0, -10);
-	
-	particleSystem.updateParticles();
-	DrawParticles();*/
-
-	//glutSwapBuffers();
-}
-
-void init (void)
-{
-	glEnable (GL_TEXTURE_2D);
-	glEnable (GL_DEPTH_TEST);
-
-	zoom = -80.0f;
-	particleSystem.createParticles();
-
-	//Soil would handle this much better
-//	texture [0] = LoadTextureRAW( "particle_mask.raw", 256, 256);
-//	texture [1] = LoadTextureRAW( "particle.raw", 256, 256);
-
-}
-
-//Called when a key is pressed
-void handleKeypress(unsigned char key, int x, int y)
-{
-	switch (key)
-   {
-      case 49: //1 key: smoke
-         zoom = -80.0f;
-         particleSystem.createParticles();
-         break;
-      case 50: //2 key: fountain high
-         zoom = -40.0f;
-         particleSystem.createParticles();
-         break;
-      case 51: //3 key: fire
-         zoom = -40.0f;
-         particleSystem.createParticles();
-         break;
-      case 52: //4 key: fire with smoke
-         zoom = -60.0f;
-         particleSystem.createParticles();
-         break;
-      case 61: //+ key: change x pull for more wind to right
-         particleSystem.modifySystemPull(0.0005f, 0.0f, 0.0f);
-         break;
-      case 45: //- key: change x pull for wind wind to left
-         particleSystem.modifySystemPull(-0.0005f, 0.0f, 0.0f);
-         break;
-      case 91: //[ key: change y pull for more gravity
-         particleSystem.modifySystemPull(0.0f, 0.0005f, 0.0f);
-         break;
-      case 93: //] key; change y pull for less gravity
-         particleSystem.modifySystemPull(0.0f, -0.0005f, 0.0f);
-         break;
-		case 27: //Escape key
-			exit(0);
-	}
-}
-
-void reshape(int w, int h)
-{/*
-	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
-	glMatrixMode (GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective ( 60, (GLfloat) w / (GLfloat)h, 1.0, 100.0);
-	glMatrixMode(GL_MODELVIEW);*/
-}
 
 int main(int argc, char **argv)
 {
-	srand((unsigned int) time(0));
-	/*glutInit ( &argc, argv);
-	glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutInitWindowSize(800, 600);
-	glutInitWindowPosition( 100, 100);
-	glutCreateWindow( "Particle System");
-	init();
-	glutDisplayFunc(display);
-	glutIdleFunc(display);
-	glutKeyboardFunc(handleKeypress);
-	glutReshapeFunc(reshape);*/
 
 	windowInit();
 
@@ -313,7 +178,7 @@ int main(int argc, char **argv)
 
 	do{
 		
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(1.0f, 0.5f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glDrawArrays(GL_POINTS, 0, 4);
