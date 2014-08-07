@@ -23,16 +23,17 @@ System::System()
 //		particlePool[i] = Particle();
 //	}
 	//Define a single particle to instance from.
-	GLfloat vertices [20] = { 
+	/*GLfloat vertices [20] = { 
 		-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
 		 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
 		 1.0f, -1.0f, 0.0f, 1.0f, 1.0f,
 		-1.0f,  1.0f, 0.0f, 0.0f, 1.0f
 	};
-
+	
+	GLuint particleVBO;
 	glGenBuffers(1, &particleVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, particleVBO);
-	glBufferData(GL_ARRAY_BUFFER, 20 * sizeof(GLfloat), vertices, GL_STREAM_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 20 * sizeof(GLfloat), vertices, GL_STREAM_DRAW);*/
 
 	//More stuff here
 	//http://open.gl/geometry
@@ -41,7 +42,6 @@ System::System()
 	//Ideally this will be able to instance 2.43 Trillion particles from the one buffer
 	//It should also be able to apply velocity.
 	//
-
 
 }
 
@@ -63,7 +63,6 @@ void System::createParticles()
 		particles[i] = Particle();
 	}
 }
- 
 //We're going to replace this with a shader.
 void System::updateParticles()
 {

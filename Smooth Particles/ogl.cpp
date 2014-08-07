@@ -12,9 +12,9 @@ Summer 2014
 #include <stdlib.h>
 
 #include <GL/glew.h>
-#include <GL/glut.h>
 #include <GLFW/glfw3.h>
 #include <SOIL\SOIL.h>
+#include "GLutils.h"
 
 #include "System.h"
 
@@ -25,73 +25,75 @@ GLFWwindow* window;
 float zoom;
 System particleSystem;
 
+GLuint shaderProgram;
+
 GLfloat texture[10];
 GLuint LoadTextureRAW(const char * filename, int width, int height);
 void FreeTexture( GLuint textures );
 
 void DrawParticles (void)
 {
-	//This should be a vertex shader (geometry??)
-	for (int i = 1; i < particleSystem.getNumOfParticles(); i++)
-	{
-		glPushMatrix();
-		// set color and alpha of current particle
-		glColor4f(particleSystem.getRGBA(i).r, particleSystem.getRGBA(i).g, particleSystem.getRGBA(i).b, particleSystem.getRGBA(i).a);
-		//move the current particle to its new position
-		glTranslatef(particleSystem.getPosition(i).x, particleSystem.getPosition(i).y, particleSystem.getPosition(i).z + zoom);
+	////This should be a vertex shader (geometry??)
+	//for (int i = 1; i < particleSystem.getNumOfParticles(); i++)
+	//{
+	//	glPushMatrix();
+	//	// set color and alpha of current particle
+	//	glColor4f(particleSystem.getRGBA(i).r, particleSystem.getRGBA(i).g, particleSystem.getRGBA(i).b, particleSystem.getRGBA(i).a);
+	//	//move the current particle to its new position
+	//	glTranslatef(particleSystem.getPosition(i).x, particleSystem.getPosition(i).y, particleSystem.getPosition(i).z + zoom);
 
-		glScalef(particleSystem.getScale(i), particleSystem.getScale(i),
-			particleSystem.getScale(i));
+	//	glScalef(particleSystem.getScale(i), particleSystem.getScale(i),
+	//		particleSystem.getScale(i));
 
-		glDisable(GL_DEPTH_TEST);
-		glEnable (GL_BLEND);
+	//	glDisable(GL_DEPTH_TEST);
+	//	glEnable (GL_BLEND);
 
-		glBlendFunc ( GL_DST_COLOR, GL_ZERO);
-		glBindTexture(GL_TEXTURE_2D, texture[0]);
+	//	glBlendFunc ( GL_DST_COLOR, GL_ZERO);
+	//	glBindTexture(GL_TEXTURE_2D, texture[0]);
 
-		glBegin (GL_QUADS);
-		glTexCoord2d (0, 0);
-		glVertex3f (-1, -1, 0);
-		glTexCoord2d (1, 0);
-		glVertex3f (1, -1, 0);
-		glTexCoord2d (1, 1);
-		glVertex3f (1, 1, 0);
-		glTexCoord2d (0, 1);
-		glVertex3f (-1, 1, 0);
-		glEnd();
+	//	glBegin (GL_QUADS);
+	//	glTexCoord2d (0, 0);
+	//	glVertex3f (-1, -1, 0);
+	//	glTexCoord2d (1, 0);
+	//	glVertex3f (1, -1, 0);
+	//	glTexCoord2d (1, 1);
+	//	glVertex3f (1, 1, 0);
+	//	glTexCoord2d (0, 1);
+	//	glVertex3f (-1, 1, 0);
+	//	glEnd();
 
-		glBlendFunc( GL_ONE, GL_ONE);
-		glBindTexture( GL_TEXTURE_2D, texture[1]);
+	//	glBlendFunc( GL_ONE, GL_ONE);
+	//	glBindTexture( GL_TEXTURE_2D, texture[1]);
 
-		glBegin (GL_QUADS);
-		glTexCoord2d (0, 0);
-		glVertex3f (-1, -1, 0);
-		glTexCoord2d (1, 0);
-		glVertex3f (1, -1, 0);
-		glTexCoord2d (1, 1);
-		glVertex3f (1, 1, 0);
-		glTexCoord2d (0, 1);
-		glVertex3f (-1, 1, 0);
-		glEnd();
+	//	glBegin (GL_QUADS);
+	//	glTexCoord2d (0, 0);
+	//	glVertex3f (-1, -1, 0);
+	//	glTexCoord2d (1, 0);
+	//	glVertex3f (1, -1, 0);
+	//	glTexCoord2d (1, 1);
+	//	glVertex3f (1, 1, 0);
+	//	glTexCoord2d (0, 1);
+	//	glVertex3f (-1, 1, 0);
+	//	glEnd();
 
-		glEnable(GL_DEPTH_TEST);
+	//	glEnable(GL_DEPTH_TEST);
 
-		glPopMatrix();
-	}
+	//	glPopMatrix();
+	//}
 }
 
 void display (void)
 {
-	glClearDepth(1);
+	/*glClearDepth(1);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	glTranslatef( 0, 0, -10);
-
+	
 	particleSystem.updateParticles();
-	DrawParticles();
+	DrawParticles();*/
 
-	glutSwapBuffers();
+	//glutSwapBuffers();
 }
 
 void init (void)
@@ -158,7 +160,7 @@ void reshape(int w, int h)
 int main(int argc, char **argv)
 {
 	srand((unsigned int) time(0));
-	glutInit ( &argc, argv);
+	/*glutInit ( &argc, argv);
 	glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(800, 600);
 	glutInitWindowPosition( 100, 100);
@@ -167,13 +169,59 @@ int main(int argc, char **argv)
 	glutDisplayFunc(display);
 	glutIdleFunc(display);
 	glutKeyboardFunc(handleKeypress);
-	glutReshapeFunc(reshape);
-	glutMainLoop();
+	glutReshapeFunc(reshape);*/
 
+	windowInit();
 
-	/*windowInit();
-	init();
+	//GL config
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDepthFunc(GL_LESS);
 
+	//ShaderFile and lineBuffer used by every shader.
+	std::ifstream shaderFile;
+	std::string lineBuffer;
+
+	//Load vertex shader
+	std::string vertexSource;
+	shaderFile.open("Shaders/VertexShader.shader");
+	while(getline(shaderFile, lineBuffer))
+	{
+		vertexSource += "\n" + lineBuffer;
+	}
+	shaderFile.close();
+
+	//Load fragment shader
+	std::string fragmentSource;
+	shaderFile.open("Shaders/FragmentShader.shader");
+	while(getline(shaderFile, lineBuffer))
+	{
+		fragmentSource += "\n" + lineBuffer;
+	}
+	shaderFile.close();
+	
+	//Bind shaders into GLchars
+	const GLchar* vertexShaderSource = vertexSource.c_str();
+	const GLchar* fragmentShaderSource = fragmentSource.c_str();
+
+	GLuint vbo; //Create a handle for our vertex buffer object
+	glGenBuffers(1, &vbo); //Generate 1 buffer
+
+	GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertShader, 1, &vertexShaderSource, NULL);
+	glCompileShader(vertShader);
+
+	GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragShader, 1, &fragmentShaderSource, NULL);
+	glCompileShader(fragShader);
+
+	GLuint shaderProgram = glCreateProgram();
+	glAttachShader(shaderProgram, vertShader);
+	glAttachShader(shaderProgram, fragShader);
+	glLinkProgram(shaderProgram);
+	glUseProgram(shaderProgram);
+	
 	do{
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -181,12 +229,11 @@ int main(int argc, char **argv)
 
 		glm::mat4 model;
 
-
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 
 	}while(glfwGetKey(window, GLFW_KEY_ENTER ) != GLFW_PRESS &&
-		   glfwWindowShouldClose(window) == 0 );*/
+		   glfwWindowShouldClose(window) == 0 );
 
 	
 	return 0;

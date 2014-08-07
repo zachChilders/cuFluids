@@ -39,7 +39,7 @@ const char* loadShader(string fname)
 	}
 }
 
-GLuint compileVertShader(const char* vertCode)
+GLuint compileVertShader(const char* vertCode, GLFWwindow *context)
 {
 	GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertShader, 1, &vertCode, NULL);
@@ -47,7 +47,7 @@ GLuint compileVertShader(const char* vertCode)
 	return vertShader;
 };
 
-GLuint compileFragShader(const char* fragCode)
+GLuint compileFragShader(const char* fragCode, GLFWwindow *context)
 {
 	GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragShader, 1, &fragCode, NULL);
@@ -55,7 +55,7 @@ GLuint compileFragShader(const char* fragCode)
 	return fragShader;
 };
 
-GLuint compileGeoShader(const char* geoCode)
+GLuint compileGeoShader(const char* geoCode, GLFWwindow *context)
 {
 	GLuint geoShader = glCreateShader(GL_GEOMETRY_SHADER);
 	glShaderSource(geoShader, 1, &geoCode, NULL);
@@ -63,13 +63,13 @@ GLuint compileGeoShader(const char* geoCode)
 	return geoShader;
 };
 
-GLuint createShader(string vertShader, string fragShader)
+GLuint createShader(string vertShader, string fragShader, GLFWwindow *context)
 {
 	const GLchar* vertSource = loadShader(vertShader);
 	const GLchar* fragSource = loadShader(fragShader);
 
-	GLuint vertexShader = compileVertShader(vertSource);
-	GLuint fragmentShader = compileFragShader(fragSource);
+	GLuint vertexShader = compileVertShader(vertSource, context);
+	GLuint fragmentShader = compileFragShader(fragSource, context);
 
 	GLuint shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertexShader);
@@ -79,15 +79,15 @@ GLuint createShader(string vertShader, string fragShader)
 	return shaderProgram;
 };
 
-GLuint createShader(string vertShader, string geoShader, string fragShader)
+GLuint createShader(string vertShader, string geoShader, string fragShader, GLFWwindow *context)
 {
 	const GLchar* vertSource = loadShader(vertShader);
 	const GLchar* fragSource = loadShader(fragShader);
 	const GLchar* geoSource = loadShader(geoShader);
 
-	GLuint vertexShader = compileVertShader(vertSource);
-	GLuint fragmentShader = compileFragShader(fragSource);
-	GLuint geometryShader = compileGeoShader(geoSource);
+	GLuint vertexShader = compileVertShader(vertSource, context);
+	GLuint fragmentShader = compileFragShader(fragSource, context);
+	GLuint geometryShader = compileGeoShader(geoSource, context);
 
 	GLuint shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertexShader);
