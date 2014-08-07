@@ -7,16 +7,102 @@ Summer 2014
 
 /*****************************************************/
 
-
+#include <iostream>
+#include <fstream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <SOIL\SOIL.h>
-#include "GLutils.h"
 
 #include "System.h"
+
+// Shader macro
+#define GLSL(src) "#version 330 core\n" #src
+
+// Vertex shader
+const GLchar* vertexShaderSrc = GLSL(
+    in vec2 pos;
+	in vec3 color;
+	in float sides;
+
+	out vec3 vColor; //output to geometry shader
+	out float vSides;
+
+    void main() {
+        gl_Position = vec4(pos, 0.0, 1.0);
+		vColor = color;
+		vSides = sides;
+    }
+);
+
+// Fragment shader
+const GLchar* fragmentShaderSrc = GLSL(
+	in vec3 fColor;
+
+    out vec4 outColor;
+    void main() {
+        outColor = vec4(fColor, 1.0);
+    }
+);
+
+const GLchar* geomShaderSrc = GLSL(
+	layout(points) in;
+	layout(triangle_strip, max_vertices = 64) out;
+
+	in vec3 vColor[]; //Output from vertex shader
+	in float vSides[];
+	out vec3 fColor;
+
+	const float PI = 3.1415926;
+
+	void main(){
+		fColor = vColor[0];
+
+		for (int i = 0; i <= vSides[0]; i++)
+		{
+			//Angle between each side in radians
+			float ang = PI * 2.0 / vSides[0] * i;
+
+			//Offset from center of point (0.3 to accomodate for aspect ratio)
+			vec4 offset = vec4(cos(ang) * 0.3, -sin(ang) * 0.4, 0.0, 0.0);
+			gl_Position = gl_in[0].gl_Position + offset;
+
+			EmitVertex();
+
+		}
+
+		EndPrimitive();
+
+		for (int i = 0; i <= vSides[0]; i++)
+		{
+			//Angle between each side in radians
+			float ang = PI * 2.0 / vSides[0] * i;
+
+			//Offset from center of point (0.3 to accomodate for aspect ratio)
+			vec4 offset = vec4(cos(ang) * 0.3, -sin(ang) * 0.4, 0.0, 0.0);
+			gl_Position = gl_in[0].gl_Position + 3 * offset;
+
+			EmitVertex();
+
+		}
+
+		EndPrimitive();
+
+	}
+);
+
+
+// Shader creation helper
+GLuint createShader(GLenum type, const GLchar* src) {
+    GLuint shader = glCreateShader(type);
+    glShaderSource(shader, 1, &src, nullptr);
+    glCompileShader(shader);
+    return shader;
+}
+
 
 int windowInit();
 
@@ -26,10 +112,6 @@ float zoom;
 System particleSystem;
 
 GLuint shaderProgram;
-
-GLfloat texture[10];
-GLuint LoadTextureRAW(const char * filename, int width, int height);
-void FreeTexture( GLuint textures );
 
 void DrawParticles (void)
 {
@@ -105,8 +187,8 @@ void init (void)
 	particleSystem.createParticles();
 
 	//Soil would handle this much better
-	texture [0] = LoadTextureRAW( "particle_mask.raw", 256, 256);
-	texture [1] = LoadTextureRAW( "particle.raw", 256, 256);
+//	texture [0] = LoadTextureRAW( "particle_mask.raw", 256, 256);
+//	texture [1] = LoadTextureRAW( "particle.raw", 256, 256);
 
 }
 
@@ -149,12 +231,12 @@ void handleKeypress(unsigned char key, int x, int y)
 }
 
 void reshape(int w, int h)
-{
+{/*
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective ( 60, (GLfloat) w / (GLfloat)h, 1.0, 100.0);
-	glMatrixMode(GL_MODELVIEW);
+	glMatrixMode(GL_MODELVIEW);*/
 }
 
 int main(int argc, char **argv)
@@ -173,61 +255,68 @@ int main(int argc, char **argv)
 
 	windowInit();
 
-	//GL config
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glDepthFunc(GL_LESS);
-
-	//ShaderFile and lineBuffer used by every shader.
-	std::ifstream shaderFile;
-	std::string lineBuffer;
-
-	//Load vertex shader
-	std::string vertexSource;
-	shaderFile.open("Shaders/VertexShader.shader");
-	while(getline(shaderFile, lineBuffer))
+	glewExperimental = GL_TRUE;
+	GLenum err = glewInit();
+	if( err != GLEW_OK )
 	{
-		vertexSource += "\n" + lineBuffer;
+		printf("GlewInit error");
+		exit(1);
 	}
-	shaderFile.close();
 
-	//Load fragment shader
-	std::string fragmentSource;
-	shaderFile.open("Shaders/FragmentShader.shader");
-	while(getline(shaderFile, lineBuffer))
-	{
-		fragmentSource += "\n" + lineBuffer;
-	}
-	shaderFile.close();
-	
-	//Bind shaders into GLchars
-	const GLchar* vertexShaderSource = vertexSource.c_str();
-	const GLchar* fragmentShaderSource = fragmentSource.c_str();
-
-	GLuint vbo; //Create a handle for our vertex buffer object
-	glGenBuffers(1, &vbo); //Generate 1 buffer
-
-	GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertShader);
-
-	GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragShader);
+    // Compile and activate shaders
+    GLuint vertShader = createShader(GL_VERTEX_SHADER, vertexShaderSrc);
+	GLuint geomShader = createShader(GL_GEOMETRY_SHADER, geomShaderSrc);
+    GLuint fragShader = createShader(GL_FRAGMENT_SHADER, fragmentShaderSrc);
 
 	GLuint shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertShader);
+	glAttachShader(shaderProgram, geomShader);
 	glAttachShader(shaderProgram, fragShader);
 	glLinkProgram(shaderProgram);
 	glUseProgram(shaderProgram);
 	
+	//Vertex buffers are neat
+	GLuint vbo;
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	
+	GLfloat points[] = {
+	   //Coordinates    Color             Sides
+		-0.45f,  0.45f, 1.0f, 0.0f, 0.0f, 4.0f,
+		 0.45f,  0.45f, 0.0f, 1.0f, 0.0f, 8.0f,
+		 0.45f, -0.45f, 0.0f, 0.0f, 1.0f, 16.0f,
+		-0.45f, -0.45f, 1.0f, 1.0f, 0.0f, 32.0f,
+	};
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(points), points, GL_STREAM_DRAW);
+
+	//Bind Vertex Attributes to the shaders
+	GLuint vao;
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	GLint posAttrib = glGetAttribLocation(shaderProgram, "pos");
+	glEnableVertexAttribArray(posAttrib);
+	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0);
+
+	GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
+	glEnableVertexAttribArray(colAttrib);
+	glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (2 * sizeof(float)));
+
+	GLint sidesAttrib = glGetAttribLocation(shaderProgram, "sides");
+	glEnableVertexAttribArray(sidesAttrib);
+	glVertexAttribPointer(sidesAttrib, 1, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (5 * sizeof(float)));
+
+	GLuint tfBuffer; 
+	glGenTransformFeedbacks(1, &tfBuffer);
+	glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, tfBuffer);
+
 	do{
-
+		
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT);
 
-		glm::mat4 model;
+		glDrawArrays(GL_POINTS, 0, 4);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -237,36 +326,6 @@ int main(int argc, char **argv)
 
 	
 	return 0;
-}
-
-// Functions to load RAW files
-// I did not write the following functions.
-// They are form the OpenGL tutorials at http://www.swiftless.com
-GLuint LoadTextureRAW( const char * filename, int width, int height )
-{
-  GLuint texture;
-  unsigned char * data;
-  FILE * file;
-  file = fopen( filename, "rb" );
-  if ( file == NULL ) return 0;
-  data = (unsigned char *)malloc( width * height * 3 );
-  fread( data, width * height * 3, 1, file );
-  fclose( file );
-  glGenTextures(1, &texture );
-  glBindTexture(GL_TEXTURE_2D, texture);
-  glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
-  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST );
-  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-  gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);
-  free( data );
-  return texture;
-}
-
-void FreeTexture( GLuint texture )
-{
-  glDeleteTextures( 1, &texture );
 }
 
 int windowInit()
@@ -284,7 +343,7 @@ int windowInit()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	window = glfwCreateWindow(1024, 768, "Particle System", NULL, NULL);
+	window = glfwCreateWindow(1440, 1280, "Particle System", NULL, NULL);
 
 	if (window == NULL)
 	{
