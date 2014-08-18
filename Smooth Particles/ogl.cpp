@@ -15,7 +15,7 @@ Summer 2014
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <SOIL\SOIL.h>
+#include <SOIL/SOIL.h>
 
 #include "System.h"
 
@@ -27,6 +27,7 @@ const GLchar* vertexShaderSrc = GLSL(
     in vec2 pos;
 	in vec3 color;
 	in float sides;
+	in float xOff;
 
 	out vec3 vColor; //output to geometry shader
 	out float vSides;
@@ -35,6 +36,7 @@ const GLchar* vertexShaderSrc = GLSL(
         gl_Position = vec4(pos, 0.0, 1.0);
 		vColor = color;
 		vSides = sides;
+	
     }
 );
 
@@ -54,43 +56,34 @@ const GLchar* geomShaderSrc = GLSL(
 
 	in vec3 vColor[]; //Output from vertex shader
 	in float vSides[];
+
 	out vec3 fColor;
 
 	const float PI = 3.1415926;
 
 	void main(){
 		fColor = vColor[0];
+		//gl_position = gl_in[0].gl_Position + 5.0;
 
-		for (int i = 0; i <= vSides[0]; i++)
+		int numShapes = 4;
+		for (int x = 1; x <= numShapes; x++)
 		{
-			//Angle between each side in radians
-			float ang = PI * 2.0 / vSides[0] * i;
 
-			//Offset from center of point (0.3 to accomodate for aspect ratio)
-			vec4 offset = vec4(cos(ang) * 0.3, -sin(ang) * 0.4, 0.0, 0.0);
-			gl_Position = gl_in[0].gl_Position + offset;
+			for (int i = 0; i <= vSides[0]; i++)
+			{
+				//Angle between each side in radians
+				float ang = PI * 2.0 / vSides[0] * i;
 
-			EmitVertex();
+				//Offset from center of point (0.3 to accomodate for aspect ratio)
+				vec4 offset = vec4(cos(ang) * 0.3, -sin(ang) * 0.4, 0.0, 0.0);
+				gl_Position = gl_in[0].gl_Position + offset / 2.0 + x;
 
+				EmitVertex();
+
+			}
+
+			EndPrimitive();
 		}
-
-		EndPrimitive();
-
-		for (int i = 0; i <= vSides[0]; i++)
-		{
-			//Angle between each side in radians
-			float ang = PI * 2.0 / vSides[0] * i;
-
-			//Offset from center of point (0.3 to accomodate for aspect ratio)
-			vec4 offset = vec4(cos(ang) * 0.3, -sin(ang) * 0.4, 0.0, 0.0);
-			gl_Position = gl_in[0].gl_Position + 3 * offset;
-
-			EmitVertex();
-
-		}
-
-		EndPrimitive();
-
 	}
 );
 
@@ -105,15 +98,12 @@ GLuint createShader(GLenum type, const GLchar* src) {
 
 
 int windowInit();
-
 GLFWwindow* window;
 
 float zoom;
 System particleSystem;
 
 GLuint shaderProgram;
-
-
 
 int main(int argc, char **argv)
 {
@@ -137,6 +127,12 @@ int main(int argc, char **argv)
 	glAttachShader(shaderProgram, vertShader);
 	glAttachShader(shaderProgram, geomShader);
 	glAttachShader(shaderProgram, fragShader);
+
+	//Before linking, we let GL know what attributes to use for feedback.
+	const GLchar* feedbackVaryings[] = { "pos" };
+	//glTransformFeedbackVaryings(shaderProgram, 1, feedbackVaryings, GL_INTERLEAVED_ATTRIBS);
+
+
 	glLinkProgram(shaderProgram);
 	glUseProgram(shaderProgram);
 	
@@ -147,10 +143,7 @@ int main(int argc, char **argv)
 	
 	GLfloat points[] = {
 	   //Coordinates    Color             Sides
-		-0.45f,  0.45f, 1.0f, 0.0f, 0.0f, 4.0f,
-		 0.45f,  0.45f, 0.0f, 1.0f, 0.0f, 8.0f,
-		 0.45f, -0.45f, 0.0f, 0.0f, 1.0f, 16.0f,
-		-0.45f, -0.45f, 1.0f, 1.0f, 0.0f, 32.0f,
+		-0.0f,  0.0f, 1.0f, 0.0f, 0.0f, 4.0f,
 	};
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(points), points, GL_STREAM_DRAW);
@@ -172,14 +165,21 @@ int main(int argc, char **argv)
 	glEnableVertexAttribArray(sidesAttrib);
 	glVertexAttribPointer(sidesAttrib, 1, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (5 * sizeof(float)));
 
+
 	GLuint tfBuffer; 
 	glGenTransformFeedbacks(1, &tfBuffer);
 	glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, tfBuffer);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(points), nullptr, GL_STATIC_READ);
+
+	//glEnable(GL_RASTERIZER_DISCARD);
+	//glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, tfBuffer);
 
 	do{
 		
-		glClearColor(1.0f, 0.5f, 0.0f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		//glBeginTransformFeedback(GL_POINTS);
 
 		glDrawArrays(GL_POINTS, 0, 4);
 
