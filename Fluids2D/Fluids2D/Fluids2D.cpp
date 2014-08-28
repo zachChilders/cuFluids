@@ -1,8 +1,9 @@
 // Fluids2D.cpp : Defines the entry point for the console application.
 //
 
-#include  stdafx.h 
-#include  particle.h 
+#include "stdafx.h"
+#include "particle.h"
+
 #include <iostream>
 #include <Windows.h>
 
@@ -37,15 +38,15 @@ void print2D(fluidParticle *fluidBox)
 
 			//Beautiful Formatting.
 			if (tmp < 10){
-				cout <<       << tmp;
+				cout << " " << tmp;
 			}
 			else if (tmp < 100)
 			{
-				cout <<      << tmp;
+				cout << " " << tmp;
 			}
 			else
 			{
-				cout <<     << tmp;
+				cout <<" " << tmp;
 			}
 		}
 		cout << endl;
@@ -75,7 +76,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 		print2D(fluidBox);
 		Sleep(200);
-		system( CLS );
+		system( "CLS" );
 	}
 
 	return 0;

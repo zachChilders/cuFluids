@@ -16,6 +16,8 @@ Summer 2014
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <SOIL/SOIL.h>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "System.h"
 
@@ -27,13 +29,14 @@ const GLchar* vertexShaderSrc = GLSL(
     in vec2 pos;
 	in vec3 color;
 	in float sides;
-	in float xOff;
 
 	out vec3 vColor; //output to geometry shader
 	out float vSides;
 
+	uniform mat4 trans;
+
     void main() {
-        gl_Position = vec4(pos, 0.0, 1.0);
+        gl_Position = trans * vec4(pos + pos, 0.0, 1.0);
 		vColor = color;
 		vSides = sides;
 	
@@ -52,7 +55,7 @@ const GLchar* fragmentShaderSrc = GLSL(
 
 const GLchar* geomShaderSrc = GLSL(
 	layout(points) in;
-	layout(triangle_strip, max_vertices = 64) out;
+	layout(triangle_strip, max_vertices = 128) out;
 
 	in vec3 vColor[]; //Output from vertex shader
 	in float vSides[];
@@ -65,7 +68,7 @@ const GLchar* geomShaderSrc = GLSL(
 		fColor = vColor[0];
 		//gl_position = gl_in[0].gl_Position + 5.0;
 
-		int numShapes = 4;
+		int numShapes = 32; 
 		for (int x = 1; x <= numShapes; x++)
 		{
 
@@ -75,8 +78,8 @@ const GLchar* geomShaderSrc = GLSL(
 				float ang = PI * 2.0 / vSides[0] * i;
 
 				//Offset from center of point (0.3 to accomodate for aspect ratio)
-				vec4 offset = vec4(cos(ang) * 0.3, -sin(ang) * 0.4, 0.0, 0.0);
-				gl_Position = gl_in[0].gl_Position + offset / 2.0 + x;
+				vec4 offset = vec4(cos(ang) * 0.3, sin(ang) * 0.4, 0.0, 0.0);
+				gl_Position = gl_in[0].gl_Position + offset / 2.0 + x / 0.75;
 
 				EmitVertex();
 
@@ -127,14 +130,9 @@ int main(int argc, char **argv)
 	glAttachShader(shaderProgram, vertShader);
 	glAttachShader(shaderProgram, geomShader);
 	glAttachShader(shaderProgram, fragShader);
-
-	//Before linking, we let GL know what attributes to use for feedback.
-	const GLchar* feedbackVaryings[] = { "pos" };
-	//glTransformFeedbackVaryings(shaderProgram, 1, feedbackVaryings, GL_INTERLEAVED_ATTRIBS);
-
-
 	glLinkProgram(shaderProgram);
 	glUseProgram(shaderProgram);
+	
 	
 	//Vertex buffers are neat
 	GLuint vbo;
@@ -142,8 +140,8 @@ int main(int argc, char **argv)
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	
 	GLfloat points[] = {
-	   //Coordinates    Color             Sides
-		-0.0f,  0.0f, 1.0f, 0.0f, 0.0f, 4.0f,
+		//Coordinates    Color         Sides
+		-1.5f, -0.5f, 1.0f, 0.0f, 0.0f, 4.0f,
 	};
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(points), points, GL_STREAM_DRAW);
@@ -152,6 +150,8 @@ int main(int argc, char **argv)
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
+
+	GLint uniTrans = glGetUniformLocation(shaderProgram, "trans");
 
 	GLint posAttrib = glGetAttribLocation(shaderProgram, "pos");
 	glEnableVertexAttribArray(posAttrib);
@@ -166,22 +166,18 @@ int main(int argc, char **argv)
 	glVertexAttribPointer(sidesAttrib, 1, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (5 * sizeof(float)));
 
 
-	GLuint tfBuffer; 
-	glGenTransformFeedbacks(1, &tfBuffer);
-	glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, tfBuffer);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(points), nullptr, GL_STATIC_READ);
-
-	//glEnable(GL_RASTERIZER_DISCARD);
-	//glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, tfBuffer);
-
 	do{
 		
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		//glBeginTransformFeedback(GL_POINTS);
+		GLfloat s = sin((GLfloat)clock() / (GLfloat)CLOCKS_PER_SEC * 5.0f) * 0.50f + 0.75f;
+		glm::mat4 trans;
+		trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f) * s);
+		glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
 
-		glDrawArrays(GL_POINTS, 0, 4);
+		glDrawArrays(GL_POINTS, 0, 1);
+
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

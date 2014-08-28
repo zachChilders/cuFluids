@@ -1,5 +1,5 @@
-#include  stdafx.h 
-#include  particle.h 
+#include  "stdafx.h"
+#include  "particle.h"
 
 //Default
 fluidParticle::
@@ -8,30 +8,36 @@ fluidParticle::
 		xPos = 0;
 		yPos = 0;
 		zPos = 0;
+
+		//Allocate our distance vector
+		// = to the number of particles
+		distances = new float[16 * 16];
 	}
 
 //2 Dimensional
 fluidParticle::
-	fluidParticle(float x, float y, float viscosity)
+	fluidParticle(float x, float y)
 	{
 		xPos = x;
 		yPos = y;
-		viscosity = viscosity;
+		distances = new float[16 * 16];
 	}
 
 //3 Dimensional
 fluidParticle::
-	fluidParticle(float x, float y, float z, float viscosity)
+	fluidParticle(float x, float y, float z)
 	{
 		xPos = x;
 		yPos = y;
 		zPos = z;
-		viscosity = viscosity;
 	}
 
 //Nothing to destruct yet.
 fluidParticle::
-	~fluidParticle(){};
+	~fluidParticle()
+{
+	delete distances;
+};
 
 //Resets assuming a square surface.
 void fluidParticle::
@@ -43,21 +49,36 @@ void fluidParticle::
 	}
 
 //Navier-Stokes Here
+
+//Weight kernel
 void fluidParticle::
-	advection(fluidParticle up, fluidParticle down, fluidParticle left, fluidParticle right)
+	weight()
 {
-	
 
 };
 
 void fluidParticle::
 	pressure()
 {
+
+};
+
+void fluidParticle::
+	viscosity()
+{
+
 };
 
 void fluidParticle::
 	external()
 {
+
+};
+
+void fluidParticle::
+	gravity()
+{
+	// (0, 0, -g);
 };
 
 //Update the next velocity
@@ -65,7 +86,6 @@ void fluidParticle::
 	update(fluidParticle up, fluidParticle down, fluidParticle left, fluidParticle right)
 	{
 		//Navier-Stokes Code
-		advection(up, down, left, right);
 		xPos += xVelocity;
 		yPos += yVelocity;
 		zPos += zVelocity;
