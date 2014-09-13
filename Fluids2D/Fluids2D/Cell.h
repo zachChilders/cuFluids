@@ -1,0 +1,5 @@
+class Cell
+{
+	Cell();
+	~Cell();
+};
