@@ -12,7 +12,7 @@ class fluidParticle
 		void reset();
 
 		//These should be applied in order functionally
-		void update(fluidParticle up, fluidParticle down, fluidParticle left, fluidParticle right);
+		void update(float xVelocity, float yVelocity, float zVelocity);
 		void pressure();
 		void external();
 		void viscosity();

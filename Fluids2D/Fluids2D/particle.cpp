@@ -48,42 +48,9 @@ void fluidParticle::
 		zPos = -zPos;
 	}
 
-//Navier-Stokes Here
-
-//Weight kernel
-void fluidParticle::
-	weight()
-{
-
-};
-
-void fluidParticle::
-	pressure()
-{
-
-};
-
-void fluidParticle::
-	viscosity()
-{
-
-};
-
-void fluidParticle::
-	external()
-{
-
-};
-
-void fluidParticle::
-	gravity()
-{
-	// (0, 0, -g);
-};
-
 //Update the next velocity
 void fluidParticle::
-	update(fluidParticle up, fluidParticle down, fluidParticle left, fluidParticle right)
+	update(float xVelocity, float yVelocity, float zVelocity)
 	{
 		//Navier-Stokes Code
 		xPos += xVelocity;
