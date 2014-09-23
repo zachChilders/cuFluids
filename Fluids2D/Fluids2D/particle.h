@@ -13,11 +13,7 @@ class fluidParticle
 
 		//These should be applied in order functionally
 		void update(float xVelocity, float yVelocity, float zVelocity);
-		void pressure();
-		void external();
-		void viscosity();
-		void gravity();
-		void weight();
+		
 		float* distances;
 
 		void getPositions(float *x, float *y, float *z);

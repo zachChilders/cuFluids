@@ -28,3 +28,8 @@ void Solver::solve()
 		cells[i].solve();
 	}
 }
+
+Cell Solver::operator[](int index)
+{
+	return cells[index];
+}

@@ -8,6 +8,11 @@ public:
 	void solve();
 
 private:
+	float totalPressure, xPressure, yPressure;
+	float totalViscosity, xViscosity, yViscosity;
+
+	float weight;
+
 	fluidParticle *particles;
 	float xVel, yVel;
 	void getParticles();
