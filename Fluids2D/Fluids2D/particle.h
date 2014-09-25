@@ -1,5 +1,7 @@
+#include <cmath>
 class fluidParticle
 {
+	friend class Cell;
 	private:
 		float xPos, yPos, zPos;
 		int xVelocity, yVelocity, zVelocity;

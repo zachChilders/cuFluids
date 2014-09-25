@@ -1,25 +1,36 @@
+#pragma once
+
 #include "particle.h"
+#include "Solver.h"
+
+#include <vector>
 
 class Cell
 {
-public:
-	Cell();
-	~Cell();
-	void solve();
+	friend class Solver;
 
-private:
-	float totalPressure, xPressure, yPressure;
-	float totalViscosity, xViscosity, yViscosity;
+	public:
+		static Solver* grid; //This needs to be set in main
+		Cell();
+		~Cell();
+		void solve();
+		void setWeight();
 
-	float weight;
+	private:
+		int xPos, yPos;
 
-	fluidParticle *particles;
-	float xVel, yVel;
-	void getParticles();
+		float totalPressure, xPressure, yPressure;
+		float totalViscosity, xViscosity, yViscosity;
+		float externalForce;
 
-	void pressure();
-	void external();
-	void viscosity();
-	void gravity();
-	void weight();
+		float weight;
+		std::vector<fluidParticle> particles;
+		float xVel, yVel;
+		void getParticles();
+
+		void pressure();
+		void external(float eX, float eY);
+		void viscosity();
+		void gravity();
+		void weight();
 };
