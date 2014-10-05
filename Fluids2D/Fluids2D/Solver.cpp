@@ -66,12 +66,17 @@ Cell Solver::operator[](int index)
 void Solver::reweight()
 {
 	float maxParticles = 0;
-
+	//Find the maximum 
 	for (int i = 0; i < width * height; i++)
 	{
 		if (cells[i].particles.size() > maxParticles)
 		{
 			maxParticles = cells[i].particles.size();
 		}
+	}
+
+	for (int i = 0; i < width * height; i++)
+	{
+
 	}
 }

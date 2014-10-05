@@ -22,8 +22,8 @@ class Cell
 		float totalPressure, xPressure, yPressure;
 		float totalViscosity, xViscosity, yViscosity;
 		float externalForce;
-
-		float weight;
+		
+		glm::fvec2 weight;
 		std::vector<fluidParticle> particles;
 		float xVel, yVel;
 		void getParticles();
@@ -32,5 +32,4 @@ class Cell
 		void external(float eX, float eY);
 		void viscosity();
 		void gravity();
-		void weight();
 };

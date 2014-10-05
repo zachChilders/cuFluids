@@ -1,6 +1,7 @@
 #pragma once
 #include "Cell.h"
 #include <time.h>
+#include "../../include/glm/glm.hpp"
 
 #define NUM_PARTICLES 1000
 

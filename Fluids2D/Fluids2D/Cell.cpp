@@ -1,5 +1,7 @@
 #include "Cell.h"
 
+#define PI 3.1415926
+
 Cell::Cell()
 {
 	xPressure = 1;
@@ -15,16 +17,7 @@ Cell::Cell()
 
 Cell::~Cell()
 {
-	delete [] particles;
 }
-
-//Weight kernel
-void Cell::
-	weight()
-{
-
-
-};
 
 void Cell::
 	pressure()
@@ -66,4 +59,19 @@ void Cell::
 			particles.push_back(*it);
 		}
 	}
+}
+
+void Cell::
+	setWeight()
+{
+	int smoothingDistance = particles.size();
+	glm::fvec2 pVector(xPos / smoothingDistance, yPos / smoothingDistance);
+	//Normalize the vector 
+	pVector = pVector / glm::length(pVector);
+	glm::fvec2 sTerm = glm::abs(pVector) / smoothingDistance;
+
+	//alpha for 2D  
+	float alpha = (15.0 / 7.0) * PI * smoothingDistance * smoothingDistance;
+							
+	
 }
