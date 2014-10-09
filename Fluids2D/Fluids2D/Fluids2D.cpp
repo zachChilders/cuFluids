@@ -1,7 +1,6 @@
 // Fluids2D.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
 #include "particle.h"
 
 #include <iostream>
@@ -53,7 +52,7 @@ void print2D(fluidParticle *fluidBox)
 	}
 }
 
-int _tmain(int argc, _TCHAR* argv[])
+int main(void)
 {
 	//Our Particle Box
 	fluidParticle *fluidBox = init2D();

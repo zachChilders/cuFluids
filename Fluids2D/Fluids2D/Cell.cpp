@@ -68,10 +68,25 @@ void Cell::
 	glm::fvec2 pVector(xPos / smoothingDistance, yPos / smoothingDistance);
 	//Normalize the vector 
 	pVector = pVector / glm::length(pVector);
-	glm::fvec2 sTerm = glm::abs(pVector) / smoothingDistance;
+	float sTerm = glm::length(pVector) / smoothingDistance;
 
 	//alpha for 2D  
 	float alpha = (15.0 / 7.0) * PI * smoothingDistance * smoothingDistance;
+
+	if ((sTerm >= 0) && (sTerm < 1))
+	{
+		float eq = alpha * ((2.0 / 3.0) - (sTerm * sTerm) + ((1.0/2.0) * (sTerm * sTerm * sTerm)));
+		weight = glm::vec2(eq, eq);
+	}
+	else if ((sTerm >= 1) && (sTerm < 2))
+	{
+		float eq = alpha * ((1.0 / 6.0) * ((2 - sTerm) * (2 - sTerm)));
+		weight = glm::vec2(eq, eq);
+	}
+	else
+	{
+		weight = glm::vec2(0,0);
+	}
 							
 	
 }
