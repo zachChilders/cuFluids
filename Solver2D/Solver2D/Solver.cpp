@@ -13,12 +13,13 @@ Solver::Solver()
 	{
 		cells[i].xPos = i * 10;
 		cells[i].yPos = i * 10;
+		cells[i].grid = this;
 	}
 
 	//Create a bunch of particles.
 	for (int i = 0; i < NUM_PARTICLES; i++)
 	{
-		master.push_back(fluidParticle((rand() % width), (rand() % height)));
+		master.push_back( fluidParticle((rand() % width), (rand() % height)));
 	}
 }
 

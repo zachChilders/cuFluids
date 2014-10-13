@@ -1,5 +1,8 @@
 #pragma once
 #include <cmath>
+
+#include <glm/glm.hpp>
+
 class fluidParticle
 {
 	friend class Cell;

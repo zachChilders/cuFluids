@@ -50,22 +50,22 @@ void Cell::
 void Cell::
 	getParticles()
 {
-	//Check every particle in the simulation
-	for (std::vector<fluidParticle>::const_iterator it = grid->master.begin(); it != grid->master.end(); ++it)
-	{
-		//If it's in our bounds, move it to our cell storage for processing.
-		if (( it->xPos > xPos) && ( it->xPos < xPos + 10) && (it->yPos > yPos) && (it->yPos < yPos + 10))
-		{
-			particles.push_back(*it);
-		}
-	}
+	///*Check every particle in the simulation
+	//for (std::vector<fluidParticle>::const_iterator it = grid->master.begin(); it != grid->master.end(); ++it)
+	//{
+	//	If it's in our bounds, move it to our cell storage for processing.
+	//	if (( it->xPos > xPos) && ( it->xPos < xPos + 10) && (it->yPos > yPos) && (it->yPos < yPos + 10))
+	//	{
+	//		particles.push_back(*it);
+	//	}
+	//}*/
 }
 
 void Cell::
 	setWeight()
 {
 	int smoothingDistance = particles.size();
-	glm::fvec2 pVector(xPos / smoothingDistance, yPos / smoothingDistance);
+	glm::fvec2 pVector(xPos / (smoothingDistance + 1), yPos / (smoothingDistance + 1));
 	//Normalize the vector 
 	pVector = pVector / glm::length(pVector);
 	float sTerm = glm::length(pVector) / smoothingDistance;
@@ -89,4 +89,20 @@ void Cell::
 	}
 							
 	
+}
+
+float Cell::
+	getMagnitude()
+{
+	return sqrt(abs((xVel * xVel) + (yVel * yVel)));
+}
+
+void Cell::
+	solve()
+{
+	setWeight();
+	pressure();
+	viscosity();
+	external(1, 1);
+	gravity();
 }

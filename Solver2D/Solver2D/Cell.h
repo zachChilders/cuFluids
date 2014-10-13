@@ -15,6 +15,7 @@ class Cell
 		~Cell();
 		void solve();
 		void setWeight();
+		float getMagnitude();
 
 	private:
 		int xPos, yPos;
