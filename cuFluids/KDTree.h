@@ -2,17 +2,17 @@
 
 #include "kdUtil.h"
 #include "Box.h"
-
+#include <iostream>
 
 template
-<typename P, B>
+<typename P, typename B>
 class KDTree
 {
 	public:
 		//Constructors
-		KDTree();
-		KDTree(P* list);
-		~KDTree();
+		KDTree(){};
+		KDTree(P* list){};
+		~KDTree(){};
 
 		//Methods
 		P getPoint();
@@ -27,7 +27,7 @@ class KDTree
 		P* queryClosestValues(P* p);
 		P* queryKPoints(P** p);
 
-		friend std::ostream& operator<<(ostream& out, KDTree& kd);
+//		friend std::ostream& operator<<(std::ostream stream& out, KDTree<P, B>& kd);
 
 	private:
 		

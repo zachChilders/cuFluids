@@ -1,0 +1,37 @@
+﻿Class sizes found, need a node class.
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch kdtree
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   Debug/cuFluids.exe
+#	modified:   Debug/cuFluids.ilk
+#	modified:   Debug/cuFluids.pdb
+#	modified:   cuFluids.sdf
+#	modified:   cuFluids.v12.suo
+#	modified:   cuFluids/Box.h
+#	new file:   cuFluids/Debug/Point.obj
+#	modified:   cuFluids/Debug/cuFluids.log
+#	new file:   cuFluids/Debug/cuFluids.tlog/CL.read.1.tlog
+#	new file:   cuFluids/Debug/cuFluids.tlog/CL.write.1.tlog
+#	new file:   cuFluids/Debug/cuFluids.tlog/cl.command.1.tlog
+#	modified:   cuFluids/Debug/cuFluids.tlog/cuFluids.lastbuildstate
+#	modified:   cuFluids/Debug/cuFluids.tlog/link.command.1.tlog
+#	modified:   cuFluids/Debug/cuFluids.tlog/link.read.1.tlog
+#	modified:   cuFluids/Debug/cuFluids.tlog/link.write.1.tlog
+#	modified:   cuFluids/Debug/kernel.cu.deps
+#	modified:   cuFluids/Debug/kernel.cu.obj
+#	new file:   cuFluids/Debug/vc120.idb
+#	new file:   cuFluids/Debug/vc120.pdb
+#	modified:   cuFluids/Heap.h
+#	modified:   cuFluids/KDTree.h
+#	new file:   cuFluids/Point.cpp
+#	modified:   cuFluids/Point.h
+#	modified:   cuFluids/cuFluids.vcxproj
+#	modified:   cuFluids/cuFluids.vcxproj.filters
+#	modified:   cuFluids/kdUtil.h
+#	modified:   cuFluids/kernel.cu
+#	modified:   cuFluids/vc120.pdb
+#
+

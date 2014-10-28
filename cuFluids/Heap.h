@@ -1,6 +1,6 @@
 #pragma once
 
-#include  <math.h>
+#include <math.h>
 #include <vector>
 #include <deque>
 #include <string>
@@ -50,9 +50,9 @@ class Heap
 		void replace(const T newNode, float newDist2);
 
 	public:
-		int maxNodes() const;
+		int getMaxNodes() const;
 
-		int currNodes() const;
+		int getCurrNodes() const;
 		
 		float cutoffDist2() const;
 		void cutoffDist2(float value);

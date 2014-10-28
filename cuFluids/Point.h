@@ -4,6 +4,7 @@
 
 #include <iostream>
 
+
 class Point3D
 {
 
@@ -12,12 +13,13 @@ class Point3D
 		//Constructors
 		Point3D();
 		Point3D(float x, float y, float z);
-		~Point3D();
+		~Point3D(){};
 
 		//Methods
 		void update(float x, float y, float z);
 		float length();
 		float dot(Point3D &point);
+		void set(float x, float y, float z);
 
 		//Operators
 		friend std::ostream& operator<<(std::ostream &out, Point3D &point);

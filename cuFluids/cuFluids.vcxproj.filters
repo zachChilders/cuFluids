@@ -7,6 +7,9 @@
     <Filter Include="Headers">
       <UniqueIdentifier>{6fda0907-09e2-449e-a05c-0d75f1d2f007}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{8a41cff2-49af-4542-80e0-a52ccd661a81}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KDTree.h">
@@ -21,6 +24,13 @@
     <ClInclude Include="kdUtil.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Heap.h" />
+    <ClInclude Include="Heap.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Point.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

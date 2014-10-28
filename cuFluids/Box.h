@@ -12,8 +12,8 @@ class Box
 
 	public:
 		//Constructors
-		Box();
-		~Box();
+		Box(){};
+		~Box(){};
 
 		//Methods
 
