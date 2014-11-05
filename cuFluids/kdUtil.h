@@ -1,6 +1,6 @@
 #pragma once
 
-typedef enum { X, Y, Z }DIMENSION;
+typedef enum DIMENSION{ X, Y, Z };
 
 class vec3
 {

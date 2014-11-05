@@ -49,9 +49,11 @@ class Point3D
 		bool operator ==(Point3D &point);
 		bool operator !=(Point3D &point);
 
-		float operator [](DIMENSION d);
+		float& operator [](int d);
+
+		Point3D *left;
+		Point3D *right;
 		
-	private:
 		vec3 position;
 		vec3 velocity;
 		vec3 angle;

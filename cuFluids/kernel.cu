@@ -3,12 +3,10 @@
 #include "device_launch_parameters.h"
 
 #include "Point.h"
-
 #include "Heap.h"
 #include "KDTree.h"
 #include "Box.h"
 
-#include <stdio.h>
 #include <iostream>
 
 cudaError_t addWithCuda(int *c, const int *a, const int *b, unsigned int size);
@@ -26,13 +24,11 @@ void swap(int *a, int *b)
 	a = tmp;
 }
 
-
-
 int main()
 {
 	Point3D p;
 	Box<float> b;
-	KDTree<Point3D, Box<float>> k;
+	KDTree k;
 
 	std::cout << "Point3D: " << sizeof(p) << std::endl;
 	std::cout << "Box: " << sizeof(b) << std::endl;
@@ -44,5 +40,6 @@ int main()
 	//Build a tree of points
 
 	//Heap all the points
+
 
 }
