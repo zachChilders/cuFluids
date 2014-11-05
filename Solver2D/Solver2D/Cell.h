@@ -10,10 +10,10 @@ class Cell
 	friend class Solver;
 
 	public:
-		static Solver* grid; //This needs to be set in main
+		Solver* grid; //This needs to be set in main
 		Cell();
 		~Cell();
-		void solve();
+		void solve(float eX, float eY);
 		void setWeight();
 		float getMagnitude();
 

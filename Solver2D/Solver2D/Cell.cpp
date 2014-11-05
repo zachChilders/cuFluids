@@ -12,6 +12,9 @@ Cell::Cell()
 	yViscosity = 1;
 	totalViscosity = 1;
 
+	xVel = 0;
+	yVel = 0;
+
 	getParticles();
 }
 
@@ -23,7 +26,8 @@ void Cell::
 	pressure()
 {	//		This pressure should change somehow				Density of water at room temp
 	totalPressure = (-1 * (xPressure / 0.9982) + (yPressure / 0.9982)); //* gradient of weight
-
+	xVel += totalPressure;
+	yVel += totalPressure;
 };
 
 void Cell::
@@ -31,13 +35,16 @@ void Cell::
 {
 					//Viscosity of water	
 	totalViscosity = 0.894 * 1  * ((xViscosity - yViscosity) / (xPressure * yPressure)) ;
-
+	xVel += totalViscosity;
+	yVel += totalViscosity;
 };
 
 void Cell::
 	external(float eX, float eY)
 {
 	externalForce = std::sqrt(eX * eX + eY * eY);
+	xVel += externalForce;
+	yVel += externalForce;
 };
 
 void Cell::
@@ -98,11 +105,16 @@ float Cell::
 }
 
 void Cell::
-	solve()
+	solve(float eX, float eY)
 {
+	xVel = 1;
+	yVel = 1;
 	setWeight();
+
+	external(eX, eY);
 	pressure();
 	viscosity();
-	external(1, 1);
 	gravity();
+
+
 }
