@@ -25,7 +25,7 @@ class KDTree
 
 		//Methods
 
-		void insert(Point3D *point);
+		void insert(Point3D point);
 		Point3D getPoint();
 		Box<float> getNode();
 		Point3D getNodeValue(Box<float> node);
@@ -65,17 +65,17 @@ KDTree::~KDTree()
 	points.clear();
 };
 
-void KDTree::insert(Point3D* point)
+void KDTree::insert(Point3D point)
 {
 	int k = 0;
 
 	if (point[k] < root[k])
 	{
-		_insert(point, point->left, k++);
+		_insert(&point, point.left, k++);
 	}
-	else if (point->position.x > root.position.x)
+	else if (point.position.x > root.position.x)
 	{
-		_insert(point, point->right, k++);
+		_insert(&point, point.right, k++);
 	}
 
 }
@@ -83,7 +83,28 @@ void KDTree::insert(Point3D* point)
 void KDTree::_insert(Point3D *point, Point3D *root, int dimension)
 {
 	dimension = dimension % DIMENSIONS;
-
+	if (point[dimension] < root[dimension])
+	{
+		if (root->left == nullptr)
+		{
+			root->left = point;
+		}
+		else
+		{
+			_insert(point, point->left, dimension++);
+		}
+	}
+	else if (point[dimension] > root[dimension])
+	{
+		if (root->right == nullptr)
+		{
+			root->right = point;
+		}
+		else
+		{
+			_insert(point, point->right, dimension++);
+		}
+	}
 
 
 }
