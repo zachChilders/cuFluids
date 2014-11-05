@@ -15,7 +15,8 @@ Solver::Solver()
 		cells[i].yPos = i * 10;
 		cells[i].grid = this;
 	}
-
+	
+	logFile.open("log.txt", std::ios::out);
 	////Create a bunch of particles.
 	//for (int i = 0; i < NUM_PARTICLES; i++)
 	//{
@@ -47,6 +48,7 @@ Solver::Solver(int xLength, int yLength)
 
 Solver::~Solver()
 {
+	logFile.close();
 	delete [] cells;
 }
 
@@ -74,4 +76,9 @@ void Solver::print()
 		}
 		std::cout << std::endl << std::endl;
 	}
+}
+
+void Solver::log()
+{
+	logFile << cells[0].getMagnitude() << std::endl;
 }

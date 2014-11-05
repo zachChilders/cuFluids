@@ -1,6 +1,7 @@
 #pragma once
 #include "Cell.h"
 #include <iostream>
+#include <fstream>
 #include <time.h>
 
 #include <vector>
@@ -18,8 +19,10 @@ class Solver
 		std::vector<fluidParticle> master;
 		void reweight(); //Weights everything properly
 		void print();
+		void log();
 
 	private:
 		int width, height;
 		Cell *cells;
+		std::ofstream logFile;
 };
