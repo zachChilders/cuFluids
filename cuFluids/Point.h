@@ -13,6 +13,7 @@ class Point3D
 		//Constructors
 		Point3D();
 		Point3D(float x, float y, float z);
+		Point3D(const Point3D &p);
 		~Point3D(){};
 
 		//Methods

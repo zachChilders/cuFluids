@@ -36,6 +36,7 @@ class KDTree
 		Point3D* queryClosestPoints(Point3D* p);
 		Point3D* queryClosestValues(Point3D* p);
 		Point3D* queryKPoints(Point3D** p);
+		std::vector<Point3D> KDTree::flatten();
 
 		friend std::ostream& operator<<(std::ostream& out, KDTree& kd);
 
@@ -46,8 +47,8 @@ class KDTree
 		std::vector<Point3D> points;  //Vectors are guaranteed contiguous.
 		
 		void _insert(Point3D *point, Point3D *root, int dimension);
+		void _bfs(Point3D *point, std::vector<Point3D> v);
 };
-
 
 KDTree::KDTree(Point3D* list, int numParticles)
 {
@@ -57,7 +58,6 @@ KDTree::KDTree(Point3D* list, int numParticles)
 		points.push_back(list[i]);
 	}
 };
-
 
 KDTree::~KDTree()
 {
@@ -107,4 +107,28 @@ void KDTree::_insert(Point3D *point, Point3D *root, int dimension)
 	}
 
 
+}
+
+std::vector<Point3D> KDTree::flatten()
+{
+	std::vector<Point3D> p; //Create an empty vector
+	p.push_back(root); // Add our node
+	_bfs(&root, p);  //Start bfs
+	points = p; //Assign points to the now full vector
+
+}
+
+void KDTree::_bfs(Point3D *point, std::vector<Point3D> v)
+{
+	//This is depth.  Fix it.
+	if (point->left != nullptr)
+	{
+		v.push_back(*point->left);
+		_bfs(point->left, v);
+	}
+	else if (point->right != nullptr)
+	{
+		v.push_back(*point->right);
+		_bfs(point->right, v);
+	}
 }

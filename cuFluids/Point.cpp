@@ -43,3 +43,13 @@ float& Point3D::operator[](int dimension)
 			return position.x; //This probably shouldn't be a thing.
 	}
 };
+
+Point3D::Point3D(const Point3D &p)
+{
+	left = p.left;
+	right = p.right;
+
+	position = p.position;
+	velocity = p.position;
+	angle = p.position;
+}
