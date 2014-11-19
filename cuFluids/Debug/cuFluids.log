@@ -1,37 +1,16 @@
-﻿Build started 10/20/2014 8:31:05 PM.
+﻿Build started 11/18/2014 3:39:38 PM.
      1>Project "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids.vcxproj" on node 2 (Build target(s)).
-     1>AddCudaCompileDeps:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I. /FIcuda_runtime.h /c C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\kernel.cu 
-       CudaBuild:
-         Compiling CUDA source file kernel.cu...
-         cmd.exe /C "C:\Users\Zach\AppData\Local\Temp\tmpb021845e310a4ffb9409e5892baffa9f.cmd"
-         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\kernel.cu.obj "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\kernel.cu"
-         
-         C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\kernel.cu.obj "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\kernel.cu" 
-     1>c:\users\zach\documents\github\cufluids\cufluids\Box.h(21): warning : type qualifier on return type is meaningless
-     1>c:\users\zach\documents\github\cufluids\cufluids\Box.h(22): warning : type qualifier on return type is meaningless
-     1>c:\users\zach\documents\github\cufluids\cufluids\Box.h(23): warning : type qualifier on return type is meaningless
-     1>c:\users\zach\documents\github\cufluids\cufluids\Box.h(21): warning : type qualifier on return type is meaningless
-     1>c:\users\zach\documents\github\cufluids\cufluids\Box.h(22): warning : type qualifier on return type is meaningless
-     1>c:\users\zach\documents\github\cufluids\cufluids\Box.h(23): warning : type qualifier on return type is meaningless
-         kernel.cu
-       ClCompile:
+     1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Point.cpp
          Point.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Zach\Documents\GitHub\cuFluids\Debug\cuFluids.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\Win32" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Zach\Documents\GitHub\cuFluids\Debug\cuFluids.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Zach\Documents\GitHub\cuFluids\Debug\cuFluids.lib" /MACHINE:X86 Debug\kernel.cu.obj
          Debug\Point.obj
-         cuFluids.vcxproj -> C:\Users\Zach\Documents\GitHub\cuFluids\Debug\cuFluids.exe
-       PostBuildEvent:
-         echo copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\cudart*.dll" "C:\Users\Zach\Documents\GitHub\cuFluids\Debug\"
-         copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\cudart*.dll" "C:\Users\Zach\Documents\GitHub\cuFluids\Debug\"
-         :VCEnd
-         copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\cudart*.dll" "C:\Users\Zach\Documents\GitHub\cuFluids\Debug\"
-         C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\cudart32_65.dll
-         C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\cudart64_65.dll
-                 2 file(s) copied.
-     1>Done Building Project "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids.vcxproj" (Build target(s)).
+     1>kernel.cu.obj : error LNK2019: unresolved external symbol "public: bool __thiscall Point3D::operator<(class Point3D &)" (??MPoint3D@@QAE_NAAV0@@Z) referenced in function "private: void __thiscall KDTree::_insert(class Point3D *,class Point3D *,int)" (?_insert@KDTree@@AAEXPAVPoint3D@@0H@Z)
+     1>kernel.cu.obj : error LNK2019: unresolved external symbol "public: bool __thiscall Point3D::operator>(class Point3D &)" (??OPoint3D@@QAE_NAAV0@@Z) referenced in function "private: void __thiscall KDTree::_insert(class Point3D *,class Point3D *,int)" (?_insert@KDTree@@AAEXPAVPoint3D@@0H@Z)
+     1>C:\Users\Zach\Documents\GitHub\cuFluids\Debug\cuFluids.exe : fatal error LNK1120: 2 unresolved externals
+     1>Done Building Project "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:05.98
+Time Elapsed 00:00:00.48

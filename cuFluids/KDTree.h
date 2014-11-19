@@ -11,6 +11,7 @@
 #include "Box.h"
 
 #include <iostream>
+#include <thread>
 #include <vector>
 
 #define DIMENSIONS 3
@@ -38,6 +39,7 @@ class KDTree
 		Point3D* queryKPoints(Point3D** p);
 		std::vector<Point3D> KDTree::flatten();
 
+
 		friend std::ostream& operator<<(std::ostream& out, KDTree& kd);
 
 	private:
@@ -47,7 +49,8 @@ class KDTree
 		std::vector<Point3D> points;  //Vectors are guaranteed contiguous.
 		
 		void _insert(Point3D *point, Point3D *root, int dimension);
-		void _bfs(Point3D *point, std::vector<Point3D> v);
+
+		void _bfs(Point3D *point, std::vector<Point3D> *v);
 };
 
 KDTree::KDTree(Point3D* list, int numParticles)
@@ -58,6 +61,11 @@ KDTree::KDTree(Point3D* list, int numParticles)
 		points.push_back(list[i]);
 	}
 };
+
+KDTree::KDTree()
+{
+	root = Point3D(0, 0, 0);
+}
 
 KDTree::~KDTree()
 {
@@ -109,26 +117,29 @@ void KDTree::_insert(Point3D *point, Point3D *root, int dimension)
 
 }
 
+
+void KDTree::_bfs(Point3D *point, std::vector<Point3D> *v)
+{
+
+
+	
+}
+
+
 std::vector<Point3D> KDTree::flatten()
 {
 	std::vector<Point3D> p; //Create an empty vector
 	p.push_back(root); // Add our node
-	_bfs(&root, p);  //Start bfs
-	points = p; //Assign points to the now full vector
-
-}
-
-void KDTree::_bfs(Point3D *point, std::vector<Point3D> v)
-{
-	//This is depth.  Fix it.
-	if (point->left != nullptr)
+	if (root.left != nullptr)
 	{
-		v.push_back(*point->left);
-		_bfs(point->left, v);
+		std::thread t1(&KDTree::_bfs, &root.left, std::ref(p));
+		t1.join();
 	}
-	else if (point->right != nullptr)
+/*
+	if (root.right != nullptr)
 	{
-		v.push_back(*point->right);
-		_bfs(point->right, v);
-	}
+		std::thread t2(&KDTree::_bfs, &root.right, std::ref(p));
+		t2.join();
+	}*/
+	return p;
 }

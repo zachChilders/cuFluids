@@ -330,3 +330,21 @@ C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\iterator
 c:\users\zach\documents\github\cufluids\cufluids\Box.h
 c:\users\zach\documents\github\cufluids\cufluids\KDTree.h
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\cuda_runtime.h
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\device_launch_parameters.h
+C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\thread
+C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\functional
+C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xfunctional
+C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\tuple
+C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\chrono
+C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\ratio
+C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdint.h
+C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\crtdefs.h
+C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\thr/xtimec.h
+C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\thr/xthrcommon.h
+C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\concrt.h
+C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\crtdefs.h
+C:\Program Files (x86)\Windows Kits\8.1\Include\shared\guiddef.h
+C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\thr/xthread
+C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\thr/xtime
+C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\thr/xthreads.h
