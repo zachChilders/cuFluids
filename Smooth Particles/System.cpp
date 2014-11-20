@@ -1,13 +1,3 @@
-/******************************************************
- * Georg Albrecht                                     *
- * Final Project for CMPS 161, Winter 2009            *
- *                                                    *
- * System.cpp                                         *
- *    This is the source file for System.h. It        *
- *    contains the code necessary to initalize, update*
- *    and manage and array of particles               *
- ******************************************************/
-
 #include "System.h"
 
 System::System(void)
@@ -43,7 +33,6 @@ void System::updateParticles(void)
    {
       particles[i].age = particles[i].age + 0.02;
       
-      
       particles[i].direction = particles[i].direction + ((((((int)(0.5) * rand()%11) + 1)) * rand()%11) + 1);
 
       particles[i].position.x = particles[i].position.x + particles[i].movement.x + particles[i].pull.x;
@@ -54,7 +43,7 @@ void System::updateParticles(void)
       particles[i].pull.y = particles[i].pull.y + systemPull.y; // acleration due to gravity
       particles[i].pull.z = particles[i].pull.z + systemPull.z;
 
-         float temp = particles[i].lifespan/particles[i].age;
+        float temp = particles[i].lifespan/particles[i].age;
          if((temp) < 1.75)
          {//red
             particles[i].color.x = 1.0f;

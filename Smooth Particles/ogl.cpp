@@ -91,7 +91,7 @@ void init (void)
 	glEnable (GL_DEPTH_TEST);
 
 	zoom = -80.0f;
-	particleSystem.setSystemType(1);
+	particleSystem.setSystemType(2);
 	particleSystem.createParticles();
 
 	//Soil would handle this much better
@@ -137,8 +137,8 @@ void handleKeypress(unsigned char key, int x, int y)
       case 93: //] key; change y pull for less gravity
          particleSystem.modifySystemPull(0.0f, -0.0005f, 0.0f);
          break;
-		case 27: //Escape key
-			exit(0);
+	  case 27: //Escape key
+		 exit(0);
 	}
 }
 
@@ -166,27 +166,8 @@ int main(int argc, char **argv)
 	glutReshapeFunc(reshape);
 	glutMainLoop();
 	return 0;
-
-
-	/*
-	windowInit();
-
-	do{
-
-		glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-
-	}while(glfwGetKey(window, GLFW_KEY_ENTER ) != GLFW_PRESS &&
-		   glfwWindowShouldClose(window) == 0 );*/
 }
 
-
-// Functions to load RAW files
-// I did not write the following functions.
-// They are form the OpenGL tutorials at http://www.swiftless.com
 GLuint LoadTextureRAW( const char * filename, int width, int height )
 {
   GLuint texture;

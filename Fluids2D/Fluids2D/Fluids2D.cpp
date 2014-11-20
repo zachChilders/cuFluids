@@ -1,8 +1,8 @@
 // Fluids2D.cpp : Defines the entry point for the console application.
 //
 
-#include  stdafx.h 
-#include  particle.h 
+#include  "stdafx.h"
+#include  "particle.h" 
 #include <iostream>
 #include <Windows.h>
 

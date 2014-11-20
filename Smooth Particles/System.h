@@ -29,8 +29,7 @@ public:
 	void createParticle(Particle *p); //creates and initalizes a single particle
 	void createParticles(); //calls createParticle() to initalize all particles in system
 	void updateParticles(); //updates particles according to forces being used
-	void turnToSmoke(Particle *p); //called only durring fire with smoke system to turn dead fire into smoke
-
+	
 	void setSystemType(int systemType); //sets the particle system type
 	int getNumOfParticles(); // returns the number of particles in the system (legacy)
 	float getXPos(int i); //returns x position of particle i
