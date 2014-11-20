@@ -4,22 +4,23 @@ Point3D::Point3D()
 {
 	left = nullptr;
 	right = nullptr;
+	currentDimension = 0;
+
 	position.x = 0; position.y = 0; position.z = 0;
 	velocity.x = 0; velocity.y = 0; velocity.z = 0;
 	angle.x = 0;    angle.y = 0;    angle.z = 0;
 };
 
-
 Point3D::Point3D(const Point3D &p)
 {
 	left = p.left;
 	right = p.right;
+	currentDimension = p.currentDimension;
 
 	position = p.position;
 	velocity = p.position;
 	angle = p.position;
 }
-
 
 Point3D::Point3D(float x, float y, float z)
 {
@@ -55,4 +56,30 @@ float& Point3D::operator[](int dimension)
 			return position.x; //This probably shouldn't be a thing.
 	}
 };
+
+bool Point3D::operator<(Point3D& other)
+{
+	switch (currentDimension)
+	{
+		case 0:
+			return (position.x < other.position.x);
+		case 1:
+			return (position.y < other.position.y);
+		case 2:
+			return (position.z < other.position.z);
+	}
+}
+
+bool Point3D::operator>(Point3D& other)
+{
+	switch (currentDimension)
+	{
+		case 0:
+			return (position.x > other.position.x);
+		case 1:
+			return (position.y > other.position.y);
+		case 2:
+			return (position.z > other.position.z);
+	}
+}
 

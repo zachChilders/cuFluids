@@ -51,9 +51,11 @@ class Point3D
 		bool operator !=(Point3D &point);
 
 		float& operator [](int d);
-
+		
+		//KD specific
 		Point3D *left;
 		Point3D *right;
+		int currentDimension;
 		
 		vec3 position;
 		vec3 velocity;

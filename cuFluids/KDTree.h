@@ -48,7 +48,7 @@ class KDTree
 		std::vector<Box<float>> boxes;
 		std::vector<Point3D> points;  //Vectors are guaranteed contiguous.
 		
-		void _insert(Point3D *point, Point3D *root, int dimension);
+		void _insert(Point3D *point, Point3D *root);
 
 		void _bfs(Point3D *point, std::vector<Point3D> *v);
 };
@@ -79,19 +79,19 @@ void KDTree::insert(Point3D point)
 
 	if (point[k] < root[k])
 	{
-		_insert(&point, point.left, k++);
+		_insert(&point, point.left);
 	}
 	else if (point.position.x > root.position.x)
 	{
-		_insert(&point, point.right, k++);
+		_insert(&point, point.right);
 	}
 
 }
 
-void KDTree::_insert(Point3D *point, Point3D *root, int dimension)
+void KDTree::_insert(Point3D *point, Point3D *root)
 {
-	dimension = dimension % DIMENSIONS;
-	if (point[dimension] < root[dimension])
+	root->currentDimension = (root->currentDimension + 1) % 3;
+	if (point < root)
 	{
 		if (root->left == nullptr)
 		{
@@ -99,10 +99,10 @@ void KDTree::_insert(Point3D *point, Point3D *root, int dimension)
 		}
 		else
 		{
-			_insert(point, point->left, dimension++);
+			_insert(point, point->left);
 		}
 	}
-	else if (point[dimension] > root[dimension])
+	else if (point > root)
 	{
 		if (root->right == nullptr)
 		{
@@ -110,13 +110,10 @@ void KDTree::_insert(Point3D *point, Point3D *root, int dimension)
 		}
 		else
 		{
-			_insert(point, point->right, dimension++);
+			_insert(point, point->right);
 		}
 	}
-
-
 }
-
 
 void KDTree::_bfs(Point3D *point, std::vector<Point3D> *v)
 {
@@ -124,7 +121,6 @@ void KDTree::_bfs(Point3D *point, std::vector<Point3D> *v)
 
 	
 }
-
 
 std::vector<Point3D> KDTree::flatten()
 {

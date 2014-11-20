@@ -244,8 +244,8 @@ c:\program files\nvidia gpu computing toolkit\cuda\v6.5\include\device_launch_pa
 c:\program files\nvidia gpu computing toolkit\cuda\v6.5\include\vector_types.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\cuda_runtime.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\device_launch_parameters.h
-c:\users\zach\documents\github\cufluids\cufluids\Point.h
-c:\users\zach\documents\github\cufluids\cufluids\kdUtil.h
+c:\users\zach\documents\github\cufluids\cufluids\cufluids\Point.h
+c:\users\zach\documents\github\cufluids\cufluids\cufluids\kdUtil.h
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\iostream
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\istream
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\ostream
@@ -322,14 +322,14 @@ C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\cerrno
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\errno.h
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\crtdefs.h
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\share.h
-c:\users\zach\documents\github\cufluids\cufluids\Heap.h
+c:\users\zach\documents\github\cufluids\cufluids\cufluids\Heap.h
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\math.h
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\vector
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\deque
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\iterator
-c:\users\zach\documents\github\cufluids\cufluids\Box.h
-c:\users\zach\documents\github\cufluids\cufluids\KDTree.h
+c:\users\zach\documents\github\cufluids\cufluids\cufluids\Box.h
+c:\users\zach\documents\github\cufluids\cufluids\cufluids\KDTree.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\cuda_runtime.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\device_launch_parameters.h
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\thread
