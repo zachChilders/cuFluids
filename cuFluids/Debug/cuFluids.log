@@ -1,10 +1,10 @@
-﻿Build started 11/20/2014 12:25:07 AM.
+﻿Build started 11/21/2014 10:26:43 AM.
      1>Project "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids\cuFluids.vcxproj" on node 2 (Build target(s)).
      1>AddCudaCompileDeps:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I. /FIcuda_runtime.h /c C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids\kernel.cu 
        CudaBuild:
          Compiling CUDA source file kernel.cu...
-         cmd.exe /C "C:\Users\Zach\AppData\Local\Temp\tmpf8304ea4b0104dafab02ecab40baa191.cmd"
+         cmd.exe /C "C:\Users\Zach\AppData\Local\Temp\tmp98b6138a0a43456293e5dbd5242ac460.cmd"
          "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\kernel.cu.obj "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids\kernel.cu"
          
          C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\kernel.cu.obj "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids\kernel.cu" 
@@ -12,11 +12,25 @@
      1>c:\users\zach\documents\github\cufluids\cufluids\cufluids\Box.h(21): warning : type qualifier on return type is meaningless
      1>c:\users\zach\documents\github\cufluids\cufluids\cufluids\Box.h(22): warning : type qualifier on return type is meaningless
      1>c:\users\zach\documents\github\cufluids\cufluids\cufluids\Box.h(23): warning : type qualifier on return type is meaningless
-     1>C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\functional(1148): error : no instance of overloaded function "std::_Pmf_wrap<_Pmf_t, _Rx, _Farg0, _Ftypes...>::operator() [with _Pmf_t=void (KDTree::*)(Point3D *, std::vector<Point3D, std::allocator<Point3D>> *), _Rx=void, _Farg0=KDTree, _Ftypes=<Point3D *, std::vector<Point3D, std::allocator<Point3D>> *>]" matches the argument list
+     1>c:\users\zach\documents\github\cufluids\cufluids\cufluids\kdUtil.h(3): warning : declaration requires a typedef name
+     1>c:\users\zach\documents\github\cufluids\cufluids\cufluids\Box.h(21): warning : type qualifier on return type is meaningless
+     1>c:\users\zach\documents\github\cufluids\cufluids\cufluids\Box.h(22): warning : type qualifier on return type is meaningless
+     1>c:\users\zach\documents\github\cufluids\cufluids\cufluids\Box.h(23): warning : type qualifier on return type is meaningless
          kernel.cu
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\BuildCustomizations\CUDA 6.5.targets(593,9): error MSB3721: The command ""C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\kernel.cu.obj "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids\kernel.cu"" exited with code 2.
-     1>Done Building Project "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids\cuFluids.vcxproj" (Build target(s)) -- FAILED.
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\Debug\cuFluids.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\Win32" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\Debug\cuFluids.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\Debug\cuFluids.lib" /MACHINE:X86 Debug\kernel.cu.obj
+         Debug\Point.obj
+         cuFluids.vcxproj -> C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\Debug\cuFluids.exe
+       PostBuildEvent:
+         echo copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\cudart*.dll" "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\Debug\"
+         copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\cudart*.dll" "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\Debug\"
+         :VCEnd
+         copy "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\cudart*.dll" "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\Debug\"
+         C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\cudart32_65.dll
+         C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\cudart64_65.dll
+                 2 file(s) copied.
+     1>Done Building Project "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids\cuFluids.vcxproj" (Build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:04.25
+Time Elapsed 00:00:10.59

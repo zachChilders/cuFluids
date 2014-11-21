@@ -25,7 +25,6 @@ class KDTree
 		~KDTree();
 
 		//Methods
-
 		void insert(Point3D point);
 		Point3D getPoint();
 		Box<float> getNode();
@@ -39,7 +38,6 @@ class KDTree
 		Point3D* queryKPoints(Point3D** p);
 		std::vector<Point3D> KDTree::flatten();
 
-
 		friend std::ostream& operator<<(std::ostream& out, KDTree& kd);
 
 	private:
@@ -50,7 +48,7 @@ class KDTree
 		
 		void _insert(Point3D *point, Point3D *root);
 
-		void _bfs(Point3D *point, std::vector<Point3D> *v);
+		static void _bfs(Point3D *point, std::vector<Point3D> *v);
 };
 
 KDTree::KDTree(Point3D* list, int numParticles)
@@ -118,7 +116,32 @@ void KDTree::_insert(Point3D *point, Point3D *root)
 void KDTree::_bfs(Point3D *point, std::vector<Point3D> *v)
 {
 
+	std::thread* t1 = nullptr;
+	std::thread* t2 = nullptr;
 
+	v->push_back(*point);
+
+	if (point->left != nullptr)
+	{
+		t1 = new std::thread(&KDTree::_bfs, point->right, v);
+	}
+
+	if (point->right != nullptr)
+	{
+		t2 = new std::thread(&KDTree::_bfs, point->right, v);
+	}
+
+	if (t1)
+	{
+		t1->join();
+		delete t1;
+	}
+
+	if (t2)
+	{
+		t2->join();
+		delete t2;
+	}
 	
 }
 
@@ -126,16 +149,28 @@ std::vector<Point3D> KDTree::flatten()
 {
 	std::vector<Point3D> p; //Create an empty vector
 	p.push_back(root); // Add our node
+	std::thread* t1 = nullptr;
+	std::thread* t2 = nullptr;
+
 	if (root.left != nullptr)
 	{
-		std::thread t1(&KDTree::_bfs, &root.left, std::ref(p));
-		t1.join();
+		t1 = new std::thread(&KDTree::_bfs, root.right, &p);
 	}
-/*
+
 	if (root.right != nullptr)
 	{
-		std::thread t2(&KDTree::_bfs, &root.right, std::ref(p));
-		t2.join();
-	}*/
+		t2 = new std::thread(&KDTree::_bfs, root.right, &p);
+	
+	}
+	if (t1)
+	{
+		t1->join();
+		delete t1;
+	}
+	if (t2)
+	{
+		t2->join();
+		delete t2;
+	}
 	return p;
 }
