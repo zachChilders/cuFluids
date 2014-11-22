@@ -4,7 +4,6 @@
 
 #include <iostream>
 
-
 class Point3D
 {
 
@@ -46,7 +45,9 @@ class Point3D
 		Point3D operator /=(float scalar);
 
 		bool operator <(Point3D &point);
+		bool operator <(float p);
 		bool operator >(Point3D &point);
+		bool operator >(float p);
 		bool operator ==(Point3D &point);
 		bool operator !=(Point3D &point);
 

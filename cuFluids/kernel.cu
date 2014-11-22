@@ -17,27 +17,22 @@ __global__ void addKernel(int *c, const int *a, const int *b)
 
 int main()
 {
-	Point3D p, q, r, s;
-	Box<float> b;
 	KDTree k;
 
-	std::cout << "Point3D: " << sizeof(p) << std::endl;
-	std::cout << "Box: " << sizeof(b) << std::endl;
-	std::cout << "KDTree: " << sizeof(k) << std::endl;
+	for (int i = 0; i < 10; i++)
+	{
+		Point3D p(i, i, i);
+		k.insert(&p);
+	}
 
-	k.insert(p);
-	k.insert(q);
-	k.insert(r);
-	k.insert(s);
 
-	k.flatten();
+
+	std::vector <Point3D> a = k.flatten();
+	for (auto b : a)
+	{
+		std::cout << b << std::endl;
+	}
 
 	system("PAUSE");
-	//Initialize a group of points
-
-	//Build a tree of points
-
-	//Heap all the points
-
 
 }

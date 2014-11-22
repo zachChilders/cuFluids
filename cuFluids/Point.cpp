@@ -26,6 +26,8 @@ Point3D::Point3D(float x, float y, float z)
 {
 	left = nullptr;
 	right = nullptr;
+	currentDimension = 0;
+
 	position.x = x; position.y = y; position.z = z;
 	velocity.x = 0; velocity.y = 0; velocity.z = 0;
 	angle.x = 0;    angle.y = 0;    angle.z = 0;
@@ -81,5 +83,11 @@ bool Point3D::operator>(Point3D& other)
 		case 2:
 			return (position.z > other.position.z);
 	}
+}
+
+std::ostream& operator<<(std::ostream &out, Point3D &point)
+{
+	out << "(" << point.position.x << ", " << point.position.y << ", " << point.position.z << ")";
+	return out;
 }
 
