@@ -19,36 +19,35 @@
 class KDTree
 {
 	public:
-		//Constructors
-		KDTree();
-		KDTree(Point3D* list, int numParticles);
-		~KDTree();
+	//Constructors
+	KDTree();
+	KDTree(Point3D* list, int numParticles);
+	~KDTree();
 
-		//Methods
-		void insert(Point3D* point);
-		Point3D getPoint();
-		Box<float> getNode();
-		Point3D getNodeValue(Box<float> node);
-		void medianSortNodes();
-		void validate();
-		Point3D* findKClosestPointIndices(Point3D* p);
-		int* findPointIndicesInRegion(Box<float>* b);
-		Point3D* queryClosestPoints(Point3D* p);
-		Point3D* queryClosestValues(Point3D* p);
-		Point3D* queryKPoints(Point3D** p);
-		std::vector<Point3D> KDTree::flatten();
+	//Methods
+	void insert(Point3D* point);
+	Point3D getPoint();
+	Box<float> getNode();
+	Point3D getNodeValue(Box<float> node);
+	void medianSortNodes();
+	void validate();
+	Point3D* findKClosestPointIndices(Point3D* p);
+	int* findPointIndicesInRegion(Box<float>* b);
+	Point3D* queryClosestPoints(Point3D* p);
+	Point3D* queryClosestValues(Point3D* p);
+	Point3D* queryKPoints(Point3D** p);
+	std::vector<Point3D> KDTree::flatten();
 
-		friend std::ostream& operator<<(std::ostream& out, KDTree& kd);
+	friend std::ostream& operator<<(std::ostream& out, KDTree& kd);
 
 	private:
-		Point3D root;
+	Point3D root;
 
-		std::vector<Box<float>> boxes;
-		std::vector<Point3D> points;  //Vectors are guaranteed contiguous.
-		
-		void _insert(Point3D *point, Point3D *root);
+	std::vector<Box<float>> boxes;
+	std::vector<Point3D> points;  //Vectors are guaranteed contiguous.
 
-		static void _bfs(Point3D *point, std::vector<Point3D> *v);
+	void _insert(Point3D point, Point3D *root);
+	static void _bfs(Point3D *point, std::vector<Point3D> *v);
 };
 
 KDTree::KDTree(Point3D* list, int numParticles)
@@ -74,6 +73,7 @@ KDTree::~KDTree()
 void KDTree::insert(Point3D *point)
 {
 	int k = 0;
+	std::cout << *point << std::endl;
 
 	if (*point < root)
 	{
@@ -83,9 +83,10 @@ void KDTree::insert(Point3D *point)
 		}
 		else
 		{
-			_insert(point, point->left);
+			_insert(*point, root.left);
 		}
 	}
+
 	else if (*point > root)
 	{
 		if (root.right == nullptr)
@@ -94,34 +95,42 @@ void KDTree::insert(Point3D *point)
 		}
 		else
 		{
-			_insert(point, point->right);
+			_insert(*point, root.right);
 		}
 	}
 }
 
-void KDTree::_insert(Point3D *point, Point3D *root)
+void KDTree::_insert(Point3D point, Point3D *currNode)
 {
-	root->currentDimension = (root->currentDimension + 1) % 3;
-	if (point < root)
+
+	if (currNode == nullptr)
 	{
-		if (root->left == nullptr)
+		std::cout << "Null";
+		std::cout << currNode << std::endl;
+		return;
+	}
+
+	currNode->currentDimension = (currNode->currentDimension + 1) % 3;
+	if (&point < currNode)
+	{
+		if (currNode->left == nullptr)
 		{
-			root->left = point;
+			currNode->left = &point;
 		}
 		else
 		{
-			_insert(point, point->left);
+			_insert(point, currNode->left);
 		}
 	}
-	else if (point > root)
+	else if (&point > currNode)
 	{
-		if (root->right == nullptr)
+		if (currNode->right == nullptr)
 		{
-			root->right = point;
+			currNode->right = &point;
 		}
 		else
 		{
-			_insert(point, point->right);
+			_insert(point, currNode->right);
 		}
 	}
 }
@@ -155,7 +164,7 @@ void KDTree::_bfs(Point3D *point, std::vector<Point3D> *v)
 		t2->join();
 		delete t2;
 	}
-	
+
 }
 
 std::vector<Point3D> KDTree::flatten()
@@ -173,14 +182,14 @@ std::vector<Point3D> KDTree::flatten()
 	if (root.right != nullptr)
 	{
 		t2 = new std::thread(&KDTree::_bfs, root.right, &p);
-	
+
 	}
-	if (t1)
+	if (t1->joinable())
 	{
 		t1->join();
 		delete t1;
 	}
-	if (t2)
+	if (t2->joinable())
 	{
 		t2->join();
 		delete t2;

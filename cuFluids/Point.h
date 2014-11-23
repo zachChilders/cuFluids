@@ -8,11 +8,10 @@ class Point3D
 {
 
 	public:
-
 		//Constructors
 		Point3D();
 		Point3D(float x, float y, float z);
-		Point3D(const Point3D &p);
+		//Point3D(const Point3D &p);
 		~Point3D(){};
 
 		//Methods
@@ -52,14 +51,14 @@ class Point3D
 		bool operator !=(Point3D &point);
 
 		float& operator [](int d);
+
+		vec3 position;
+		vec3 velocity;
+		vec3 angle;
 		
 		//KD specific
 		Point3D *left;
 		Point3D *right;
 		int currentDimension;
 		
-		vec3 position;
-		vec3 velocity;
-		vec3 angle;
-
 };

@@ -156,7 +156,6 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="kernel.cu" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Box.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="KDTree.h" />
     <ClInclude Include="kdUtil.h" />

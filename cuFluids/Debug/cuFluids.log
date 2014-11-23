@@ -1,10 +1,10 @@
-﻿Build started 11/22/2014 1:15:16 PM.
+﻿Build started 11/23/2014 2:09:51 PM.
      1>Project "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids\cuFluids.vcxproj" on node 2 (Build target(s)).
      1>AddCudaCompileDeps:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I. /FIcuda_runtime.h /c C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids\kernel.cu 
        CudaBuild:
          Compiling CUDA source file kernel.cu...
-         cmd.exe /C "C:\Users\Zach\AppData\Local\Temp\tmp488ed1d7f6e449a598a7ade8ba9c5767.cmd"
+         cmd.exe /C "C:\Users\Zach\AppData\Local\Temp\tmp729c9d1e822942cc86de7b092ecf8f03.cmd"
          "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\kernel.cu.obj "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids\kernel.cu"
          
          C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\kernel.cu.obj "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids\kernel.cu" 
@@ -12,14 +12,14 @@
      1>c:\users\zach\documents\github\cufluids\cufluids\cufluids\Box.h(21): warning : type qualifier on return type is meaningless
      1>c:\users\zach\documents\github\cufluids\cufluids\cufluids\Box.h(22): warning : type qualifier on return type is meaningless
      1>c:\users\zach\documents\github\cufluids\cufluids\cufluids\Box.h(23): warning : type qualifier on return type is meaningless
-     1>c:\users\zach\documents\github\cufluids\cufluids\cufluids\KDTree.h(76): warning : variable "k" was declared but never referenced
+     1>c:\users\zach\documents\github\cufluids\cufluids\cufluids\KDTree.h(75): warning : variable "k" was declared but never referenced
      1>c:\users\zach\documents\github\cufluids\cufluids\cufluids\kdUtil.h(3): warning : declaration requires a typedef name
      1>c:\users\zach\documents\github\cufluids\cufluids\cufluids\Box.h(21): warning : type qualifier on return type is meaningless
      1>c:\users\zach\documents\github\cufluids\cufluids\cufluids\Box.h(22): warning : type qualifier on return type is meaningless
      1>c:\users\zach\documents\github\cufluids\cufluids\cufluids\Box.h(23): warning : type qualifier on return type is meaningless
-     1>c:\users\zach\documents\github\cufluids\cufluids\cufluids\KDTree.h(76): warning : variable "k" was declared but never referenced
+     1>c:\users\zach\documents\github\cufluids\cufluids\cufluids\KDTree.h(75): warning : variable "k" was declared but never referenced
          kernel.cu
-     1>C:/Users/Zach/Documents/GitHub/cuFluids/cuFluids/cuFluids/kernel.cu(24): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>C:/Users/Zach/Documents/GitHub/cuFluids/cuFluids/cuFluids/kernel.cu(31): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\Debug\cuFluids.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\Win32" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\Debug\cuFluids.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\Debug\cuFluids.lib" /MACHINE:X86 Debug\kernel.cu.obj
          Debug\Point.obj
@@ -36,4 +36,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:08.70
+Time Elapsed 00:00:06.66

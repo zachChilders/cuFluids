@@ -18,9 +18,6 @@
     <ClInclude Include="Point.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Box.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="kdUtil.h">
       <Filter>Headers</Filter>
     </ClInclude>
