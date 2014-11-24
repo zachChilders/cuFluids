@@ -5,7 +5,6 @@
 #include "Point.h"
 #include "Heap.h"
 #include "KDTree.h"
-#include "Box.h"
 
 #include <iostream>
 
@@ -18,20 +17,16 @@ __global__ void addKernel(int *c, const int *a, const int *b)
 int main()
 {
 	KDTree k;
-	/*Point3D p = Point3D(1, 1, 1);
-	Point3D q = Point3D(2, 2, 2);
-	Point3D r = Point3D(3, 3, 3);
 
-	k.insert(&p);
-	k.insert(&q);
-	k.insert(&r);*/
-
-	for (int i = 0; i < 10; i++)
+	std::cout << "Inserting Elements" << std::endl;
+	for (int i = 1; i < 10; i++)
 	{
 		Point3D p = Point3D(i, i, i);
 		k.insert(&p);
 	}
-	
+
+	std::cout << "===============" << std::endl;
+	std::cout << "Flattening tree" << std::endl;
 
 
 	std::vector <Point3D> a = k.flatten();

@@ -8,10 +8,10 @@
 #include "device_launch_parameters.h"
 
 #include "Point.h"
-#include "Box.h"
 
 #include <iostream>
 #include <thread>
+#include <queue>
 #include <vector>
 
 #define DIMENSIONS 3
@@ -27,12 +27,11 @@ class KDTree
 	//Methods
 	void insert(Point3D* point);
 	Point3D getPoint();
-	Box<float> getNode();
-	Point3D getNodeValue(Box<float> node);
+	//Point3D getNodeValue(Box<float> node);
 	void medianSortNodes();
 	void validate();
 	Point3D* findKClosestPointIndices(Point3D* p);
-	int* findPointIndicesInRegion(Box<float>* b);
+	//int* findPointIndicesInRegion(Box<float>* b);
 	Point3D* queryClosestPoints(Point3D* p);
 	Point3D* queryClosestValues(Point3D* p);
 	Point3D* queryKPoints(Point3D** p);
@@ -43,10 +42,9 @@ class KDTree
 	private:
 	Point3D root;
 
-	std::vector<Box<float>> boxes;
 	std::vector<Point3D> points;  //Vectors are guaranteed contiguous.
 
-	void _insert(Point3D point, Point3D *root);
+	void _insert(Point3D *point, Point3D *root);
 	static void _bfs(Point3D *point, std::vector<Point3D> *v);
 };
 
@@ -72,8 +70,7 @@ KDTree::~KDTree()
 
 void KDTree::insert(Point3D *point)
 {
-	int k = 0;
-	std::cout << *point << std::endl;
+	//std::cout << *point << std::endl;
 
 	if (*point < root)
 	{
@@ -82,8 +79,10 @@ void KDTree::insert(Point3D *point)
 			root.left = point;
 		}
 		else
-		{
-			_insert(*point, root.left);
+		{	
+
+			std::cout << "A " << *point << " " << *root.left << std::endl;
+			_insert(point, root.left);
 		}
 	}
 
@@ -95,38 +94,31 @@ void KDTree::insert(Point3D *point)
 		}
 		else
 		{
-			_insert(*point, root.right);
+			std::cout << *point << " " << *root.right << std::endl;
+			_insert(point, root.right);
 		}
 	}
 }
 
-void KDTree::_insert(Point3D point, Point3D *currNode)
+void KDTree::_insert(Point3D *point, Point3D *currNode)
 {
-
-	if (currNode == nullptr)
-	{
-		std::cout << "Null";
-		std::cout << currNode << std::endl;
-		return;
-	}
-
-	currNode->currentDimension = (currNode->currentDimension + 1) % 3;
-	if (&point < currNode)
+	point->currentDimension = (point->currentDimension + 1) % 3;
+	if (point < currNode)
 	{
 		if (currNode->left == nullptr)
 		{
-			currNode->left = &point;
+			currNode->left = point;
 		}
 		else
 		{
 			_insert(point, currNode->left);
 		}
 	}
-	else if (&point > currNode)
+	else if (point > currNode)
 	{
 		if (currNode->right == nullptr)
 		{
-			currNode->right = &point;
+			currNode->right = point;
 		}
 		else
 		{
@@ -135,64 +127,32 @@ void KDTree::_insert(Point3D point, Point3D *currNode)
 	}
 }
 
-void KDTree::_bfs(Point3D *point, std::vector<Point3D> *v)
-{
-
-	std::thread* t1 = nullptr;
-	std::thread* t2 = nullptr;
-
-	v->push_back(*point);
-
-	if (point->left != nullptr)
-	{
-		t1 = new std::thread(&KDTree::_bfs, point->right, v);
-	}
-
-	if (point->right != nullptr)
-	{
-		t2 = new std::thread(&KDTree::_bfs, point->right, v);
-	}
-
-	if (t1)
-	{
-		t1->join();
-		delete t1;
-	}
-
-	if (t2)
-	{
-		t2->join();
-		delete t2;
-	}
-
-}
-
 std::vector<Point3D> KDTree::flatten()
 {
 	std::vector<Point3D> p; //Create an empty vector
-	p.push_back(root); // Add our node
-	std::thread* t1 = nullptr;
-	std::thread* t2 = nullptr;
+	std::queue<Point3D> q; //Helper queue to hold points
 
-	if (root.left != nullptr)
+	p.push_back(root);
+	q.emplace(root);
+
+	//BFS
+	while (!q.empty())
 	{
-		t1 = new std::thread(&KDTree::_bfs, root.right, &p);
+		Point3D *temp = &q.front();
+		q.pop();
+
+		if (temp->left != nullptr)
+		{
+			p.push_back(*temp->left);
+			q.emplace(*temp->left);
+		}
+		if (temp->right != nullptr)
+		{
+			p.push_back(*temp->right);
+			q.emplace(*temp->right);
+		}
+			
 	}
 
-	if (root.right != nullptr)
-	{
-		t2 = new std::thread(&KDTree::_bfs, root.right, &p);
-
-	}
-	if (t1->joinable())
-	{
-		t1->join();
-		delete t1;
-	}
-	if (t2->joinable())
-	{
-		t2->join();
-		delete t2;
-	}
 	return p;
 }

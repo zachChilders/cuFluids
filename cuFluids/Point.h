@@ -11,7 +11,6 @@ class Point3D
 		//Constructors
 		Point3D();
 		Point3D(float x, float y, float z);
-		//Point3D(const Point3D &p);
 		~Point3D(){};
 
 		//Methods
@@ -43,9 +42,9 @@ class Point3D
 		Point3D operator /=(Point3D &point);
 		Point3D operator /=(float scalar);
 
-		bool operator <(Point3D &point);
+		bool operator <(const Point3D& point);
 		bool operator <(float p);
-		bool operator >(Point3D &point);
+		bool operator >(const Point3D& point);
 		bool operator >(float p);
 		bool operator ==(Point3D &point);
 		bool operator !=(Point3D &point);

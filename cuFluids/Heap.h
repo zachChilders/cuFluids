@@ -6,7 +6,6 @@
 #include <string>
 
 #include "Point.h"
-#include "Box.h"
 
 template
 <typename T>

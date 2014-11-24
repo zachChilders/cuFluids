@@ -11,17 +11,6 @@ Point3D::Point3D()
 	angle.x = 0;    angle.y = 0;    angle.z = 0;
 };
 
-//Point3D::Point3D(const Point3D &p)
-//{
-//	left = p.left;
-//	right = p.right;
-//	currentDimension = p.currentDimension;
-//
-//	position = p.position;
-//	velocity = p.position;
-//	angle = p.position;
-//}
-
 Point3D::Point3D(float x, float y, float z)
 {
 	left = nullptr;
@@ -59,7 +48,7 @@ float& Point3D::operator[](int dimension)
 	}
 };
 
-bool Point3D::operator<(Point3D& other)
+bool Point3D::operator<(const Point3D& other)
 {
 	switch (currentDimension)
 	{
@@ -72,7 +61,7 @@ bool Point3D::operator<(Point3D& other)
 	}
 }
 
-bool Point3D::operator>(Point3D& other)
+bool Point3D::operator>(const Point3D& other)
 {
 	switch (currentDimension)
 	{
