@@ -24,6 +24,9 @@
     <ClInclude Include="Heap.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="include\cuda_gl_interop.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Point.cpp">
