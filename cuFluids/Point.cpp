@@ -12,6 +12,7 @@ Point3D::Point3D()
 	angle.x = 0;    angle.y = 0;    angle.z = 0;
 };
 
+CUDA_CALLABLE_MEMBER
 Point3D::Point3D(float x, float y, float z)
 {
 	left = nullptr;
@@ -81,7 +82,7 @@ std::ostream& operator<<(std::ostream &out, Point3D &point)
 	return out;
 }
 
-__global__
+CUDA_CALLABLE_MEMBER
 void Point3D::operator+(float scalar)
 {
 	position.y += scalar;

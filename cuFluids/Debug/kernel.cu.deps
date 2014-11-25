@@ -244,11 +244,11 @@ c:\program files\nvidia gpu computing toolkit\cuda\v6.5\include\device_launch_pa
 c:\program files\nvidia gpu computing toolkit\cuda\v6.5\include\vector_types.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\cuda_runtime.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\device_launch_parameters.h
-c:\users\zach\documents\github\cufluids\cufluids\cufluids\KDTree.h
+c:\users\zach\documents\cufluids\cufluids\KDTree.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\cuda_runtime.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\device_launch_parameters.h
-c:\users\zach\documents\github\cufluids\cufluids\cufluids\Point.h
-c:\users\zach\documents\github\cufluids\cufluids\cufluids\kdUtil.h
+c:\users\zach\documents\cufluids\cufluids\Point.h
+c:\users\zach\documents\cufluids\cufluids\kdUtil.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\cuda_runtime.h
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\iostream
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\istream

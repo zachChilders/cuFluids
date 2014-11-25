@@ -9,11 +9,11 @@
 #include <Windows.h>
 #include <cuda_gl_interop.h>
 
-__global__ void addKernel(Point3D* x)
-{
-    int i = threadIdx.x;
-	x[i] + 1;
-}
+//CUDA_CALLABLE_MEMBER void addKernel(Point3D* x)
+//{
+//    int i = threadIdx.x;
+//	x[i] + 1;
+//}
 
 void cudaErrorCheck(cudaError_t e)
 {
