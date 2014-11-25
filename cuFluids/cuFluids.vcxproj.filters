@@ -27,9 +27,18 @@
     <ClInclude Include="include\cuda_gl_interop.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="GLutils.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\glm.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Point.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ogl.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

@@ -4,9 +4,10 @@
 
 #include "KDTree.h"
 
-#include <iostream>
 
 #include <Windows.h>
+#include "GLutils.h"
+
 #include <cuda_gl_interop.h>
 
 //CUDA_CALLABLE_MEMBER void addKernel(Point3D* x)
@@ -14,6 +15,10 @@
 //    int i = threadIdx.x;
 //	x[i] + 1;
 //}
+
+
+int windowInit();
+GLFWwindow* window;
 
 void cudaErrorCheck(cudaError_t e)
 {
@@ -50,9 +55,6 @@ int main()
 	cudaErrorCheck(cudaStatus);
 	cudaStatus = cudaMemcpy(devA, &v[0], v.size() * sizeof(Point3D), cudaMemcpyHostToDevice);
 	cudaErrorCheck(cudaStatus);
-
-	
-	
 /*
 	std::cout << "===============" << std::endl;
 	std::cout << "Flattening tree" << std::endl;*/
@@ -64,6 +66,55 @@ int main()
 		std::cout << b << std::endl;
 	}
 
-	system("PAUSE");
+	windowInit();
 
+	glewExperimental = GL_TRUE;
+	GLenum err = glewInit();
+	if (err != GLEW_OK)
+	{
+		printf("GlewInit error");
+		exit(1);
+	}
+	
+	do{
+
+			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT);
+
+		
+			glfwSwapBuffers(window);
+			glfwPollEvents();
+
+		} while (glfwGetKey(window, GLFW_KEY_ENTER) != GLFW_PRESS &&
+				 glfwWindowShouldClose(window) == 0);
+	
+}
+
+int windowInit()
+{
+
+	if (!glfwInit())
+	{
+		printf("Failed to init GLFW.\n");
+		fprintf(stderr, "Failed to initialize GLFW\n");
+		return -1;
+	}
+
+	glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+	window = glfwCreateWindow(720, 640, "Particle System", NULL, NULL);
+
+	if (window == NULL)
+	{
+		printf("Failed to open GLFW window.\n");
+		fprintf(stderr, "Failed to open GLFW window.");
+		glfwTerminate();
+		return -1;
+	}
+
+	glfwMakeContextCurrent(window);
+	return 0;
 }
