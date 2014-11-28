@@ -10,6 +10,9 @@
     <Filter Include="Source">
       <UniqueIdentifier>{8a41cff2-49af-4542-80e0-a52ccd661a81}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{f75dbecd-040b-4127-860d-1d10fbee89e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KDTree.h">
@@ -21,9 +24,6 @@
     <ClInclude Include="kdUtil.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Heap.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="include\cuda_gl_interop.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -33,13 +33,33 @@
     <ClInclude Include="include\glm.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="controls.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="shader.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Point.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="ogl.cpp">
+    <ClCompile Include="controls.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="shader.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Particle.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Particle.vert">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

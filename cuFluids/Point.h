@@ -7,10 +7,9 @@
 #define CUDA_CALLABLE_MEMBER
 #endif 
 
-
-#include "kdUtil.h"
 #include "cuda_runtime.h"
 #include <iostream>
+#include <glm/glm.hpp>
 
 class Point3D
 {
@@ -59,12 +58,17 @@ class Point3D
 		bool operator ==(Point3D &point);
 		bool operator !=(Point3D &point);
 
+		float* toFloats();
+
 		float& operator [](int d);
 
-		vec3 position;
-		vec3 velocity;
-		vec3 angle;
-		
+		glm::vec3 position;
+		glm::vec3 velocity;
+		glm::vec3 angle;
+
+		float life;
+		float size;
+
 		//KD specific
 		Point3D *left;
 		Point3D *right;

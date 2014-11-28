@@ -87,3 +87,13 @@ void Point3D::operator+(float scalar)
 {
 	position.y += scalar;
 }
+
+float* Point3D::toFloats()
+{
+	float* floats = new float[3];
+	floats[0] = position.x;
+	floats[1] = position.y;
+	floats[2] = position.z;
+
+	return floats;
+}

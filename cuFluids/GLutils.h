@@ -18,8 +18,17 @@ Summer 2014
 #include <glm/gtc/type_ptr.hpp>
 
 using namespace std;
-#define GLEW_STATIC
 
+#define GLSL(src) "#version 330 core\n" #src
+
+
+GLuint createShader(GLenum type, const GLchar* src)
+{
+	GLuint shader = glCreateShader(type);
+	glShaderSource(shader, 1, &src, nullptr);
+	glCompileShader(shader);
+	return shader;
+}
 //Reads a shader, returns a char* for compilation
 const char* loadShader(string fname)
 {
@@ -44,7 +53,7 @@ const char* loadShader(string fname)
 	}
 }
 
-GLuint compileVertShader(const char* vertCode, GLFWwindow *context)
+GLuint compileVertShader(const char* vertCode)
 {
 	GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertShader, 1, &vertCode, NULL);
@@ -52,7 +61,7 @@ GLuint compileVertShader(const char* vertCode, GLFWwindow *context)
 	return vertShader;
 };
 
-GLuint compileFragShader(const char* fragCode, GLFWwindow *context)
+GLuint compileFragShader(const char* fragCode)
 {
 	GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragShader, 1, &fragCode, NULL);
@@ -60,7 +69,7 @@ GLuint compileFragShader(const char* fragCode, GLFWwindow *context)
 	return fragShader;
 };
 
-GLuint compileGeoShader(const char* geoCode, GLFWwindow *context)
+GLuint compileGeoShader(const char* geoCode)
 {
 	GLuint geoShader = glCreateShader(GL_GEOMETRY_SHADER);
 	glShaderSource(geoShader, 1, &geoCode, NULL);
@@ -68,13 +77,13 @@ GLuint compileGeoShader(const char* geoCode, GLFWwindow *context)
 	return geoShader;
 };
 
-GLuint createShader(string vertShader, string fragShader, GLFWwindow *context)
+GLuint createShader(string vertShader, string fragShader)
 {
 	const GLchar* vertSource = loadShader(vertShader);
 	const GLchar* fragSource = loadShader(fragShader);
 
-	GLuint vertexShader = compileVertShader(vertSource, context);
-	GLuint fragmentShader = compileFragShader(fragSource, context);
+	GLuint vertexShader = compileVertShader(vertSource);
+	GLuint fragmentShader = compileFragShader(fragSource);
 
 	GLuint shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertexShader);
@@ -84,15 +93,31 @@ GLuint createShader(string vertShader, string fragShader, GLFWwindow *context)
 	return shaderProgram;
 };
 
-GLuint createShader(string vertShader, string geoShader, string fragShader, GLFWwindow *context)
+GLuint createShader(string vertShader, string geoShader, string fragShader)
 {
 	const GLchar* vertSource = loadShader(vertShader);
 	const GLchar* fragSource = loadShader(fragShader);
 	const GLchar* geoSource = loadShader(geoShader);
 
-	GLuint vertexShader = compileVertShader(vertSource, context);
-	GLuint fragmentShader = compileFragShader(fragSource, context);
-	GLuint geometryShader = compileGeoShader(geoSource, context);
+	GLuint vertexShader = compileVertShader(vertSource);
+	GLuint fragmentShader = compileFragShader(fragSource);
+	GLuint geometryShader = compileGeoShader(geoSource);
+
+	if (vertexShader == GL_FALSE)
+	{
+		std::cout << "Vertex shader failed" << std::endl;
+	}
+
+	if (fragmentShader == GL_FALSE)
+	{
+		std::cout << "Fragment shader failed" << std::endl;
+	}
+
+	if (geometryShader == GL_FALSE)
+	{
+		std::cout << "Geometry shader failed" << std::endl;
+	}
+
 
 	GLuint shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertexShader);
@@ -100,5 +125,9 @@ GLuint createShader(string vertShader, string geoShader, string fragShader, GLFW
 	glAttachShader(shaderProgram, geometryShader);
 
 	glLinkProgram(shaderProgram);
+	if (shaderProgram == GL_FALSE)
+	{
+		std::cout << "Link failed" << std::endl;
+	}
 	return shaderProgram;
 };

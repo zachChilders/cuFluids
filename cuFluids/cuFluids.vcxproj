@@ -90,7 +90,7 @@
 copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <CudaCompile>
-      <GenerateRelocatableDeviceCode>true</GenerateRelocatableDeviceCode>
+      <GenerateRelocatableDeviceCode>false</GenerateRelocatableDeviceCode>
       <Runtime>InheritFromHost</Runtime>
     </CudaCompile>
   </ItemDefinitionGroup>
@@ -160,17 +160,24 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="kernel.cu" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="controls.hpp" />
     <ClInclude Include="GLutils.h" />
-    <ClInclude Include="Heap.h" />
     <ClInclude Include="include\cuda_gl_interop.h" />
     <ClInclude Include="include\glm.hpp" />
     <ClInclude Include="KDTree.h" />
     <ClInclude Include="kdUtil.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="shader.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ogl.cpp" />
+    <ClCompile Include="controls.cpp" />
     <ClCompile Include="Point.cpp" />
+    <ClCompile Include="shader.cpp" />
+    <ClCompile Include="texture.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Particle.frag" />
+    <None Include="Particle.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
