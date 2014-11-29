@@ -22,25 +22,11 @@
 //	x[i] + 1;
 //}
 
-// CPU representation of a particle
-struct Particle{
-	glm::vec3 pos, speed;
-	unsigned char r, g, b, a; // Color
-	float size, angle, weight;
-	float life; // Remaining life of the particle. if <0 : dead and unused.
-	float cameradistance; // *Squared* distance to the camera. if dead : -1.0f
-
-	bool operator<(const Particle& that) const {
-		// Sort in reverse order : far particles drawn first.
-		return this->cameradistance > that.cameradistance;
-	}
-};
-
 int windowInit();
 GLFWwindow* window;
 
 const int MaxParticles = 1000;
-Particle ParticlesContainer[MaxParticles];
+Point3D ParticlesContainer[MaxParticles];
 int LastUsedParticle = 0;
 
 int FindUnusedParticle(){
@@ -157,9 +143,9 @@ int main()
 	static GLfloat* g_particule_position_size_data = new GLfloat[MaxParticles * 4];
 	static GLubyte* g_particule_color_data = new GLubyte[MaxParticles * 4];
 
+	//Probably not necessary, since we won't be killing particles.
 	for (int i = 0; i<MaxParticles; i++){
 		ParticlesContainer[i].life = -1.0f;
-		ParticlesContainer[i].cameradistance = -1.0f;
 	}
 
 	 //The VBO containing the 4 vertices of the particles.
@@ -193,7 +179,7 @@ int main()
 		double delta = currentTime - lastTime;
 		lastTime = currentTime;
 
-
+		//MVP should be set - ZC
 		computeMatricesFromInputs();
 		glm::mat4 ProjectionMatrix = getProjectionMatrix();
 		glm::mat4 ViewMatrix = getViewMatrix();
@@ -217,7 +203,7 @@ int main()
 		for (int i = 0; i < newparticles; i++){
 			int particleIndex = FindUnusedParticle();
 			ParticlesContainer[particleIndex].life = 5.0f; // This particle will live 5 seconds.
-			ParticlesContainer[particleIndex].pos = glm::vec3(0, 0, -20.0f);
+			ParticlesContainer[particleIndex].position = glm::vec3(0, 0, -20.0f);
 
 			float spread = 1.5f;
 			glm::vec3 maindir = glm::vec3(0.0f, 10.0f, 0.0f);
@@ -229,7 +215,7 @@ int main()
 				(rand() % 2000 - 1000.0f) / 1000.0f
 				);
 
-			ParticlesContainer[particleIndex].speed = maindir + randomdir*spread;
+			ParticlesContainer[particleIndex].velocity = maindir + randomdir*spread;
 
 			ParticlesContainer[particleIndex].size = (rand() % 1000) / 2000.0f + 0.1f;
 
@@ -239,41 +225,27 @@ int main()
 		int ParticlesCount = 0;
 		for (int i = 0; i<MaxParticles; i++){
 
-			Particle& p = ParticlesContainer[i]; // shortcut
-
-			if (p.life > 0.0f){
+			Point3D& p = ParticlesContainer[i]; // shortcut
 
 			//	 Decrease life
-				p.life -= delta;
-				if (p.life > 0.0f){
+			p.life -= delta;
 
-					// Simulate simple physics : gravity only, no collisions
-					p.speed += glm::vec3(0.0f, -9.81f, 0.0f) * (float)delta * 0.5f;
-					p.pos += p.speed * (float)delta;
-					p.cameradistance = glm::length(p.pos - CameraPosition);
-					ParticlesContainer[i].pos += glm::vec3(0.0f,10.0f, 0.0f) * (float)delta;
 
-					// Fill the GPU buffer
-					g_particule_position_size_data[4 * ParticlesCount + 0] = p.pos.x;
-					g_particule_position_size_data[4 * ParticlesCount + 1] = p.pos.y;
-					g_particule_position_size_data[4 * ParticlesCount + 2] = p.pos.z;
+			// Simulate simple physics : gravity only, no collisions
+			p.velocity += glm::vec3(0.0f, -9.81f, 0.0f) * (float)delta * 0.5f;
+			p.position += p.velocity * (float)delta;
+			
+			ParticlesContainer[i].position += glm::vec3(0.0f, 2.0f, 0.0f) * (float)delta;
 
-					g_particule_position_size_data[4 * ParticlesCount + 3] = p.size;
+			// Fill the GPU buffer
+			g_particule_position_size_data[4 * ParticlesCount + 0] = p.position.x;
+			g_particule_position_size_data[4 * ParticlesCount + 1] = p.position.y;
+			g_particule_position_size_data[4 * ParticlesCount + 2] = p.position.z;
 
-					g_particule_color_data[4 * ParticlesCount + 0] = p.r;
-					g_particule_color_data[4 * ParticlesCount + 1] = p.g;
-					g_particule_color_data[4 * ParticlesCount + 2] = p.b;
-					g_particule_color_data[4 * ParticlesCount + 3] = p.a;
+			g_particule_position_size_data[4 * ParticlesCount + 3] = p.size;
 
-				}
-				else{
-					// Particles that just died will be put at the end of the buffer in SortParticles();
-					p.cameradistance = -1.0f;
-				}
-
-				ParticlesCount++;
-
-			}
+			ParticlesCount++;
+			
 		}
 
 		SortParticles();
