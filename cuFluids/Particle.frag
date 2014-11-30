@@ -13,12 +13,11 @@ uniform sampler2D myTextureSampler;
 void main(){
 	// Output color = color of the texture at the specified UV
 
-
 	// calculate normal from texture coordinates
     vec3 N;
     N.xy = gl_PointCoord * 2.0 - vec2(0.5);    
     float mag = dot(N.xy, N.xy);
-    if (mag > 2.0) discard;   // kill pixels outside circle
+    if (mag > 0.5) discard;   // kill pixels outside circle
     N.z = sqrt(1.0-mag);
 
     // calculate lighting

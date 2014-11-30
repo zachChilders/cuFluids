@@ -25,7 +25,7 @@
 int windowInit();
 GLFWwindow* window;
 
-const int MaxParticles = 1000;
+const int MaxParticles = 100000;
 Point3D ParticlesContainer[MaxParticles];
 int LastUsedParticle = 0;
 
@@ -148,13 +148,48 @@ int main()
 		ParticlesContainer[i].life = -1.0f;
 	}
 
+	/* Generate 10 new particule each millisecond,
+	but limit this to 16 ms (60 fps), or if you have 1 long frame (1sec),
+	newparticles will be huge and the next frame even longer.*/
+	int newparticles = (int)(10000.0);
+	if (newparticles >(int)(0.016f*10000.0))
+		newparticles = (int)(0.016f*10000.0);
+
+	for (int i = 0; i < 100; i++)
+	{
+		float zOffset = 0;
+		for (int j = 0; j < 100; j++)
+		{
+			int particleIndex = FindUnusedParticle();
+			ParticlesContainer[particleIndex].life = 5.0f; // This particle will live 5 seconds.
+			ParticlesContainer[particleIndex].position = glm::vec3(0, 0, -20.0f);
+
+			float spread = 1.5f;
+			glm::vec3 maindir = glm::vec3(0.0f, 10.0f, 0.0f);
+
+			//Random direction
+			glm::vec3 randomdir = glm::vec3(
+				(rand() % 2000 - 1000.0f) / 1000.0f,
+				(rand() % 2000 - 1000.0f) / 1000.0f,
+				(rand() % 2000 - 1000.0f) / 1000.0f
+				);
+
+			ParticlesContainer[particleIndex].velocity = maindir + randomdir*spread;
+
+			ParticlesContainer[particleIndex].size = (rand() % 1000) / 2000.0f + 0.1f;
+			ParticlesContainer[particleIndex].position.x += i - (newparticles / 2);
+			ParticlesContainer[particleIndex].position.z += zOffset;
+		}
+		zOffset -= 10;
+	}
+
 	 //The VBO containing the 4 vertices of the particles.
 	 //Thanks to instancing, they will be shared by all particles.
 	static const GLfloat g_vertex_buffer_data[] = {
-		-0.5f, -0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f,
-		-0.5f, 0.5f, 0.0f,
-		0.5f, 0.5f, 0.0f,
+		-0.5f, -0.5f, 1.0f,
+		0.5f, -0.5f, 1.0f,
+		-0.5f, 0.5f, 1.0f,
+		0.5f, 0.5f, 1.0f,
 	};
 	GLuint billboard_vertex_buffer;
 	glGenBuffers(1, &billboard_vertex_buffer);
@@ -167,7 +202,6 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
 	// Initialize with empty (NULL) buffer : it will be updated later, each frame.
 	glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
-
 
 	double lastTime = glfwGetTime();
 	do
@@ -192,50 +226,23 @@ int main()
 
 		glm::mat4 ViewProjectionMatrix = ProjectionMatrix * ViewMatrix;
 
-
-		/* Generate 10 new particule each millisecond,
-		 but limit this to 16 ms (60 fps), or if you have 1 long frame (1sec),
-		 newparticles will be huge and the next frame even longer.*/
-		int newparticles = (int)(delta*10000.0);
-		if (newparticles > (int)(0.016f*10000.0))
-			newparticles = (int)(0.016f*10000.0);
-
-		for (int i = 0; i < newparticles; i++){
-			int particleIndex = FindUnusedParticle();
-			ParticlesContainer[particleIndex].life = 5.0f; // This particle will live 5 seconds.
-			ParticlesContainer[particleIndex].position = glm::vec3(0, 0, -20.0f);
-
-			float spread = 1.5f;
-			glm::vec3 maindir = glm::vec3(0.0f, 10.0f, 0.0f);
-
-			//Random direction
-			glm::vec3 randomdir = glm::vec3(
-				(rand() % 2000 - 1000.0f) / 1000.0f,
-				(rand() % 2000 - 1000.0f) / 1000.0f,
-				(rand() % 2000 - 1000.0f) / 1000.0f
-				);
-
-			ParticlesContainer[particleIndex].velocity = maindir + randomdir*spread;
-
-			ParticlesContainer[particleIndex].size = (rand() % 1000) / 2000.0f + 0.1f;
-
-		}
-
+		
 		// update loop, cudaIZE
 		int ParticlesCount = 0;
-		for (int i = 0; i<MaxParticles; i++){
+		for (int i = 0; i < MaxParticles; i++){
 
 			Point3D& p = ParticlesContainer[i]; // shortcut
 
-			//	 Decrease life
-			p.life -= delta;
-
+			// Decrease life
+			//p.life -= delta;
 
 			// Simulate simple physics : gravity only, no collisions
 			p.velocity += glm::vec3(0.0f, -9.81f, 0.0f) * (float)delta * 0.5f;
 			p.position += p.velocity * (float)delta;
 			
 			ParticlesContainer[i].position += glm::vec3(0.0f, 2.0f, 0.0f) * (float)delta;
+
+
 
 			// Fill the GPU buffer
 			g_particule_position_size_data[4 * ParticlesCount + 0] = p.position.x;
@@ -253,7 +260,6 @@ int main()
 		glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
 		glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
 		glBufferSubData(GL_ARRAY_BUFFER, 0, ParticlesCount * sizeof(GLfloat)* 4, g_particule_position_size_data);
-
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -294,14 +300,11 @@ int main()
 
 		glVertexAttribDivisor(0, 0); // particles vertices : always reuse the same 4 vertices -> 0
 		glVertexAttribDivisor(1, 1); // positions : one per quad (its center)                 -> 1
-		glVertexAttribDivisor(2, 1); // color : one per quad                                  -> 1
-
 
 		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
 
 		// Swap buffers
 		glfwSwapBuffers(window);
