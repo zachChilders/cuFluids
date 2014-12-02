@@ -25,28 +25,9 @@
 int windowInit();
 GLFWwindow* window;
 
-const int MaxParticles = 100000;
+const int MaxParticles = 10000;
 Point3D ParticlesContainer[MaxParticles];
 int LastUsedParticle = 0;
-
-int FindUnusedParticle(){
-
-	for (int i = LastUsedParticle; i<MaxParticles; i++){
-		if (ParticlesContainer[i].life < 0){
-			LastUsedParticle = i;
-			return i;
-		}
-	}
-
-	for (int i = 0; i<LastUsedParticle; i++){
-		if (ParticlesContainer[i].life < 0){
-			LastUsedParticle = i;
-			return i;
-		}
-	}
-
-	return 0; // All particles are taken, override the first one
-}
 
 void SortParticles(){
 	std::sort(&ParticlesContainer[0], &ParticlesContainer[MaxParticles]);
@@ -62,35 +43,24 @@ void cudaErrorCheck(cudaError_t e)
 
 int main()
 {
-	//	KDTree k;
+	KDTree k;
 
 	std::vector<Point3D> v;
-	std::cout << "Inserting Elements" << std::endl;
-	for (int i = 1; i < NUM_PARTICLES; i++)
+	for (int i = 1; i < MaxParticles; i++)
 	{
-		Point3D p = Point3D(i, 0, 0);
-		v.push_back(p);
+		Point3D *p = new Point3D(i, 0, 0);
+		k.insert(p);
 	}
 
-	for (auto b : v)
-	{
-		std::cout << b << std::endl;
-	}
-	std::cout << "==========" << std::endl;
+	std::vector <Point3D> a = k.flatten();
 
 	Point3D *devA;
 
 	cudaError_t cudaStatus;
-	cudaStatus = cudaMalloc((void**)&devA, v.size() * sizeof(Point3D));
+	cudaStatus = cudaMalloc((void**)&devA, a.size() * sizeof(Point3D));
 	cudaErrorCheck(cudaStatus);
-	cudaStatus = cudaMemcpy(devA, &v[0], v.size() * sizeof(Point3D), cudaMemcpyHostToDevice);
+	cudaStatus = cudaMemcpy(devA, &a[0], a.size() * sizeof(Point3D), cudaMemcpyHostToDevice);
 	cudaErrorCheck(cudaStatus);
-	/*
-		std::cout << "===============" << std::endl;
-		std::cout << "Flattening tree" << std::endl;*/
-
-
-	//std::vector <Point3D> a = k.flatten();
 
 	windowInit();
 
@@ -112,13 +82,13 @@ int main()
 		return -1;
 	}
 
-	 //Ensure we can capture the escape key being pressed below
+	//Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-	// Dark blue background
+	// Black background
 	glClearColor(0.f, 0.f, 0.f, 0.0f);
 
-	 //Enable depth test
+	//Enable depth test
 	glEnable(GL_DEPTH_TEST);
 	// Accept fragment if it closer to the camera than the former one
 	glDepthFunc(GL_LESS);
@@ -127,7 +97,7 @@ int main()
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
 
-	 //Create and compile our GLSL program from the shaders
+	//Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders("Particle.vert", "Particle.frag");
 
 	// Vertex shader
@@ -143,24 +113,14 @@ int main()
 	static GLfloat* g_particule_position_size_data = new GLfloat[MaxParticles * 4];
 	static GLubyte* g_particule_color_data = new GLubyte[MaxParticles * 4];
 
-	//Probably not necessary, since we won't be killing particles.
-	for (int i = 0; i<MaxParticles; i++){
-		ParticlesContainer[i].life = -1.0f;
-	}
 
-	/* Generate 10 new particule each millisecond,
-	but limit this to 16 ms (60 fps), or if you have 1 long frame (1sec),
-	newparticles will be huge and the next frame even longer.*/
-	int newparticles = (int)(10000.0);
-	if (newparticles >(int)(0.016f*10000.0))
-		newparticles = (int)(0.016f*10000.0);
-
+	//Create the particles
 	for (int i = 0; i < 100; i++)
 	{
 		float zOffset = 0;
 		for (int j = 0; j < 100; j++)
 		{
-			int particleIndex = FindUnusedParticle();
+			int particleIndex = i * 100 + j;
 			ParticlesContainer[particleIndex].life = 5.0f; // This particle will live 5 seconds.
 			ParticlesContainer[particleIndex].position = glm::vec3(0, 0, -20.0f);
 
@@ -177,14 +137,14 @@ int main()
 			ParticlesContainer[particleIndex].velocity = maindir + randomdir*spread;
 
 			ParticlesContainer[particleIndex].size = (rand() % 1000) / 2000.0f + 0.1f;
-			ParticlesContainer[particleIndex].position.x += i - (newparticles / 2);
+			ParticlesContainer[particleIndex].position.x += i - 50; //some x offset
 			ParticlesContainer[particleIndex].position.z += zOffset;
 		}
 		zOffset -= 10;
 	}
 
-	 //The VBO containing the 4 vertices of the particles.
-	 //Thanks to instancing, they will be shared by all particles.
+	//The VBO containing the 4 vertices of the particles.
+	//Thanks to instancing, they will be shared by all particles.
 	static const GLfloat g_vertex_buffer_data[] = {
 		-0.5f, -0.5f, 1.0f,
 		0.5f, -0.5f, 1.0f,
@@ -196,7 +156,7 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, billboard_vertex_buffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 
-	 //The VBO containing the positions and sizes of the particles
+	//The VBO containing the positions and sizes of the particles
 	GLuint particles_position_buffer;
 	glGenBuffers(1, &particles_position_buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
@@ -220,29 +180,24 @@ int main()
 
 		/* We will need the camera's position in order to sort the particles
 		 w.r.t the camera's distance.
-		 There should be a getCameraPosition() function in common/controls.cpp, 
+		 There should be a getCameraPosition() function in common/controls.cpp,
 		 but this works too.*/
 		glm::vec3 CameraPosition(glm::inverse(ViewMatrix)[3]);
 
 		glm::mat4 ViewProjectionMatrix = ProjectionMatrix * ViewMatrix;
 
-		
+
 		// update loop, cudaIZE
 		int ParticlesCount = 0;
 		for (int i = 0; i < MaxParticles; i++){
 
 			Point3D& p = ParticlesContainer[i]; // shortcut
 
-			// Decrease life
-			//p.life -= delta;
-
 			// Simulate simple physics : gravity only, no collisions
 			p.velocity += glm::vec3(0.0f, -9.81f, 0.0f) * (float)delta * 0.5f;
 			p.position += p.velocity * (float)delta;
-			
+
 			ParticlesContainer[i].position += glm::vec3(0.0f, 2.0f, 0.0f) * (float)delta;
-
-
 
 			// Fill the GPU buffer
 			g_particule_position_size_data[4 * ParticlesCount + 0] = p.position.x;
@@ -252,7 +207,7 @@ int main()
 			g_particule_position_size_data[4 * ParticlesCount + 3] = p.size;
 
 			ParticlesCount++;
-			
+
 		}
 
 		SortParticles();
@@ -267,7 +222,7 @@ int main()
 		// Use our shader
 		glUseProgram(programID);
 
-		 //Same as the billboards tutorial
+		//Same as the billboards tutorial
 		glUniform3f(CameraRight_worldspace_ID, ViewMatrix[0][0], ViewMatrix[1][0], ViewMatrix[2][0]);
 		glUniform3f(CameraUp_worldspace_ID, ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]);
 
@@ -285,7 +240,7 @@ int main()
 			(void*)0            // array buffer offset
 			);
 
-		 //2nd attribute buffer : positions of particles' centers
+		//2nd attribute buffer : positions of particles' centers
 		glEnableVertexAttribArray(1);
 		glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
 		glVertexAttribPointer(
@@ -324,7 +279,7 @@ int main()
 	glDeleteVertexArrays(1, &VertexArrayID);
 
 
-	 //Close OpenGL window and terminate GLFW
+	//Close OpenGL window and terminate GLFW
 	glfwTerminate();
 
 	return 0;

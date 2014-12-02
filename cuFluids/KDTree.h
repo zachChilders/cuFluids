@@ -80,8 +80,6 @@ void KDTree::insert(Point3D *point)
 		}
 		else
 		{	
-
-			std::cout << "A " << *point << " " << *root.left << std::endl;
 			_insert(point, root.left);
 		}
 	}
@@ -94,7 +92,6 @@ void KDTree::insert(Point3D *point)
 		}
 		else
 		{
-			std::cout << *point << " " << *root.right << std::endl;
 			_insert(point, root.right);
 		}
 	}
