@@ -41,9 +41,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Point.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="controls.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -51,6 +48,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="texture.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Point.cu">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

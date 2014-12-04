@@ -5,6 +5,7 @@
 #include "KDTree.h"
 
 #include <algorithm>
+#include <omp.h>
 #include <Windows.h>
 #include "GLutils.h"
 
@@ -13,8 +14,6 @@
 #include "texture.hpp"
 
 #include <cuda_gl_interop.h>
-
-#define NUM_PARTICLES 2
 
 //CUDA_CALLABLE_MEMBER void addKernel(Point3D* x)
 //{
@@ -26,12 +25,7 @@ int windowInit();
 GLFWwindow* window;
 
 const int MaxParticles = 10000;
-Point3D ParticlesContainer[MaxParticles];
 int LastUsedParticle = 0;
-
-void SortParticles(){
-	std::sort(&ParticlesContainer[0], &ParticlesContainer[MaxParticles]);
-}
 
 void cudaErrorCheck(cudaError_t e)
 {
@@ -45,23 +39,47 @@ int main()
 {
 	KDTree k;
 
-	std::vector<Point3D> v;
-	for (int i = 1; i < MaxParticles; i++)
+	std::vector<Point3D *> v;
+	std::cout << "Building initial tree...";
+
+	for (int x = -50; x < 50; x++)
 	{
-		Point3D *p = new Point3D(i, 0, 0);
-		k.insert(p);
+		for (int y = -50; y < 50; y++)
+		{
+			for (int z = 0; z < 10; z++)
+			{
+				Point3D *p = new Point3D(x, y, z);
+				v.push_back(p);
+			}
+		}
+	}
+	
+	double start = omp_get_wtime();
+	for (auto a : v)
+	{
+		k.insert(a);
 	}
 
-	std::vector <Point3D> a = k.flatten();
+	double end = omp_get_wtime();
+	
 
+	std::cout << " Done in " << end - start << " seconds." <<  std::endl;
+
+	std::cout << "Flattening Tree...";
+	std::vector <Point3D> particleContainer = k.flatten();
+	std::cout << " Done." << std::endl;
+
+	std::cout << "Pushing to GPU...";
 	Point3D *devA;
-
 	cudaError_t cudaStatus;
-	cudaStatus = cudaMalloc((void**)&devA, a.size() * sizeof(Point3D));
+	cudaStatus = cudaMalloc((void**)&devA, particleContainer.size() * sizeof(Point3D));
 	cudaErrorCheck(cudaStatus);
-	cudaStatus = cudaMemcpy(devA, &a[0], a.size() * sizeof(Point3D), cudaMemcpyHostToDevice);
+	cudaStatus = cudaMemcpy(devA, &particleContainer[0], particleContainer.size() * sizeof(Point3D), cudaMemcpyHostToDevice);
 	cudaErrorCheck(cudaStatus);
 
+	std::cout << " Done." << std::endl;
+
+	std::cout << "Starting renderer..." << std::endl;
 	windowInit();
 
 	glewExperimental = GL_TRUE;
@@ -121,8 +139,8 @@ int main()
 		for (int j = 0; j < 100; j++)
 		{
 			int particleIndex = i * 100 + j;
-			ParticlesContainer[particleIndex].life = 5.0f; // This particle will live 5 seconds.
-			ParticlesContainer[particleIndex].position = glm::vec3(0, 0, -20.0f);
+			particleContainer[particleIndex].life = 5.0f; // This particle will live 5 seconds.
+			particleContainer[particleIndex].position = glm::vec3(0, 0, -20.0f);
 
 			float spread = 1.5f;
 			glm::vec3 maindir = glm::vec3(0.0f, 10.0f, 0.0f);
@@ -134,11 +152,11 @@ int main()
 				(rand() % 2000 - 1000.0f) / 1000.0f
 				);
 
-			ParticlesContainer[particleIndex].velocity = maindir + randomdir*spread;
+			particleContainer[particleIndex].velocity = maindir + randomdir*spread;
 
-			ParticlesContainer[particleIndex].size = (rand() % 1000) / 2000.0f + 0.1f;
-			ParticlesContainer[particleIndex].position.x += i - 50; //some x offset
-			ParticlesContainer[particleIndex].position.z += zOffset;
+			particleContainer[particleIndex].size = (rand() % 1000) / 2000.0f + 0.1f;
+			particleContainer[particleIndex].position.x += i - 50; //some x offset
+			particleContainer[particleIndex].position.z += zOffset;
 		}
 		zOffset -= 10;
 	}
@@ -191,13 +209,13 @@ int main()
 		int ParticlesCount = 0;
 		for (int i = 0; i < MaxParticles; i++){
 
-			Point3D& p = ParticlesContainer[i]; // shortcut
+			Point3D& p = particleContainer[i]; // shortcut
 
 			// Simulate simple physics : gravity only, no collisions
 			p.velocity += glm::vec3(0.0f, -9.81f, 0.0f) * (float)delta * 0.5f;
 			p.position += p.velocity * (float)delta;
 
-			ParticlesContainer[i].position += glm::vec3(0.0f, 2.0f, 0.0f) * (float)delta;
+			particleContainer[i].position += glm::vec3(0.0f, 2.0f, 0.0f) * (float)delta;
 
 			// Fill the GPU buffer
 			g_particule_position_size_data[4 * ParticlesCount + 0] = p.position.x;
@@ -210,7 +228,7 @@ int main()
 
 		}
 
-		SortParticles();
+		//std::sort(particleContainer.begin(), particleContainer.end());
 
 		glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
 		glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.

@@ -1,0 +1,42 @@
+﻿Build started 12/3/2014 4:39:54 PM.
+     1>Project "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids.vcxproj" on node 2 (Build target(s)).
+     1>AddCudaCompileDeps:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /DWIN64 /D_DEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I. /FIcuda_runtime.h /c C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\kernel.cu 
+       CudaBuild:
+         Compiling CUDA source file kernel.cu...
+         cmd.exe /C "C:\Users\Zach\AppData\Local\Temp\tmp94897f2d02424d85ad5e32baf6ff4537.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64" -rdc=true -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\kernel.cu.obj "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\kernel.cu"
+         
+         C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64" -rdc=true -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\kernel.cu.obj "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\kernel.cu" 
+     1>c:\users\zach\documents\github\cufluids\cufluids\Point.h(14): warning : attribute does not apply to any entity
+     1>c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\func_matrix.inl(457): warning : calling a __host__ function from a __host__ __device__ function is not allowed
+     1>c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\func_matrix.inl(457): warning : calling a __host__ function("glm::detail::compute_inverse<glm::detail::tmat4x4, float, (glm::precision)0> ::call") from a __host__ __device__ function("glm::inverse<float, (glm::precision)0, glm::detail::tmat4x4> ") is not allowed
+     1>c:\users\zach\documents\github\cufluids\cufluids\Point.h(14): warning : attribute does not apply to any entity
+         kernel.cu
+     1>C:/Users/Zach/Documents/GitHub/cuFluids/cuFluids/kernel.cu(52): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /Zi /nologo /W3 /WX- /Od /D WIN32 /D WIN64 /D _DEBUG /D _CONSOLE /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt controls.cpp Point.cu shader.cpp texture.cpp
+         texture.cpp
+     1>texture.cpp(23): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+     1>texture.cpp(127): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+         shader.cpp
+         Point.cu
+         controls.cpp
+         GLM: perspective function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
+         Generating Code...
+     1>c:\users\zach\documents\github\cufluids\cufluids\point.cu(64): warning C4715: 'Point3D::operator<' : not all control paths return a value
+     1>c:\users\zach\documents\github\cufluids\cufluids\point.cu(77): warning C4715: 'Point3D::operator>' : not all control paths return a value
+       CudaLink:
+         cmd.exe /C "C:\Users\Zach\AppData\Local\Temp\tmp33bf60fc952841f6a64b402a590133e0.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -dlink -o x64\Debug\cuFluids.device-link.obj -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" glew32.lib glfw3.lib opengl32.lib cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib  -gencode=arch=compute_20,code=sm_20 -G --machine 64 x64\Debug\kernel.cu.obj
+         
+         C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -dlink -o x64\Debug\cuFluids.device-link.obj -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" glew32.lib glfw3.lib opengl32.lib cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib  -gencode=arch=compute_20,code=sm_20 -G --machine 64 x64\Debug\kernel.cu.obj 
+         nvcc fatal   : Could not set up the environment for Microsoft Visual Studio using 'C:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/bin/x86_amd64/../../../VC/bin/amd64/vcvars64.bat'
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\BuildCustomizations\CUDA 6.5.targets(669,9): error MSB3721: The command ""C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -dlink -o x64\Debug\cuFluids.device-link.obj -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" glew32.lib glfw3.lib opengl32.lib cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib  -gencode=arch=compute_20,code=sm_20 -G --machine 64 x64\Debug\kernel.cu.obj" exited with code 1.
+     1>Done Building Project "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:15.18

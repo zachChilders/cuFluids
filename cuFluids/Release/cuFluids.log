@@ -1,0 +1,14 @@
+﻿Build started 12/3/2014 1:04:58 PM.
+     1>Project "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids.vcxproj" on node 2 (Build target(s)).
+     1>CudaLink:
+         cmd.exe /C "C:\Users\Zach\AppData\Local\Temp\tmpf8a8328d6d494f8e823cad0feec8c8ca.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -dlink -o Release\cuFluids.device-link.obj -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\Win32" glew32.lib glfw3.lib opengl32.lib cudadevrt.lib cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib  -gencode=arch=compute_20,code=sm_20  --machine 32 Release\kernel.cu.obj
+         
+         C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -dlink -o Release\cuFluids.device-link.obj -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\Win32" glew32.lib glfw3.lib opengl32.lib cudadevrt.lib cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib  -gencode=arch=compute_20,code=sm_20  --machine 32 Release\kernel.cu.obj 
+         nvcc fatal   : Could not set up the environment for Microsoft Visual Studio using 'C:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/bin/../../VC/bin/vcvars32.bat'
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\BuildCustomizations\CUDA 6.5.targets(669,9): error MSB3721: The command ""C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -dlink -o Release\cuFluids.device-link.obj -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\Win32" glew32.lib glfw3.lib opengl32.lib cudadevrt.lib cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib  -gencode=arch=compute_20,code=sm_20  --machine 32 Release\kernel.cu.obj" exited with code 1.
+     1>Done Building Project "C:\Users\Zach\Documents\GitHub\cuFluids\cuFluids\cuFluids.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.30

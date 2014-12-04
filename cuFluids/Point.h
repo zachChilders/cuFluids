@@ -11,12 +11,13 @@
 #include <iostream>
 #include <glm/glm.hpp>
 
+CUDA_CALLABLE_MEMBER 
 class Point3D
 {
-
 	public:
 		//Constructors
-		CUDA_CALLABLE_MEMBER Point3D();
+		CUDA_CALLABLE_MEMBER 
+		Point3D();
 		CUDA_CALLABLE_MEMBER
 		Point3D(float x, float y, float z);
 		CUDA_CALLABLE_MEMBER
@@ -32,7 +33,8 @@ class Point3D
 		friend std::ostream& operator<<(std::ostream &out, Point3D &point);
 
 		Point3D operator +(Point3D &point);
-		CUDA_CALLABLE_MEMBER void operator +(float scalar);
+		CUDA_CALLABLE_MEMBER 
+		void operator +(float scalar);
 		Point3D operator +=(Point3D &point);
 		Point3D operator +=(float scalar);
 
