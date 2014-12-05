@@ -15,12 +15,6 @@
 
 #include <cuda_gl_interop.h>
 
-//CUDA_CALLABLE_MEMBER void addKernel(Point3D* x)
-//{
-//    int i = threadIdx.x;
-//	x[i] + 1;
-//}
-
 int windowInit();
 GLFWwindow* window;
 
@@ -42,18 +36,21 @@ int main()
 	std::vector<Point3D *> v;
 	std::cout << "Building initial tree...";
 
+
+	//Generate points.  This needs to be done strategically.
 	for (int x = -50; x < 50; x++)
 	{
 		for (int y = -50; y < 50; y++)
 		{
 			for (int z = 0; z < 10; z++)
 			{
-				Point3D *p = new Point3D(x, y, z);
+				Point3D *p = new Point3D(x, y, -20);
 				v.push_back(p);
 			}
 		}
 	}
 	
+	//Might be able to do this in cuda now.
 	double start = omp_get_wtime();
 	for (auto a : v)
 	{
@@ -70,6 +67,7 @@ int main()
 	std::cout << " Done." << std::endl;
 
 	std::cout << "Pushing to GPU...";
+	
 	Point3D *devA;
 	cudaError_t cudaStatus;
 	cudaStatus = cudaMalloc((void**)&devA, particleContainer.size() * sizeof(Point3D));
@@ -140,7 +138,7 @@ int main()
 		{
 			int particleIndex = i * 100 + j;
 			particleContainer[particleIndex].life = 5.0f; // This particle will live 5 seconds.
-			particleContainer[particleIndex].position = glm::vec3(0, 0, -20.0f);
+			//particleContainer[particleIndex].position = glm::vec3(0, 0, -20.0f);
 
 			float spread = 1.5f;
 			glm::vec3 maindir = glm::vec3(0.0f, 10.0f, 0.0f);

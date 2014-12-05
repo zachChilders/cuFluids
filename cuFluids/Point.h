@@ -11,7 +11,8 @@
 #include <iostream>
 #include <glm/glm.hpp>
 
-CUDA_CALLABLE_MEMBER 
+
+CUDA_CALLABLE_MEMBER
 class Point3D
 {
 	public:

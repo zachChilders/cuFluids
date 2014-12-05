@@ -244,10 +244,10 @@ c:\program files\nvidia gpu computing toolkit\cuda\v6.5\include\device_launch_pa
 c:\program files\nvidia gpu computing toolkit\cuda\v6.5\include\vector_types.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\cuda_runtime.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\device_launch_parameters.h
-c:\users\zach\documents\github\cufluids\cufluids\KDTree.h
+c:\users\zach\documents\cufluids\cufluids\KDTree.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\cuda_runtime.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\device_launch_parameters.h
-c:\users\zach\documents\github\cufluids\cufluids\Point.h
+c:\users\zach\documents\cufluids\cufluids\Point.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\cuda_runtime.h
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\iostream
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\istream
@@ -325,90 +325,90 @@ C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\cerrno
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\errno.h
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\crtdefs.h
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\share.h
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/_fixes.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/_fixes.hpp
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\cassert
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\assert.h
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\crtdefs.h
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\fwd.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/type_int.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\setup.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\fwd.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/type_int.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\setup.hpp
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\cassert
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\assert.h
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\crtdefs.h
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\cuda.h
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/type_float.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/type_vec.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\precision.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/type_mat.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\vec2.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/type_vec2.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\type_vec2.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\vec3.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/type_vec3.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\type_vec3.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\vec4.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/type_vec4.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\type_vec4.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\mat2x2.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/type_mat2x2.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\type_mat2x2.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\mat2x3.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/type_mat2x3.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\type_mat2x3.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\mat2x4.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/type_mat2x4.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\type_mat2x4.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\mat3x2.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/type_mat3x2.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\type_mat3x2.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\mat3x3.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/type_mat3x3.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\type_mat3x3.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\mat3x4.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/type_mat3x4.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\type_mat3x4.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\mat4x2.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/type_mat4x2.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\type_mat4x2.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\mat4x3.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/type_mat4x3.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\type_mat4x3.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\mat4x4.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/type_mat4x4.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\type_mat4x4.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\trigonometric.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/func_trigonometric.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\func_trigonometric.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\_vectorize.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\type_vec1.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\type_vec1.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\exponential.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/func_exponential.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\func_exponential.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\func_vector_relational.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\func_vector_relational.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/type_float.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/type_vec.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\precision.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/type_mat.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\vec2.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/type_vec2.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\type_vec2.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\vec3.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/type_vec3.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\type_vec3.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\vec4.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/type_vec4.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\type_vec4.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\mat2x2.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/type_mat2x2.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\type_mat2x2.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\mat2x3.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/type_mat2x3.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\type_mat2x3.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\mat2x4.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/type_mat2x4.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\type_mat2x4.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\mat3x2.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/type_mat3x2.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\type_mat3x2.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\mat3x3.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/type_mat3x3.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\type_mat3x3.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\mat3x4.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/type_mat3x4.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\type_mat3x4.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\mat4x2.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/type_mat4x2.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\type_mat4x2.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\mat4x3.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/type_mat4x3.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\type_mat4x3.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\mat4x4.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/type_mat4x4.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\type_mat4x4.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\trigonometric.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/func_trigonometric.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\func_trigonometric.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\_vectorize.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\type_vec1.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\type_vec1.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\exponential.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/func_exponential.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\func_exponential.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\func_vector_relational.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\func_vector_relational.inl
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\cassert
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\assert.h
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\crtdefs.h
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\common.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/func_common.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\_fixes.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\func_common.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\packing.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/func_packing.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\func_packing.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\type_half.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\type_half.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\geometric.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/func_geometric.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\func_geometric.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\matrix.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/func_matrix.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\func_matrix.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\vector_relational.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\integer.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/func_integer.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail\func_integer.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\common.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/func_common.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\_fixes.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\func_common.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\packing.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/func_packing.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\func_packing.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\type_half.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\type_half.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\geometric.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/func_geometric.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\func_geometric.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\matrix.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/func_matrix.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\func_matrix.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\vector_relational.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\integer.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/func_integer.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail\func_integer.inl
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\thread
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\functional
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\xfunctional
@@ -633,24 +633,24 @@ C:\Program Files (x86)\Windows Kits\8.1\Include\um\winsvc.h
 C:\Program Files (x86)\Windows Kits\8.1\Include\um\mcx.h
 C:\Program Files (x86)\Windows Kits\8.1\Include\um\imm.h
 C:\Program Files (x86)\Windows Kits\8.1\Include\um\ime_cmodes.h
-c:\users\zach\documents\github\cufluids\cufluids\GLutils.h
+c:\users\zach\documents\cufluids\cufluids\GLutils.h
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\ctime
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\fstream
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\iterator
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\detail/_fixes.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\detail/_fixes.hpp
 C:\Program Files (x86)\Windows Kits\8.1\Include\um\GL/glu.h
 C:\Program Files (x86)\Windows Kits\8.1\Include\um\GL/gl.h
 C:\Program Files (x86)\Windows Kits\8.1\Include\um\GL/gl.h
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\gtc\../gtc/constants.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\gtc\constants.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\gtc\matrix_transform.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\gtc\../gtc/quaternion.hpp
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\gtc\quaternion.inl
-c:\users\zach\documents\github\cufluids\cufluids\include\glm\gtc\type_ptr.inl
-c:\users\zach\documents\github\cufluids\cufluids\controls.hpp
-c:\users\zach\documents\github\cufluids\cufluids\shader.hpp
-c:\users\zach\documents\github\cufluids\cufluids\texture.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\gtc\../gtc/constants.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\gtc\constants.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\gtc\matrix_transform.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\gtc\../gtc/quaternion.hpp
+c:\users\zach\documents\cufluids\cufluids\include\glm\gtc\quaternion.inl
+c:\users\zach\documents\cufluids\cufluids\include\glm\gtc\type_ptr.inl
+c:\users\zach\documents\cufluids\cufluids\controls.hpp
+c:\users\zach\documents\cufluids\cufluids\shader.hpp
+c:\users\zach\documents\cufluids\cufluids\texture.hpp
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\cuda_gl_interop.h
 c:\program files\nvidia gpu computing toolkit\cuda\v6.5\include\builtin_types.h
 c:\program files\nvidia gpu computing toolkit\cuda\v6.5\include\device_types.h
