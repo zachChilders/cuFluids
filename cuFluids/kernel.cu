@@ -1,6 +1,4 @@
 
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
 
 #include "KDTree.h"
 
@@ -13,7 +11,6 @@
 #include "shader.hpp"
 #include "texture.hpp"
 
-#include <cuda_gl_interop.h>
 
 int windowInit();
 GLFWwindow* window;
@@ -29,32 +26,43 @@ void cudaErrorCheck(cudaError_t e)
 	}
 }
 
+__global__ void update(Point3D* list, int len, float delta)
+{
+	int index = threadIdx.x + blockIdx.x * blockDim.x;
+
+	if (index < len)
+	{
+		list[index].velocity += glm::vec3(0.0f, -9.81f, 0.0f) * (float)delta;
+		list[index].position += list[index].velocity * (float)delta;
+	}
+}
+
 int main()
 {
 	KDTree k;
 
-	std::vector<Point3D *> v;
+	std::vector<Point3D> v;
 	std::cout << "Building initial tree...";
 
 
 	//Generate points.  This needs to be done strategically.
-	for (int x = -50; x < 50; x++)
+	for (int x = 0; x < 100; x++)
 	{
 		for (int y = -50; y < 50; y++)
 		{
-			for (int z = 0; z < 10; z++)
+			for (int z = -10; z < 0; z++)
 			{
-				Point3D *p = new Point3D(x, y, -20);
-				v.push_back(p);
+				Point3D *p = new Point3D(x - 0.5, y, 0);
+				v.push_back(*p);
 			}
 		}
 	}
 	
 	//Might be able to do this in cuda now.
 	double start = omp_get_wtime();
-	for (auto a : v)
+	for (int i = 0; i < v.size(); i++)
 	{
-		k.insert(a);
+		k.insert(&v[i]);
 	}
 
 	double end = omp_get_wtime();
@@ -133,12 +141,13 @@ int main()
 	//Create the particles
 	for (int i = 0; i < 100; i++)
 	{
+		std::cout << particleContainer.at(0) << std::endl;
 		float zOffset = 0;
 		for (int j = 0; j < 100; j++)
 		{
 			int particleIndex = i * 100 + j;
 			particleContainer[particleIndex].life = 5.0f; // This particle will live 5 seconds.
-			//particleContainer[particleIndex].position = glm::vec3(0, 0, -20.0f);
+			particleContainer[particleIndex].position += glm::vec3(0, 0, -20.0f);
 
 			float spread = 1.5f;
 			glm::vec3 maindir = glm::vec3(0.0f, 10.0f, 0.0f);
@@ -155,6 +164,7 @@ int main()
 			particleContainer[particleIndex].size = (rand() % 1000) / 2000.0f + 0.1f;
 			particleContainer[particleIndex].position.x += i - 50; //some x offset
 			particleContainer[particleIndex].position.z += zOffset;
+			
 		}
 		zOffset -= 10;
 	}
@@ -210,10 +220,26 @@ int main()
 			Point3D& p = particleContainer[i]; // shortcut
 
 			// Simulate simple physics : gravity only, no collisions
-			p.velocity += glm::vec3(0.0f, -9.81f, 0.0f) * (float)delta * 0.5f;
+			p.velocity += glm::vec3(0.0f, -9.81f, 0.0f) * (float)delta;
 			p.position += p.velocity * (float)delta;
-
+			
 			particleContainer[i].position += glm::vec3(0.0f, 2.0f, 0.0f) * (float)delta;
+
+
+			//Bounds
+			if (abs(particleContainer[i].position.x) > 10)
+			{
+				particleContainer[i].velocity.x *= -0.5f;
+			}
+			if (particleContainer[i].position.y < -5)
+			{
+				particleContainer[i].position.y = -5;
+			}
+			if ((particleContainer[i].position.z > 25))
+			{
+				particleContainer[i].velocity.z *= -0.5f;
+			}
+			
 
 			// Fill the GPU buffer
 			g_particule_position_size_data[4 * ParticlesCount + 0] = p.position.x;

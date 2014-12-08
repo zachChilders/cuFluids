@@ -12,13 +12,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="KDTree.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Point.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="kdUtil.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="include\cuda_gl_interop.h">
@@ -36,8 +30,17 @@
     <ClInclude Include="shader.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="KDTree.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="kdUtil.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Point.cu">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="controls.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -45,9 +48,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="texture.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Point.cu">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
