@@ -4,13 +4,19 @@
 
 #include <algorithm>
 #include <omp.h>
+#include <SOIL.h>
 #include <Windows.h>
+
 #include "GLutils.h"
+
+#include <cuda_gl_interop.h>
+#include <helper_cuda.h>
 
 #include "controls.hpp"
 #include "shader.hpp"
 #include "texture.hpp"
 
+#define CUDA_CHECK_STATUS cudaErrorCheck(cudaStatus, __FILE__, __LINE__);
 
 int windowInit();
 GLFWwindow* window;
@@ -18,32 +24,49 @@ GLFWwindow* window;
 const int MaxParticles = 10000;
 int LastUsedParticle = 0;
 
-void cudaErrorCheck(cudaError_t e)
+void cudaErrorCheck(cudaError_t e, std::string file, int line)
 {
 	if (e != cudaSuccess)
 	{
-		std::cout << "Failed." << std::endl;
+		std::cout << cudaGetErrorString(cudaGetLastError()) << " at " << " line: " << line << std::endl;
 	}
 }
 
-__global__ void update(Point3D* list, int len, float delta)
+__global__ void update(Point3D* list, GLfloat* posBuffer, int len, float delta)
 {
-	int index = threadIdx.x + blockIdx.x * blockDim.x;
+	int index = threadIdx.x + blockDim.x * blockIdx.x;
 
-	if (index < len)
+	list[index].velocity += glm::vec3(0.0f, -9.81f, 0.0f) * (float)delta;
+	list[index].position += list[index].velocity * (float)delta;
+
+	list[index].position += glm::vec3(0.0f, 2.0f, 0.0f) * (float)delta;
+
+	if (abs(list[index].position.x) > 10)
 	{
-		list[index].velocity += glm::vec3(0.0f, -9.81f, 0.0f) * (float)delta;
-		list[index].position += list[index].velocity * (float)delta;
+		list[index].velocity.x *= -0.5f;
 	}
+	if (list[index].position.y < -5)
+	{
+		list[index].position.y = -5;
+	}
+	if ((list[index].position.z > 25))
+	{
+		list[index].velocity.z *= -0.5f;
+	}
+
+	posBuffer[4 * index + 0] = list[index].position.x;
+	posBuffer[4 * index + 1] = list[index].position.y;
+	posBuffer[4 * index + 2] = list[index].position.z;
+
+	posBuffer[4 * index + 3] = list[index].size;
+
 }
 
 int main()
 {
 	KDTree k;
 
-	std::vector<Point3D> v;
-	std::cout << "Building initial tree...";
-
+	std::vector<Point3D> particleContainer;
 
 	//Generate points.  This needs to be done strategically.
 	for (int x = 0; x < 100; x++)
@@ -53,39 +76,12 @@ int main()
 			for (int z = -10; z < 0; z++)
 			{
 				Point3D *p = new Point3D(x - 0.5, y, 0);
-				v.push_back(*p);
+				particleContainer.push_back(*p);
 			}
 		}
 	}
 	
-	//Might be able to do this in cuda now.
-	double start = omp_get_wtime();
-	for (int i = 0; i < v.size(); i++)
-	{
-		k.insert(&v[i]);
-	}
-
-	double end = omp_get_wtime();
-	
-
-	std::cout << " Done in " << end - start << " seconds." <<  std::endl;
-
-	std::cout << "Flattening Tree...";
-	std::vector <Point3D> particleContainer = k.flatten();
-	std::cout << " Done." << std::endl;
-
-	std::cout << "Pushing to GPU...";
-	
-	Point3D *devA;
-	cudaError_t cudaStatus;
-	cudaStatus = cudaMalloc((void**)&devA, particleContainer.size() * sizeof(Point3D));
-	cudaErrorCheck(cudaStatus);
-	cudaStatus = cudaMemcpy(devA, &particleContainer[0], particleContainer.size() * sizeof(Point3D), cudaMemcpyHostToDevice);
-	cudaErrorCheck(cudaStatus);
-
-	std::cout << " Done." << std::endl;
-
-	std::cout << "Starting renderer..." << std::endl;
+	//GLbegin
 	windowInit();
 
 	glewExperimental = GL_TRUE;
@@ -112,6 +108,8 @@ int main()
 	// Black background
 	glClearColor(0.f, 0.f, 0.f, 0.0f);
 
+	GLuint Texture = loadDDS("particle.dds");
+
 	//Enable depth test
 	glEnable(GL_DEPTH_TEST);
 	// Accept fragment if it closer to the camera than the former one
@@ -131,17 +129,11 @@ int main()
 
 	// fragment shader
 	GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
-	GLuint lightDir = glGetUniformLocation(programID, "lightDir");
 
 
-	static GLfloat* g_particule_position_size_data = new GLfloat[MaxParticles * 4];
-	static GLubyte* g_particule_color_data = new GLubyte[MaxParticles * 4];
-
-
-	//Create the particles
+	//Create the particles from 
 	for (int i = 0; i < 100; i++)
 	{
-		std::cout << particleContainer.at(0) << std::endl;
 		float zOffset = 0;
 		for (int j = 0; j < 100; j++)
 		{
@@ -169,6 +161,27 @@ int main()
 		zOffset -= 10;
 	}
 
+
+	//Cuda Error check
+	cudaError_t cudaStatus;
+
+	//To render particles out of.
+	GLfloat* particleRenderData = new GLfloat[particleContainer.size() * 4];
+
+	//particlePosBuffer lives on GPU and is used to copy updated particle data
+	//Back to the OpenGL Buffer.
+	GLfloat *particlePosBuffer;
+	cudaStatus = cudaMalloc((void**)&particlePosBuffer, particleContainer.size() * sizeof(GLfloat)* 4);
+	CUDA_CHECK_STATUS;
+
+	//CalcBuffer is our points.  CUDA will modify it on GPU.
+	Point3D *calcBuffer;
+	cudaStatus = cudaMalloc((void**)&calcBuffer, particleContainer.size() * sizeof(Point3D));
+	CUDA_CHECK_STATUS;
+	cudaStatus = cudaMemcpy(calcBuffer, &particleContainer[0], particleContainer.size() * sizeof(Point3D), cudaMemcpyHostToDevice);
+	CUDA_CHECK_STATUS;
+	
+
 	//The VBO containing the 4 vertices of the particles.
 	//Thanks to instancing, they will be shared by all particles.
 	static const GLfloat g_vertex_buffer_data[] = {
@@ -177,6 +190,7 @@ int main()
 		-0.5f, 0.5f, 1.0f,
 		0.5f, 0.5f, 1.0f,
 	};
+
 	GLuint billboard_vertex_buffer;
 	glGenBuffers(1, &billboard_vertex_buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, billboard_vertex_buffer);
@@ -189,6 +203,7 @@ int main()
 	// Initialize with empty (NULL) buffer : it will be updated later, each frame.
 	glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
 
+	//Draw loop
 	double lastTime = glfwGetTime();
 	do
 	{
@@ -212,59 +227,31 @@ int main()
 
 		glm::mat4 ViewProjectionMatrix = ProjectionMatrix * ViewMatrix;
 
+		//4096 threads is a lot of threads.
+		update <<<16, 1024>>>(calcBuffer, particlePosBuffer, MaxParticles, delta);
+		cudaThreadSynchronize();
 
-		// update loop, cudaIZE
-		int ParticlesCount = 0;
-		for (int i = 0; i < MaxParticles; i++){
+		cudaStatus = cudaMemcpy(particleRenderData, particlePosBuffer, sizeof(GLfloat) * MaxParticles * 4, cudaMemcpyDeviceToHost);
+		CUDA_CHECK_STATUS;
 
-			Point3D& p = particleContainer[i]; // shortcut
+		//Bind position buffer and update with the renderData
+ 		glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
+		glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); 
+		glBufferSubData(GL_ARRAY_BUFFER, 0, MaxParticles * sizeof(GLfloat)* 4, particleRenderData);
 
-			// Simulate simple physics : gravity only, no collisions
-			p.velocity += glm::vec3(0.0f, -9.81f, 0.0f) * (float)delta;
-			p.position += p.velocity * (float)delta;
-			
-			particleContainer[i].position += glm::vec3(0.0f, 2.0f, 0.0f) * (float)delta;
-
-
-			//Bounds
-			if (abs(particleContainer[i].position.x) > 10)
-			{
-				particleContainer[i].velocity.x *= -0.5f;
-			}
-			if (particleContainer[i].position.y < -5)
-			{
-				particleContainer[i].position.y = -5;
-			}
-			if ((particleContainer[i].position.z > 25))
-			{
-				particleContainer[i].velocity.z *= -0.5f;
-			}
-			
-
-			// Fill the GPU buffer
-			g_particule_position_size_data[4 * ParticlesCount + 0] = p.position.x;
-			g_particule_position_size_data[4 * ParticlesCount + 1] = p.position.y;
-			g_particule_position_size_data[4 * ParticlesCount + 2] = p.position.z;
-
-			g_particule_position_size_data[4 * ParticlesCount + 3] = p.size;
-
-			ParticlesCount++;
-
-		}
-
-		//std::sort(particleContainer.begin(), particleContainer.end());
-
-		glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
-		glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
-		glBufferSubData(GL_ARRAY_BUFFER, 0, ParticlesCount * sizeof(GLfloat)* 4, g_particule_position_size_data);
-
+		//Transparency 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		// Use our shader
 		glUseProgram(programID);
 
-		//Same as the billboards tutorial
+		//Textures
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, Texture);
+		glUniform1i(TextureID, 0);
+
+		//This is for billboarding.  The particles will always face the camera
 		glUniform3f(CameraRight_worldspace_ID, ViewMatrix[0][0], ViewMatrix[1][0], ViewMatrix[2][0]);
 		glUniform3f(CameraUp_worldspace_ID, ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]);
 
@@ -295,10 +282,11 @@ int main()
 			);
 
 
-		glVertexAttribDivisor(0, 0); // particles vertices : always reuse the same 4 vertices -> 0
+		glVertexAttribDivisor(0, 0); 
 		glVertexAttribDivisor(1, 1); // positions : one per quad (its center)                 -> 1
-
-		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
+														
+		//Instance MaxParticles quads.
+		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, MaxParticles);
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
@@ -311,15 +299,19 @@ int main()
 	while (glfwGetKey(window, GLFW_KEY_ENTER) != GLFW_PRESS &&
 	glfwWindowShouldClose(window) == 0);
 
-
-	delete[] g_particule_position_size_data;
+	//Cleanup Host buffers
+	delete[] particleRenderData;
 
 	// Cleanup VBO and shader
 	glDeleteBuffers(1, &particles_position_buffer);
 	glDeleteBuffers(1, &billboard_vertex_buffer);
 	glDeleteProgram(programID);
+	glDeleteTextures(1, &Texture);
 	glDeleteVertexArrays(1, &VertexArrayID);
 
+	////Cleanup CUDA
+	cudaFree(calcBuffer);
+	cudaFree(particlePosBuffer);
 
 	//Close OpenGL window and terminate GLFW
 	glfwTerminate();

@@ -647,6 +647,15 @@ c:\users\zach\documents\cufluids\cufluids\include\glm\gtc\matrix_transform.inl
 c:\users\zach\documents\cufluids\cufluids\include\glm\gtc\../gtc/quaternion.hpp
 c:\users\zach\documents\cufluids\cufluids\include\glm\gtc\quaternion.inl
 c:\users\zach\documents\cufluids\cufluids\include\glm\gtc\type_ptr.inl
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include\cuda_gl_interop.h
+c:\program files\nvidia gpu computing toolkit\cuda\v6.5\include\builtin_types.h
+c:\program files\nvidia gpu computing toolkit\cuda\v6.5\include\device_types.h
+c:\program files\nvidia gpu computing toolkit\cuda\v6.5\include\driver_types.h
+c:\program files\nvidia gpu computing toolkit\cuda\v6.5\include\surface_types.h
+c:\program files\nvidia gpu computing toolkit\cuda\v6.5\include\texture_types.h
+c:\program files\nvidia gpu computing toolkit\cuda\v6.5\include\vector_types.h
+c:\program files\nvidia gpu computing toolkit\cuda\v6.5\include\host_defines.h
+C:\Program Files (x86)\Windows Kits\8.1\Include\um\GL/gl.h
 c:\users\zach\documents\cufluids\cufluids\controls.hpp
 c:\users\zach\documents\cufluids\cufluids\shader.hpp
 c:\users\zach\documents\cufluids\cufluids\texture.hpp
