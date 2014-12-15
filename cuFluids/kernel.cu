@@ -21,6 +21,22 @@
 int windowInit();
 GLFWwindow* window;
 
+//void pressure()
+//{	//		This pressure should change somehow				Density of water at room temp
+//	totalPressure = (-1 * (xPressure / 0.9982) + (yPressure / 0.9982)); //* gradient of weight
+//	xVel += totalPressure;
+//	yVel += totalPressure;
+//};
+//
+//void viscosity()
+//{
+//	//Viscosity of water	
+//	totalViscosity = 0.894 * 1 * ((xViscosity - yViscosity) / (xPressure * yPressure));
+//	xVel += totalViscosity;
+//	yVel += totalViscosity;
+//};
+
+
 void cudaErrorCheck(cudaError_t e, std::string file, int line)
 {
 	if (e != cudaSuccess)
@@ -46,7 +62,7 @@ __global__ void update(Point3D* list, GLfloat* posBuffer, int len, float delta)
 	{
 		list[index].position.y = -5;
 	}
-	if ((list[index].position.z > -9))
+	if ((list[index].position.z > -5))
 	{
 		list[index].velocity.z *= -0.5f;
 	}
@@ -72,7 +88,7 @@ int main()
 		{
 			for (int z = -37; z < 0; z++)
 			{
-				Point3D *p = new Point3D(x - 0.5, y, z);
+				Point3D *p = new Point3D(x - 0.75, y, z);
 				particleContainer.push_back(*p);
 			}
 		}
