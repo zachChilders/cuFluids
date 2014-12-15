@@ -21,9 +21,6 @@
 int windowInit();
 GLFWwindow* window;
 
-const int MaxParticles = 10000;
-int LastUsedParticle = 0;
-
 void cudaErrorCheck(cudaError_t e, std::string file, int line)
 {
 	if (e != cudaSuccess)
@@ -41,15 +38,15 @@ __global__ void update(Point3D* list, GLfloat* posBuffer, int len, float delta)
 
 	list[index].position += glm::vec3(0.0f, 2.0f, 0.0f) * (float)delta;
 
-	if (abs(list[index].position.x) > 10)
-	{
-		list[index].velocity.x *= -0.5f;
-	}
+	//if (abs(list[index].position.x) > 10)
+	//{
+	//	list[index].velocity.x *= -0.5f;
+	//}
 	if (list[index].position.y < -5)
 	{
 		list[index].position.y = -5;
 	}
-	if ((list[index].position.z > 25))
+	if ((list[index].position.z > -9))
 	{
 		list[index].velocity.z *= -0.5f;
 	}
@@ -69,18 +66,21 @@ int main()
 	std::vector<Point3D> particleContainer;
 
 	//Generate points.  This needs to be done strategically.
-	for (int x = 0; x < 100; x++)
+	for (int x = 10; x < 30; x++)
 	{
 		for (int y = -50; y < 50; y++)
 		{
-			for (int z = -10; z < 0; z++)
+			for (int z = -37; z < 0; z++)
 			{
-				Point3D *p = new Point3D(x - 0.5, y, 0);
+				Point3D *p = new Point3D(x - 0.5, y, z);
 				particleContainer.push_back(*p);
 			}
 		}
 	}
-	
+
+	std::cout <<"Generated " << particleContainer.size() << " particles. " << std::endl;
+	int numParticles = particleContainer.size();
+
 	//GLbegin
 	windowInit();
 
@@ -166,19 +166,19 @@ int main()
 	cudaError_t cudaStatus;
 
 	//To render particles out of.
-	GLfloat* particleRenderData = new GLfloat[particleContainer.size() * 4];
+	GLfloat* particleRenderData = new GLfloat[numParticles * 4];
 
 	//particlePosBuffer lives on GPU and is used to copy updated particle data
 	//Back to the OpenGL Buffer.
 	GLfloat *particlePosBuffer;
-	cudaStatus = cudaMalloc((void**)&particlePosBuffer, particleContainer.size() * sizeof(GLfloat)* 4);
+	cudaStatus = cudaMalloc((void**)&particlePosBuffer, numParticles * sizeof(GLfloat)* 4);
 	CUDA_CHECK_STATUS;
 
 	//CalcBuffer is our points.  CUDA will modify it on GPU.
 	Point3D *calcBuffer;
-	cudaStatus = cudaMalloc((void**)&calcBuffer, particleContainer.size() * sizeof(Point3D));
+	cudaStatus = cudaMalloc((void**)&calcBuffer, numParticles * sizeof(Point3D));
 	CUDA_CHECK_STATUS;
-	cudaStatus = cudaMemcpy(calcBuffer, &particleContainer[0], particleContainer.size() * sizeof(Point3D), cudaMemcpyHostToDevice);
+	cudaStatus = cudaMemcpy(calcBuffer, &particleContainer[0], numParticles * sizeof(Point3D), cudaMemcpyHostToDevice);
 	CUDA_CHECK_STATUS;
 	
 
@@ -201,7 +201,7 @@ int main()
 	glGenBuffers(1, &particles_position_buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
 	// Initialize with empty (NULL) buffer : it will be updated later, each frame.
-	glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, numParticles * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
 
 	//Draw loop
 	double lastTime = glfwGetTime();
@@ -227,17 +227,17 @@ int main()
 
 		glm::mat4 ViewProjectionMatrix = ProjectionMatrix * ViewMatrix;
 
-		//4096 threads is a lot of threads.
-		update <<<16, 1024>>>(calcBuffer, particlePosBuffer, MaxParticles, delta);
+		//16k threads is a lot of threads.
+		update <<<16, 1024>>>(calcBuffer, particlePosBuffer, numParticles, delta);
 		cudaThreadSynchronize();
 
-		cudaStatus = cudaMemcpy(particleRenderData, particlePosBuffer, sizeof(GLfloat) * MaxParticles * 4, cudaMemcpyDeviceToHost);
+		cudaStatus = cudaMemcpy(particleRenderData, particlePosBuffer, sizeof(GLfloat)* numParticles *4, cudaMemcpyDeviceToHost);
 		CUDA_CHECK_STATUS;
 
 		//Bind position buffer and update with the renderData
  		glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
-		glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); 
-		glBufferSubData(GL_ARRAY_BUFFER, 0, MaxParticles * sizeof(GLfloat)* 4, particleRenderData);
+		glBufferData(GL_ARRAY_BUFFER, numParticles * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); 
+		glBufferSubData(GL_ARRAY_BUFFER, 0, numParticles * sizeof(GLfloat)* 4, particleRenderData);
 
 		//Transparency 
 		glEnable(GL_BLEND);
@@ -286,7 +286,7 @@ int main()
 		glVertexAttribDivisor(1, 1); // positions : one per quad (its center)                 -> 1
 														
 		//Instance MaxParticles quads.
-		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, MaxParticles);
+		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, numParticles);
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
