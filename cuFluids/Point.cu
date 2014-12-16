@@ -10,6 +10,10 @@ Point3D::Point3D()
 	position.x = 0; position.y = 0; position.z = 0;
 	velocity.x = 0; velocity.y = 0; velocity.z = 0;
 	angle.x = 0;    angle.y = 0;    angle.z = 0;
+
+	viscosity.x = 0; viscosity.y = 0; viscosity.z = 0;
+	pressure.x = 0; pressure.y = 0; pressure.z = 0;
+
 };
 
 CUDA_CALLABLE_MEMBER
@@ -22,6 +26,9 @@ Point3D::Point3D(float x, float y, float z)
 	position.x = x; position.y = y; position.z = z;
 	velocity.x = 0; velocity.y = 0; velocity.z = 0;
 	angle.x = 0;    angle.y = 0;    angle.z = 0;
+
+	viscosity.x = 0; viscosity.y = 0; viscosity.z = 0;
+	pressure.x = 0; pressure.y = 0; pressure.z = 0;
 };
 
 void Point3D::update(float x, float y, float z)

@@ -1,23 +1,32 @@
-﻿Build started 12/15/2014 2:45:22 AM.
+﻿Build started 12/16/2014 1:47:13 AM.
      1>Project "C:\Users\Zach\Documents\cuFluids\cuFluids\cuFluids.vcxproj" on node 2 (Build target(s)).
      1>AddCudaCompileDeps:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /DNDEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I. /FIcuda_runtime.h /c C:\Users\Zach\Documents\cuFluids\cuFluids\kernel.cu 
        CudaBuild:
          Compiling CUDA source file kernel.cu...
-         cmd.exe /C "C:\Users\Zach\AppData\Local\Temp\tmpc92f680e462441679a077be4a103adb5.cmd"
+         cmd.exe /C "C:\Users\Zach\AppData\Local\Temp\tmp6a1e038367d8441097bf790d9c1e5c0f.cmd"
          "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin" -rdc=true -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"     --keep-dir Release -maxrregcount=0  --machine 32 --compile -cudart static     -DWIN32 -DNDEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -o Release\kernel.cu.obj "C:\Users\Zach\Documents\cuFluids\cuFluids\kernel.cu"
          
          C:\Users\Zach\Documents\cuFluids\cuFluids>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin" -rdc=true -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"     --keep-dir Release -maxrregcount=0  --machine 32 --compile -cudart static     -DWIN32 -DNDEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -o Release\kernel.cu.obj "C:\Users\Zach\Documents\cuFluids\cuFluids\kernel.cu" 
      1>c:\users\zach\documents\cufluids\cufluids\Point.h(15): warning : attribute does not apply to any entity
+     1>C:/Users/Zach/Documents/cuFluids/cuFluids/kernel.cu(106): warning : variable "xPos" is used before its value is set
+     1>C:/Users/Zach/Documents/cuFluids/cuFluids/kernel.cu(105): warning : variable "yPos" was declared but never referenced
+     1>C:/Users/Zach/Documents/cuFluids/cuFluids/kernel.cu(105): warning : variable "zPos" was declared but never referenced
      1>c:\users\zach\documents\cufluids\cufluids\include\glm\detail\func_matrix.inl(457): warning : calling a __host__ function from a __host__ __device__ function is not allowed
      1>c:\users\zach\documents\cufluids\cufluids\include\glm\detail\func_matrix.inl(457): warning : calling a __host__ function("glm::detail::compute_inverse<glm::detail::tmat4x4, float, (glm::precision)0> ::call") from a __host__ __device__ function("glm::inverse<float, (glm::precision)0, glm::detail::tmat4x4> ") is not allowed
      1>c:\users\zach\documents\cufluids\cufluids\Point.h(15): warning : attribute does not apply to any entity
+     1>C:/Users/Zach/Documents/cuFluids/cuFluids/kernel.cu(106): warning : variable "xPos" is used before its value is set
+     1>C:/Users/Zach/Documents/cuFluids/cuFluids/kernel.cu(105): warning : variable "yPos" was declared but never referenced
+     1>C:/Users/Zach/Documents/cuFluids/cuFluids/kernel.cu(105): warning : variable "zPos" was declared but never referenced
          kernel.cu
-     1>C:/Users/Zach/Documents/cuFluids/cuFluids/kernel.cu(91): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>C:/Users/Zach/Documents/cuFluids/cuFluids/kernel.cu(91): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-     1>C:/Users/Zach/Documents/cuFluids/cuFluids/kernel.cu(247): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>C:/Users/Zach/Documents/cuFluids/cuFluids/kernel.cu(110): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>C:/Users/Zach/Documents/cuFluids/cuFluids/kernel.cu(249): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>C:/Users/Zach/Documents/cuFluids/cuFluids/kernel.cu(105): warning C4101: 'yPos' : unreferenced local variable
+     1>C:/Users/Zach/Documents/cuFluids/cuFluids/kernel.cu(105): warning C4101: 'zPos' : unreferenced local variable
+     1>c:\users\zach\documents\cufluids\cufluids\kernel.cu(106): warning C4700: uninitialized local variable 'xPos' used
+     1>c:\users\zach\documents\cufluids\cufluids\kernel.cu(110): warning C4700: uninitialized local variable 'xOffset' used
        CudaLink:
-         cmd.exe /C "C:\Users\Zach\AppData\Local\Temp\tmp8ad9cd7db8b4403387a5fb3079f2e35d.cmd"
+         cmd.exe /C "C:\Users\Zach\AppData\Local\Temp\tmp83f69a33c076474b9ceb9e371a5154f7.cmd"
          "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -dlink -o Release\cuFluids.device-link.obj -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\Win32" SOIL.lib glew32.lib glfw3.lib opengl32.lib cudadevrt.lib cudart_static.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib cudart.lib  -gencode=arch=compute_30,code=sm_30  --machine 32 Release\kernel.cu.obj
          
          C:\Users\Zach\Documents\cuFluids\cuFluids>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -dlink -o Release\cuFluids.device-link.obj -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\Win32" SOIL.lib glew32.lib glfw3.lib opengl32.lib cudadevrt.lib cudart_static.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib cudart.lib  -gencode=arch=compute_30,code=sm_30  --machine 32 Release\kernel.cu.obj 
@@ -64,4 +73,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:13.02
+Time Elapsed 00:00:12.91

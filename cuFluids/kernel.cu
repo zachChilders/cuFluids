@@ -21,21 +21,6 @@
 int windowInit();
 GLFWwindow* window;
 
-//void pressure()
-//{	//		This pressure should change somehow				Density of water at room temp
-//	totalPressure = (-1 * (xPressure / 0.9982) + (yPressure / 0.9982)); //* gradient of weight
-//	xVel += totalPressure;
-//	yVel += totalPressure;
-//};
-//
-//void viscosity()
-//{
-//	//Viscosity of water	
-//	totalViscosity = 0.894 * 1 * ((xViscosity - yViscosity) / (xPressure * yPressure));
-//	xVel += totalViscosity;
-//	yVel += totalViscosity;
-//};
-
 
 void cudaErrorCheck(cudaError_t e, std::string file, int line)
 {
@@ -49,24 +34,50 @@ __global__ void update(Point3D* list, GLfloat* posBuffer, int len, float delta)
 {
 	int index = threadIdx.x + blockDim.x * blockIdx.x;
 
-	list[index].velocity += glm::vec3(0.0f, -9.81f, 0.0f) * (float)delta;
+	//==============
+	//   PRESSURE
+	//==============
+	list[index].pressure.x = (-1 * (list[index].pressure.x / 0.9982) + (list[index].pressure.y / 0.9982));
+	list[index].velocity += list[index].pressure;
+
+	//==============
+	//  VISCOSITY
+	////==============
+	//list[index].viscosity.x = 0.894 * 1 * ((list[index].viscosity.x - list[index].viscosity.y) / (list[index].pressure.x * list[index].pressure.y));
+	//list[index].velocity += list[index].viscosity;
+
+	//============
+	//  EXTERNAL
+	//============
+	list[index].velocity += glm::vec3(0.0f, 2.0f, 0.0f) * (float)delta;  
+
+	//===========
+	//  GRAVITY
+	//===========
+	list[index].velocity += glm::vec3(0.0f, -9.81f, 0.0f) * (float)delta; 
+
+
 	list[index].position += list[index].velocity * (float)delta;
 
-	list[index].position += glm::vec3(0.0f, 2.0f, 0.0f) * (float)delta;
-
-	//if (abs(list[index].position.x) > 10)
-	//{
-	//	list[index].velocity.x *= -0.5f;
-	//}
+	//========
+	// BOUNDS
+	//========
+	if ((list[index].position.x < -7.5) || (list[index].position.x > 7.5))
+	{
+		list[index].velocity.x *= -0.5f;
+	}
 	if (list[index].position.y < -5)
 	{
 		list[index].position.y = -5;
 	}
-	if ((list[index].position.z > -5))
+	if ((list[index].position.z < 0))
 	{
 		list[index].velocity.z *= -0.5f;
 	}
 
+	//==========
+	//  RENDER
+	//==========
 	posBuffer[4 * index + 0] = list[index].position.x;
 	posBuffer[4 * index + 1] = list[index].position.y;
 	posBuffer[4 * index + 2] = list[index].position.z;
@@ -81,6 +92,9 @@ int main()
 
 	std::vector<Point3D> particleContainer;
 
+	float xOffset;
+	float spread = 1.5f;
+
 	//Generate points.  This needs to be done strategically.
 	for (int x = 10; x < 30; x++)
 	{
@@ -88,7 +102,26 @@ int main()
 		{
 			for (int z = -37; z < 0; z++)
 			{
-				Point3D *p = new Point3D(x - 0.75, y, z);
+				float xPos, yPos, zPos;
+				if (xPos < 0)
+				{
+					xPos = 0;
+				}
+				Point3D *p = new Point3D(xPos - xOffset, y, z);
+
+				glm::vec3 maindir = glm::vec3(0.0f, 10.0f, 0.0f);
+
+				//Random direction
+				glm::vec3 randomdir = glm::vec3(
+					(rand() % 2000 - 1000.0f) / 1000.0f,
+					(rand() % 2000 - 1000.0f) / 1000.0f,
+					(rand() % 2000 - 1000.0f) / 1000.0f
+					);
+
+				p->velocity = maindir + randomdir*spread;
+
+				p->size = (rand() % 1000) / 2000.0f + 0.1f;
+
 				particleContainer.push_back(*p);
 			}
 		}
@@ -96,6 +129,26 @@ int main()
 
 	std::cout <<"Generated " << particleContainer.size() << " particles. " << std::endl;
 	int numParticles = particleContainer.size();
+
+	//Cuda Error check
+	cudaError_t cudaStatus;
+
+	//To render particles out of.
+	GLfloat* particleRenderData = new GLfloat[numParticles * 4];
+
+	//particlePosBuffer lives on GPU and is used to copy updated particle data
+	//Back to the OpenGL Buffer.
+	GLfloat *particlePosBuffer;
+	cudaStatus = cudaMalloc((void**)&particlePosBuffer, numParticles * sizeof(GLfloat)* 4);
+	CUDA_CHECK_STATUS;
+
+	//CalcBuffer is our points.  CUDA will modify it on GPU.
+	Point3D *calcBuffer;
+	cudaStatus = cudaMalloc((void**)&calcBuffer, numParticles * sizeof(Point3D));
+	CUDA_CHECK_STATUS;
+	cudaStatus = cudaMemcpy(calcBuffer, &particleContainer[0], numParticles * sizeof(Point3D), cudaMemcpyHostToDevice);
+	CUDA_CHECK_STATUS;
+
 
 	//GLbegin
 	windowInit();
@@ -138,65 +191,13 @@ int main()
 	//Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders("Particle.vert", "Particle.frag");
 
-	// Vertex shader
+	//Set Camera matrices
 	GLuint CameraRight_worldspace_ID = glGetUniformLocation(programID, "CameraRight_worldspace");
 	GLuint CameraUp_worldspace_ID = glGetUniformLocation(programID, "CameraUp_worldspace");
 	GLuint ViewProjMatrixID = glGetUniformLocation(programID, "VP");
 
-	// fragment shader
+	//Texturing
 	GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
-
-
-	//Create the particles from 
-	for (int i = 0; i < 100; i++)
-	{
-		float zOffset = 0;
-		for (int j = 0; j < 100; j++)
-		{
-			int particleIndex = i * 100 + j;
-			particleContainer[particleIndex].life = 5.0f; // This particle will live 5 seconds.
-			particleContainer[particleIndex].position += glm::vec3(0, 0, -20.0f);
-
-			float spread = 1.5f;
-			glm::vec3 maindir = glm::vec3(0.0f, 10.0f, 0.0f);
-
-			//Random direction
-			glm::vec3 randomdir = glm::vec3(
-				(rand() % 2000 - 1000.0f) / 1000.0f,
-				(rand() % 2000 - 1000.0f) / 1000.0f,
-				(rand() % 2000 - 1000.0f) / 1000.0f
-				);
-
-			particleContainer[particleIndex].velocity = maindir + randomdir*spread;
-
-			particleContainer[particleIndex].size = (rand() % 1000) / 2000.0f + 0.1f;
-			particleContainer[particleIndex].position.x += i - 50; //some x offset
-			particleContainer[particleIndex].position.z += zOffset;
-			
-		}
-		zOffset -= 10;
-	}
-
-
-	//Cuda Error check
-	cudaError_t cudaStatus;
-
-	//To render particles out of.
-	GLfloat* particleRenderData = new GLfloat[numParticles * 4];
-
-	//particlePosBuffer lives on GPU and is used to copy updated particle data
-	//Back to the OpenGL Buffer.
-	GLfloat *particlePosBuffer;
-	cudaStatus = cudaMalloc((void**)&particlePosBuffer, numParticles * sizeof(GLfloat)* 4);
-	CUDA_CHECK_STATUS;
-
-	//CalcBuffer is our points.  CUDA will modify it on GPU.
-	Point3D *calcBuffer;
-	cudaStatus = cudaMalloc((void**)&calcBuffer, numParticles * sizeof(Point3D));
-	CUDA_CHECK_STATUS;
-	cudaStatus = cudaMemcpy(calcBuffer, &particleContainer[0], numParticles * sizeof(Point3D), cudaMemcpyHostToDevice);
-	CUDA_CHECK_STATUS;
-	
 
 	//The VBO containing the 4 vertices of the particles.
 	//Thanks to instancing, they will be shared by all particles.
@@ -207,6 +208,7 @@ int main()
 		0.5f, 0.5f, 1.0f,
 	};
 
+	//Billboarding, may be unnecessary
 	GLuint billboard_vertex_buffer;
 	glGenBuffers(1, &billboard_vertex_buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, billboard_vertex_buffer);
@@ -243,8 +245,8 @@ int main()
 
 		glm::mat4 ViewProjectionMatrix = ProjectionMatrix * ViewMatrix;
 
-		//16k threads is a lot of threads.
-		update <<<16, 1024>>>(calcBuffer, particlePosBuffer, numParticles, delta);
+		
+		update <<<64, 1024>>>(calcBuffer, particlePosBuffer, numParticles, delta);
 		cudaThreadSynchronize();
 
 		cudaStatus = cudaMemcpy(particleRenderData, particlePosBuffer, sizeof(GLfloat)* numParticles *4, cudaMemcpyDeviceToHost);
@@ -331,6 +333,8 @@ int main()
 
 	//Close OpenGL window and terminate GLFW
 	glfwTerminate();
+
+	cudaDeviceReset();
 
 	return 0;
 }

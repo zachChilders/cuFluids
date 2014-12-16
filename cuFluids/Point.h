@@ -69,7 +69,9 @@ class Point3D
 		glm::vec3 velocity;
 		glm::vec3 angle;
 
-		float life;
+		glm::vec3 viscosity;
+		glm::vec3 pressure;
+
 		float size;
 
 		//KD specific
