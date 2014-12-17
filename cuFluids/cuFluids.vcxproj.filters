@@ -36,6 +36,9 @@
     <ClInclude Include="kdUtil.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Point.cu">
@@ -48,6 +51,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="texture.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="box.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

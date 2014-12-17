@@ -14,6 +14,9 @@ Point3D::Point3D()
 	viscosity.x = 0; viscosity.y = 0; viscosity.z = 0;
 	pressure.x = 0; pressure.y = 0; pressure.z = 0;
 
+	numChildren = 0;
+	grounded = false;
+
 };
 
 CUDA_CALLABLE_MEMBER
@@ -29,6 +32,9 @@ Point3D::Point3D(float x, float y, float z)
 
 	viscosity.x = 0; viscosity.y = 0; viscosity.z = 0;
 	pressure.x = 0; pressure.y = 0; pressure.z = 0;
+
+	numChildren = 0;
+	grounded = false;
 };
 
 void Point3D::update(float x, float y, float z)

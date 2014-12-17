@@ -1,43 +1,28 @@
 #pragma once
-#include "kdUtil.h"
-#include "Point.h"
 
-template
-<typename T>
+#include "Point.h"
+#include <vector>
+
+CUDA_CALLABLE_MEMBER
 class Box
 {
-
-	protected:
-		T min, max;
-
 	public:
 		//Constructors
-		Box(){};
-		~Box(){};
+		CUDA_CALLABLE_MEMBER
+		Box();
+		CUDA_CALLABLE_MEMBER
+		Box(float minX, float minY, float minZ, float maxX, float maxY, float maxZ);
+		CUDA_CALLABLE_MEMBER
+		~Box();
 
-		//Methods
+		bool isLeaf;
 
-		//Centers
-		const float centerX();
-		const float centerY();
-		const float centerZ();
-		vec3 center();
+		std::vector<Point3D> points;
+		
+		Box* parent;
+		Box* child1;
+		Box* child2;
 
-		//Midpoints
-		float halfWidthX();
-		float halfWidthY();
-		float halfWidthZ();
-		vec3 halfWidth();
+		float minXbound, minYbound, minZbound, maxXbound, maxYbound, maxZbound;
 
-		//Min/Max
-		T minX() const;
-		T maxX() const;
-		T minY() const;
-		T maxY() const;
-		T minZ() const;
-		T maxZ() const;
-
-		//Corner functions
-		//Splitting functions
-		//Set box
 };

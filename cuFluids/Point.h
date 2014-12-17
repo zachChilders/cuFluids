@@ -1,6 +1,5 @@
 #pragma once
 
-
 #ifdef __CUDACC__
 #define CUDA_CALLABLE_MEMBER __host__ __device__
 #else
@@ -74,9 +73,12 @@ class Point3D
 
 		float size;
 
+		bool grounded;
+
 		//KD specific
 		Point3D *left;
 		Point3D *right;
 		int currentDimension;
+		int numChildren;
 		
 };

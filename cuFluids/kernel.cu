@@ -4,7 +4,6 @@
 
 #include <algorithm>
 #include <omp.h>
-#include <SOIL.h>
 #include <Windows.h>
 
 #include "GLutils.h"
@@ -22,6 +21,26 @@ int windowInit();
 GLFWwindow* window;
 
 
+
+#include <PxPhysicsAPI.h>
+#include <extensions\PxExtensionsAPI.h>
+#include <extensions\PxDefaultErrorCallback.h>
+#include <extensions\PxDefaultAllocator.h>
+#include <extensions\PxDefaultSimulationFilterShader.h>
+#include <extensions\PxShapeExt.h>
+#include <extensions\PxSimpleFactory.h>
+
+#include <foundation\PxFoundation.h>
+using namespace physx;
+
+void PhysXInit();
+static PxPhysics* physicsSDK = NULL;
+static PxDefaultErrorCallback defaultErrorCallback;
+static PxDefaultAllocator defaultAllocatorCallback;
+static PxSimulationFilterShader defaultFilterShader = PxDefaultSimulationFilterShader;
+
+PxScene* gScene = NULL;
+
 void cudaErrorCheck(cudaError_t e, std::string file, int line)
 {
 	if (e != cudaSuccess)
@@ -37,20 +56,28 @@ __global__ void update(Point3D* list, GLfloat* posBuffer, int len, float delta)
 	//==============
 	//   PRESSURE
 	//==============
-	list[index].pressure.x = (-1 * (list[index].pressure.x / 0.9982) + (list[index].pressure.y / 0.9982));
+	list[index].pressure.x = (-1 * (list[index].pressure.x / 0.9982) + (list[index].pressure.y / 0.9982) + (list[index].pressure.z / 0.9982));
+	list[index].pressure.y = (-1 * (list[index].pressure.x / 0.9982) + (list[index].pressure.y / 0.9982) + (list[index].pressure.z / 0.9982));
+	list[index].pressure.z = (-1 * (list[index].pressure.x / 0.9982) + (list[index].pressure.y / 0.9982) + (list[index].pressure.z / 0.9982));
 	list[index].velocity += list[index].pressure;
 
 	//==============
 	//  VISCOSITY
-	////==============
+	//==============
 	//list[index].viscosity.x = 0.894 * 1 * ((list[index].viscosity.x - list[index].viscosity.y) / (list[index].pressure.x * list[index].pressure.y));
+	//list[index].viscosity.y = 0.894 * 1 * ((list[index].viscosity.x - list[index].viscosity.y) / (list[index].pressure.x * list[index].pressure.y));
+	//list[index].viscosity.z = 0.894 * 1 * ((list[index].viscosity.x - list[index].viscosity.y) / (list[index].pressure.x * list[index].pressure.y));
 	//list[index].velocity += list[index].viscosity;
 
 	//============
 	//  EXTERNAL
 	//============
-	list[index].velocity += glm::vec3(0.0f, 2.0f, 0.0f) * (float)delta;  
+	if (list[index].grounded == true)
+	{
+		list[index].velocity += glm::vec3(0.0f, 2.0f, 4.0f) * (float)delta;
+	}
 
+	list[index].velocity += glm::vec3(0.0f, 2.0f, 0.0f) * (float)delta;
 	//===========
 	//  GRAVITY
 	//===========
@@ -65,10 +92,12 @@ __global__ void update(Point3D* list, GLfloat* posBuffer, int len, float delta)
 	if ((list[index].position.x < -7.5) || (list[index].position.x > 7.5))
 	{
 		list[index].velocity.x *= -0.5f;
+
 	}
 	if (list[index].position.y < -5)
 	{
 		list[index].position.y = -5;
+		list[index].grounded = true;
 	}
 	if ((list[index].position.z < 0))
 	{
@@ -107,7 +136,7 @@ int main()
 				{
 					xPos = 0;
 				}
-				Point3D *p = new Point3D(xPos - xOffset, y, z);
+				Point3D *p = new Point3D(xPos - xOffset, y, z - 10);
 
 				glm::vec3 maindir = glm::vec3(0.0f, 10.0f, 0.0f);
 
@@ -120,7 +149,7 @@ int main()
 
 				p->velocity = maindir + randomdir*spread;
 
-				p->size = (rand() % 1000) / 2000.0f + 0.1f;
+				p->size = (rand() % 1000) / 4000.0f + 0.1f;
 
 				particleContainer.push_back(*p);
 			}
@@ -366,4 +395,16 @@ int windowInit()
 
 	glfwMakeContextCurrent(window);
 	return 0;
+}
+
+void  PhysxInit()
+{
+	PxFoundation* foundation = PxCreateFoundation(PX_PHYSICS_VERSION, defaultAllocatorCallback, defaultErrorCallback);
+
+	physicsSDK = PxCreatePhysics(PX_PHYSICS_VERSION, *foundation, PxTolerancesScale());
+
+	PxInitExtensions(*physicsSDK);
+
+	PxSceneDesc sceneDesc(physicsSDK->getTolerancesScale());
+
 }

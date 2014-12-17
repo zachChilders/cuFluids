@@ -51,6 +51,7 @@ KDTree::~KDTree()
 
 void KDTree::insert(Point3D* point)
 {
+	point->numChildren++;
 	if (*point < root)
 	{
 		if (root.left == nullptr)
@@ -78,6 +79,7 @@ void KDTree::insert(Point3D* point)
 
 void KDTree::_insert(Point3D *point, Point3D *currNode)
 {
+	point->numChildren++;
 	point->currentDimension = (point->currentDimension + 1) % 3;
 	if (point < currNode)
 	{

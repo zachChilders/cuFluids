@@ -12,7 +12,7 @@ out vec4 particlecolor;
 // Values that stay constant for the whole mesh.
 uniform vec3 CameraRight_worldspace;
 uniform vec3 CameraUp_worldspace;
-uniform mat4 VP; // Model-View-Projection matrix, but without the Model (the position is in BillboardPos; the orientation depends on the camera)
+uniform mat4 VP; // Model-View-Projection matrix, but without the Model
 
 void main()
 {
@@ -28,7 +28,7 @@ void main()
 	gl_Position = VP * vec4(vertexPosition_worldspace, 1.0f);
 
 	// UV of the vertex. No special space for this one.
-	UV = squareVertices.xy + vec2(0.5, 0.5);
+	UV = squareVertices.xy + vec2(0.5, 0.5) * -1;
 	particlecolor = color;
 }
 
