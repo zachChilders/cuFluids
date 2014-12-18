@@ -9,6 +9,7 @@
 #include "cuda_runtime_api.h"
 
 #include "Point.h"
+#include "Box.h"
 
 #include <iostream>
 #include <thread>
@@ -25,10 +26,12 @@ class KDTree
 		~KDTree();
 
 		std::vector<Point3D> points;  //Vectors are guaranteed contiguous.
+		std::vector<Box*> boxen;
 
 		//Methods
 		void insert(Point3D* point);
-		std::vector<Point3D> KDTree::flatten();
+		std::vector<Point3D> flatten();
+		std::vector<Box*> createBounds(Point3D* currentPoint);
 		friend std::ostream& operator<<(std::ostream& out, KDTree& kd);
 
 	private:
@@ -47,7 +50,26 @@ KDTree::~KDTree()
 {
 	//this needs to cuda free everything too
 	points.clear();
+	for (auto b : boxen)
+	{
+		delete b;
+	}
 };
+
+//std::vector<Box*> KDTree::createBounds(Point3D* currentPoint)
+//{
+//	//Set bounds of root box
+//	Box* newBox;
+//
+//	boxen.push_back(newBox);
+//
+//	//For each point, draw a box
+//	
+//
+//
+//
+//
+//}
 
 void KDTree::insert(Point3D* point)
 {

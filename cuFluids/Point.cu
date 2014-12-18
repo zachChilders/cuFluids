@@ -37,16 +37,11 @@ Point3D::Point3D(float x, float y, float z)
 	grounded = false;
 };
 
-void Point3D::update(float x, float y, float z)
+CUDA_CALLABLE_MEMBER
+void Point3D::operator+(float scalar)
 {
-	velocity.x = x; velocity.y = y; velocity.z = z;
-	position += velocity;
-};
-
-float Point3D::length()
-{
-	return sqrt((position.x * position.x) * (position.y * position.y) * (position.z * position.z));
-};
+	position.y += scalar;
+}
 
 float& Point3D::operator[](int dimension)
 {
@@ -95,11 +90,7 @@ std::ostream& operator<<(std::ostream &out, Point3D &point)
 	return out;
 }
 
-CUDA_CALLABLE_MEMBER
-void Point3D::operator+(float scalar)
-{
-	position.y += scalar;
-}
+
 
 float* Point3D::toFloats()
 {

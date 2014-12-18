@@ -18,3 +18,5 @@ Box::Box(float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
 	child1 = nullptr;
 	child2 = nullptr;
 }
+
+Box::~Box(){};

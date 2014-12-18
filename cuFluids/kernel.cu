@@ -1,5 +1,3 @@
-
-
 #include "KDTree.h"
 
 #include <algorithm>
@@ -20,27 +18,6 @@
 int windowInit();
 GLFWwindow* window;
 
-
-
-#include <PxPhysicsAPI.h>
-#include <extensions\PxExtensionsAPI.h>
-#include <extensions\PxDefaultErrorCallback.h>
-#include <extensions\PxDefaultAllocator.h>
-#include <extensions\PxDefaultSimulationFilterShader.h>
-#include <extensions\PxShapeExt.h>
-#include <extensions\PxSimpleFactory.h>
-
-#include <foundation\PxFoundation.h>
-using namespace physx;
-
-void PhysXInit();
-static PxPhysics* physicsSDK = NULL;
-static PxDefaultErrorCallback defaultErrorCallback;
-static PxDefaultAllocator defaultAllocatorCallback;
-static PxSimulationFilterShader defaultFilterShader = PxDefaultSimulationFilterShader;
-
-PxScene* gScene = NULL;
-
 void cudaErrorCheck(cudaError_t e, std::string file, int line)
 {
 	if (e != cudaSuccess)
@@ -56,10 +33,10 @@ __global__ void update(Point3D* list, GLfloat* posBuffer, int len, float delta)
 	//==============
 	//   PRESSURE
 	//==============
-	list[index].pressure.x = (-1 * (list[index].pressure.x / 0.9982) + (list[index].pressure.y / 0.9982) + (list[index].pressure.z / 0.9982));
-	list[index].pressure.y = (-1 * (list[index].pressure.x / 0.9982) + (list[index].pressure.y / 0.9982) + (list[index].pressure.z / 0.9982));
-	list[index].pressure.z = (-1 * (list[index].pressure.x / 0.9982) + (list[index].pressure.y / 0.9982) + (list[index].pressure.z / 0.9982));
-	list[index].velocity += list[index].pressure;
+	//list[index].pressure.x = (-1 * (list[index].pressure.x / 0.9982) + (list[index].pressure.y / 0.9982) + (list[index].pressure.z / 0.9982));
+	//list[index].pressure.y = (-1 * (list[index].pressure.x / 0.9982) + (list[index].pressure.y / 0.9982) + (list[index].pressure.z / 0.9982));
+	//list[index].pressure.z = (-1 * (list[index].pressure.x / 0.9982) + (list[index].pressure.y / 0.9982) + (list[index].pressure.z / 0.9982));
+	//list[index].velocity += list[index].pressure;
 
 	//==============
 	//  VISCOSITY
@@ -72,10 +49,10 @@ __global__ void update(Point3D* list, GLfloat* posBuffer, int len, float delta)
 	//============
 	//  EXTERNAL
 	//============
-	if (list[index].grounded == true)
-	{
-		list[index].velocity += glm::vec3(0.0f, 2.0f, 4.0f) * (float)delta;
-	}
+	//if (list[index].grounded == true)
+	//{
+	//	list[index].velocity += glm::vec3(0.0f, 2.0f, 4.0f) * (float)delta;
+	//}
 
 	list[index].velocity += glm::vec3(0.0f, 2.0f, 0.0f) * (float)delta;
 	//===========
@@ -124,7 +101,7 @@ int main()
 	float xOffset;
 	float spread = 1.5f;
 
-	//Generate points.  This needs to be done strategically.
+	//Generate points.  
 	for (int x = 10; x < 30; x++)
 	{
 		for (int y = -50; y < 50; y++)
@@ -342,6 +319,8 @@ int main()
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 
+		//std::cout << 1 / delta << " fps" << std::endl;
+
 	} // Check if the ESC key was pressed or the window was closed
 	while (glfwGetKey(window, GLFW_KEY_ENTER) != GLFW_PRESS &&
 	glfwWindowShouldClose(window) == 0);
@@ -395,16 +374,4 @@ int windowInit()
 
 	glfwMakeContextCurrent(window);
 	return 0;
-}
-
-void  PhysxInit()
-{
-	PxFoundation* foundation = PxCreateFoundation(PX_PHYSICS_VERSION, defaultAllocatorCallback, defaultErrorCallback);
-
-	physicsSDK = PxCreatePhysics(PX_PHYSICS_VERSION, *foundation, PxTolerancesScale());
-
-	PxInitExtensions(*physicsSDK);
-
-	PxSceneDesc sceneDesc(physicsSDK->getTolerancesScale());
-
 }

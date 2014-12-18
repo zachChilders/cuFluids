@@ -23,12 +23,6 @@ class Point3D
 		CUDA_CALLABLE_MEMBER
 		~Point3D(){};
 
-		//Methods
-		void update(float x, float y, float z);
-		float length();
-		float dot(Point3D &point);
-		void set(float x, float y, float z);
-
 		//Operators
 		friend std::ostream& operator<<(std::ostream &out, Point3D &point);
 
